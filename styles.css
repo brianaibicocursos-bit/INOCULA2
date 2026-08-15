@@ -789,3 +789,57 @@ button {
     font-size: 9px;
   }
 }
+/* =========================================================
+   NUEVO CREADOR DE PERSONAJE
+   ========================================================= */
+
+.name-input-wrapper {
+  width: 100%;
+  margin: 15px 0 25px;
+}
+
+#player-name {
+  width: 100%;
+  padding: 16px 18px;
+  border: 2px solid #e5e2f2;
+  border-radius: 15px;
+  background: #faf9ff;
+  color: #182033;
+  font-size: 16px;
+  font-weight: 600;
+  outline: none;
+  text-align: center;
+  transition: .2s;
+}
+
+#player-name:focus {
+  border-color: #7557ff;
+  background: white;
+  box-shadow: 0 0 0 4px rgba(117,87,255,.10);
+}
+
+#player-name::placeholder {
+  color: #a0a4b0;
+}
+
+.board-player-avatar {
+  position: absolute;
+  font-size: 22px;
+  top: 5px;
+  left: 25px;
+  z-index: 3;
+}
+
+.tile-car {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  font-size: 34px;
+  z-index: 5;
+  animation: carBounce .5s infinite alternate;
+}
+
+.tile-car .board-player-avatar + * {
+  margin-top: 15px;
+}
