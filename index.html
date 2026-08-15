@@ -27,19 +27,27 @@
 
   <div class="nav-links">
 
-    <button class="nav-btn active" onclick="navigateTo('page-home')" data-i18n="navHome">
+    <button class="nav-btn active"
+            onclick="navigateTo('page-home')"
+            data-i18n="navHome">
       🏠 Inicio
     </button>
 
-    <button class="nav-btn" onclick="navigateTo('page-game')" data-i18n="navGame">
+    <button class="nav-btn"
+            onclick="navigateTo('page-game')"
+            data-i18n="navGame">
       🎮 Tablero
     </button>
 
-    <button class="nav-btn" onclick="navigateTo('page-lab')" data-i18n="navLab">
+    <button class="nav-btn"
+            onclick="navigateTo('page-lab')"
+            data-i18n="navLab">
       🧪 Laboratorio
     </button>
 
-    <button class="nav-btn" onclick="navigateTo('page-ranking')" data-i18n="navRanking">
+    <button class="nav-btn"
+            onclick="navigateTo('page-ranking')"
+            data-i18n="navRanking">
       🏆 Ranking
     </button>
 
@@ -64,7 +72,7 @@
 
   <div class="hero">
 
-    <div class="hero-badge">
+    <div class="hero-badge" data-i18n="hackathon">
       ✨ UNESCO Youth Hackathon 2026
     </div>
 
@@ -80,7 +88,9 @@
 
     <div class="hero-buttons">
 
-      <button class="primary-btn" onclick="startGame()" data-i18n="startGame">
+      <button class="primary-btn"
+              onclick="startGame()"
+              data-i18n="startGame">
         🚀 Comenzar aventura
       </button>
 
@@ -154,7 +164,6 @@
 
       </div>
 
-
       <h3 data-i18n="chooseStyle">
         Elige tu estilo
       </h3>
@@ -189,7 +198,13 @@
 
       <div class="preview">
 
-        <div id="avatar-preview" class="big-avatar"></div>
+        <div id="avatar-preview" class="big-avatar">
+          🧑‍💻
+        </div>
+
+        <div id="preview-style" class="preview-style">
+          😎
+        </div>
 
         <div class="preview-car">
           🚗
@@ -283,11 +298,15 @@
 
       <div class="player-car-area">
 
-        <div class="road-line"></div>
+        <div class="car-scene">
 
-        <div class="player-car">
+          <div id="player-avatar" class="car-avatar">
+            🧑‍💻
+          </div>
 
-          <div id="player-avatar" class="car-avatar"></div>
+          <div id="player-style" class="player-style">
+            😎
+          </div>
 
           <div class="car">
             🚗
@@ -341,33 +360,25 @@
       <button onclick="labTool('source')">
         🔎
         <strong data-i18n="sourceTool">Fuente</strong>
-        <small data-i18n="sourceDescription">
-          Busca el origen
-        </small>
+        <small data-i18n="sourceDescription">Busca el origen</small>
       </button>
 
       <button onclick="labTool('image')">
         🖼️
         <strong data-i18n="imageTool">Imagen</strong>
-        <small data-i18n="imageDescription">
-          Analiza el contexto
-        </small>
+        <small data-i18n="imageDescription">Analiza el contexto</small>
       </button>
 
       <button onclick="labTool('ai')">
         🤖
         <strong data-i18n="aiTool">IA</strong>
-        <small data-i18n="aiDescription">
-          Busca señales de IA
-        </small>
+        <small data-i18n="aiDescription">Busca señales de IA</small>
       </button>
 
       <button onclick="labTool('date')">
         📅
         <strong data-i18n="dateTool">Fecha</strong>
-        <small data-i18n="dateDescription">
-          Comprueba cuándo ocurrió
-        </small>
+        <small data-i18n="dateDescription">Comprueba cuándo ocurrió</small>
       </button>
 
     </div>
@@ -393,10 +404,25 @@
 
     <div class="ranking-card">
 
-      <div>🥇 FactChecker_01 <strong>980</strong></div>
-      <div>🥈 MediaGuardian <strong>920</strong></div>
-      <div>🥉 TruthHunter <strong>860</strong></div>
-      <div>⭐ You <strong id="your-score">100</strong></div>
+      <div>
+        <span>🥇 FactChecker_01</span>
+        <strong>980</strong>
+      </div>
+
+      <div>
+        <span>🥈 MediaGuardian</span>
+        <strong>920</strong>
+      </div>
+
+      <div>
+        <span>🥉 TruthHunter</span>
+        <strong>860</strong>
+      </div>
+
+      <div>
+        <span>⭐ <span data-i18n="you">Tú</span></span>
+        <strong id="your-score">100</strong>
+      </div>
 
     </div>
 
@@ -415,9 +441,7 @@
       📰
     </div>
 
-    <h2 id="event-title">
-      Nuevo reto
-    </h2>
+    <h2 id="event-title"></h2>
 
     <p id="event-description"></p>
 
