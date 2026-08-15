@@ -29,7 +29,7 @@ button {
 }
 
 
-/* NAVBAR */
+/* ================= NAVBAR ================= */
 
 .navbar {
   height: 76px;
@@ -80,7 +80,7 @@ button {
 }
 
 
-/* GENERAL */
+/* ================= GENERAL ================= */
 
 .page-view {
   min-height: calc(100vh - 76px);
@@ -190,7 +190,7 @@ button {
 }
 
 
-/* CHARACTER */
+/* ================= CHARACTER ================= */
 
 .setup-container {
   min-height: calc(100vh - 76px);
@@ -237,6 +237,11 @@ button {
   transition: .2s;
 }
 
+.character-option:hover,
+.style-option:hover {
+  transform: translateY(-3px);
+}
+
 .character-option span,
 .style-option span {
   display: block;
@@ -251,6 +256,9 @@ button {
   background: #f0edff;
 }
 
+
+/* ================= AVATAR ================= */
+
 .preview {
   height: 180px;
   background:
@@ -261,24 +269,55 @@ button {
   display: flex;
   align-items: flex-end;
   justify-content: center;
-  padding-bottom: 25px;
+  padding-bottom: 20px;
 }
 
 .big-avatar {
   position: absolute;
-  bottom: 48px;
-  font-size: 60px;
-  z-index: 2;
+  bottom: 72px;
+  z-index: 4;
   transition: .3s;
 }
 
 .preview-car {
-  font-size: 90px;
+  font-size: 100px;
+  line-height: 1;
+  z-index: 3;
   transform: translateY(12px);
 }
 
+.avatar-character {
+  font-size: 62px;
+  position: relative;
+  z-index: 2;
+  filter: drop-shadow(0 4px 5px rgba(0,0,0,.15));
+}
 
-/* GAME */
+.avatar-accessory {
+  position: absolute;
+  z-index: 4;
+  font-size: 30px;
+  transform: translate(15px,-28px);
+}
+
+.avatar-accessory.cool {
+  transform: translate(17px,-27px);
+}
+
+.avatar-accessory.smart {
+  transform: translate(16px,-25px);
+}
+
+.avatar-accessory.fun {
+  transform: translate(17px,-25px);
+}
+
+.avatar-accessory.cyber {
+  transform: translate(15px,-27px);
+}
+
+
+/* ================= GAME ================= */
 
 .game-container {
   max-width: 1400px;
@@ -310,6 +349,9 @@ button {
 .virus-stat strong {
   color: #ef476f;
 }
+
+
+/* ================= STAGE PROGRESS ================= */
 
 .stage-progress {
   display: flex;
@@ -352,10 +394,11 @@ button {
 
 .stage-point.active {
   border-color: #7355ff;
+  box-shadow: 0 0 0 6px rgba(115,85,255,.10);
 }
 
 
-/* BOARD */
+/* ================= BOARD ================= */
 
 .board-wrapper {
   background: white;
@@ -435,12 +478,17 @@ button {
 }
 
 @keyframes carBounce {
-  from { transform: translateY(0); }
-  to { transform: translateY(-4px); }
+  from {
+    transform: translateY(0);
+  }
+
+  to {
+    transform: translateY(-4px);
+  }
 }
 
 
-/* PLAYER PANEL */
+/* ================= PLAYER CAR ================= */
 
 .player-panel {
   display: flex;
@@ -452,37 +500,105 @@ button {
 }
 
 .player-car-area {
-  min-height: 120px;
+  min-height: 150px;
   flex: 1;
   background: linear-gradient(135deg,#e8f8ff,#fff0f7);
   border-radius: 25px;
   display: flex;
-  align-items: center;
+  align-items: flex-end;
   justify-content: center;
   position: relative;
+  overflow: hidden;
+}
+
+.road-line {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 22px;
+  height: 5px;
+  background: repeating-linear-gradient(
+    90deg,
+    #ffffff 0 40px,
+    transparent 40px 75px
+  );
+  opacity: .8;
+}
+
+.player-car {
+  position: relative;
+  width: 190px;
+  height: 125px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  z-index: 2;
 }
 
 .car {
-  font-size: 90px;
+  font-size: 100px;
+  line-height: 1;
+  position: relative;
+  z-index: 2;
+  filter: drop-shadow(0 8px 5px rgba(0,0,0,.15));
 }
 
 .car-avatar {
+  position: absolute;
+  z-index: 4;
+  bottom: 57px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 70px;
+  height: 70px;
+  display: grid;
+  place-items: center;
+}
+
+.car-avatar .avatar-character {
   font-size: 48px;
-  position: relative;
-  top: -25px;
-  left: 50px;
-  z-index: 3;
+}
+
+.car-avatar .avatar-accessory {
+  font-size: 24px;
 }
 
 .car-viruses {
   position: absolute;
-  bottom: 15px;
+  z-index: 6;
+  bottom: 4px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 180px;
   display: flex;
-  gap: 3px;
+  justify-content: center;
+  gap: 2px;
   font-size: 25px;
-  max-width: 90%;
   overflow: hidden;
+  pointer-events: none;
 }
+
+.car-viruses span {
+  animation: virusAppear .5s ease;
+  filter: drop-shadow(0 2px 2px rgba(0,0,0,.15));
+}
+
+@keyframes virusAppear {
+  0% {
+    transform: scale(0) rotate(-30deg);
+  }
+
+  70% {
+    transform: scale(1.25) rotate(10deg);
+  }
+
+  100% {
+    transform: scale(1) rotate(0);
+  }
+}
+
+
+/* ================= WHEEL ================= */
 
 .wheel-panel {
   background: white;
@@ -513,7 +629,7 @@ button {
 }
 
 
-/* LAB */
+/* ================= LAB ================= */
 
 .lab-container,
 .ranking-container {
@@ -582,7 +698,7 @@ button {
 }
 
 
-/* RANKING */
+/* ================= RANKING ================= */
 
 .ranking-card {
   background: white;
@@ -599,7 +715,7 @@ button {
 }
 
 
-/* MODAL */
+/* ================= MODALS ================= */
 
 .modal,
 .error-screen {
@@ -661,11 +777,27 @@ button {
   display: block;
   width: 100%;
   margin: 10px 0;
-  padding: 14px;
+  padding: 15px;
   border-radius: 13px;
   background: #eeeaff;
   color: #5139c4;
   font-weight: 800;
+  transition: .2s;
+}
+
+.event-option:hover {
+  transform: translateY(-2px);
+  background: #e2dcff;
+}
+
+.event-option.share {
+  background: #fff0f3;
+  color: #d93c61;
+}
+
+.event-option.no-share {
+  background: #eafaf1;
+  color: #218653;
 }
 
 .error-box {
@@ -688,18 +820,31 @@ button {
 }
 
 @keyframes virusPulse {
-  from { transform: scale(1); }
-  to { transform: scale(1.2) rotate(10deg); }
+  from {
+    transform: scale(1);
+  }
+
+  to {
+    transform: scale(1.2) rotate(10deg);
+  }
 }
 
 @keyframes errorShake {
-  0%,100% { transform: translateX(0); }
-  25% { transform: translateX(-10px); }
-  75% { transform: translateX(10px); }
+  0%,100% {
+    transform: translateX(0);
+  }
+
+  25% {
+    transform: translateX(-10px);
+  }
+
+  75% {
+    transform: translateX(10px);
+  }
 }
 
 
-/* RESPONSIVE */
+/* ================= RESPONSIVE ================= */
 
 @media(max-width:900px) {
 
@@ -737,6 +882,24 @@ button {
 
   .setup-card {
     padding: 25px;
+  }
+
+  .stage-point {
+    width: 60px;
+    height: 60px;
+  }
+
+  .stage-point span {
+    top: 68px;
+    font-size: 9px;
+  }
+
+  .player-car-area {
+    min-height: 130px;
+  }
+
+  .wheel-panel {
+    width: 100%;
   }
 
 }
