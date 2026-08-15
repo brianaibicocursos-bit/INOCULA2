@@ -1,1 +1,943 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+  <title>INOCULA · Digital Life</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap"
+    rel="stylesheet"
+  >
+
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+  >
+
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+<!-- =========================================================
+     NAVBAR
+========================================================= -->
+
+<nav class="navbar">
+
+  <div class="brand" onclick="showPage('home')">
+    <div class="brand-icon">
+      🧬
+    </div>
+
+    <div>
+      <strong>INOCULA</strong>
+      <span>Digital Life</span>
+    </div>
+  </div>
+
+  <div class="nav-links">
+
+    <button class="nav-button active" data-page="home" onclick="showPage('home')">
+      🏠 <span data-i18n="navHome">Inicio</span>
+    </button>
+
+    <button class="nav-button" data-page="game" onclick="showPage('game')">
+      🎮 <span data-i18n="navGame">Tablero</span>
+    </button>
+
+    <button class="nav-button" data-page="lab" onclick="showPage('lab')">
+      🧪 <span data-i18n="navLab">Laboratorio</span>
+    </button>
+
+    <button class="nav-button" data-page="ranking" onclick="showPage('ranking')">
+      🏆 <span data-i18n="navRanking">Ranking</span>
+    </button>
+
+  </div>
+
+  <div class="nav-right">
+
+    <select id="languageSelect" onchange="changeLanguage(this.value)">
+      <option value="es">🇲🇽 Español</option>
+      <option value="en">🇺🇸 English</option>
+      <option value="zh">🇨🇳 中文</option>
+    </select>
+
+    <span class="hackathon-label">
+      UNESCO Youth 2026
+    </span>
+
+  </div>
+
+</nav>
+
+
+<!-- =========================================================
+     HOME
+========================================================= -->
+
+<section id="page-home" class="page active">
+
+  <div class="hero">
+
+    <div class="hero-decoration decoration-one">✦</div>
+    <div class="hero-decoration decoration-two">✧</div>
+
+    <div class="hero-content">
+
+      <div class="hero-badge">
+        🧬 <span data-i18n="heroBadge">UNESCO Youth Hackathon 2026</span>
+      </div>
+
+      <h1>
+        <span data-i18n="heroTitle1">Antes de creer,</span>
+        <span class="gradient-text" data-i18n="heroTitle2">
+          inocúlate.
+        </span>
+      </h1>
+
+      <p data-i18n="heroDescription">
+        Una experiencia interactiva que te entrena para detectar
+        fake news, deepfakes y manipulación digital.
+      </p>
+
+      <div class="hero-actions">
+
+        <button class="primary-button large" onclick="startGame()">
+          🎮 <span data-i18n="startGame">Comenzar aventura</span>
+        </button>
+
+        <button class="secondary-button large" onclick="showPage('lab')">
+          🧪 <span data-i18n="tryLab">Explorar laboratorio</span>
+        </button>
+
+      </div>
+
+    </div>
+
+
+    <div class="hero-preview">
+
+      <div class="floating-card card-one">
+        📰
+        <strong data-i18n="fakeNews">Fake News</strong>
+        <span data-i18n="detectIt">Detect it.</span>
+      </div>
+
+      <div class="floating-card card-two">
+        🤖
+        <strong>AI</strong>
+        <span data-i18n="verifyIt">Verify it.</span>
+      </div>
+
+      <div class="phone-mockup">
+
+        <div class="phone-header">
+          <span>INOCULA</span>
+          <span>●</span>
+        </div>
+
+        <div class="phone-character">
+          🧑‍💻
+        </div>
+
+        <div class="phone-title" data-i18n="digitalJourney">
+          Tu viaje digital
+        </div>
+
+        <div class="phone-progress">
+          <div></div>
+        </div>
+
+        <div class="phone-stat">
+          🛡️ 1 &nbsp;&nbsp; 👥 100
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <div class="home-features">
+
+    <div class="feature-card">
+      <div>🎮</div>
+      <h3 data-i18n="featureGame">Aprende jugando</h3>
+      <p data-i18n="featureGameText">
+        Toma decisiones y observa sus consecuencias.
+      </p>
+    </div>
+
+    <div class="feature-card">
+      <div>🧠</div>
+      <h3 data-i18n="featureSkills">Desarrolla habilidades</h3>
+      <p data-i18n="featureSkillsText">
+        Aprende a verificar información antes de compartirla.
+      </p>
+    </div>
+
+    <div class="feature-card">
+      <div>🌎</div>
+      <h3 data-i18n="featureLanguages">Multilingüe</h3>
+      <p data-i18n="featureLanguagesText">
+        Disponible en español, inglés y chino.
+      </p>
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- =========================================================
+     CHARACTER CREATION
+========================================================= -->
+
+<section id="page-character" class="page">
+
+  <div class="character-container">
+
+    <div class="section-heading">
+
+      <span class="eyebrow">
+        🧬 INOCULA
+      </span>
+
+      <h2 data-i18n="createAgent">
+        Crea tu agente
+      </h2>
+
+      <p data-i18n="createAgentText">
+        Este personaje te acompañará durante todo tu viaje digital.
+      </p>
+
+    </div>
+
+
+    <div class="character-builder">
+
+      <div class="avatar-preview">
+
+        <div id="avatarPreview" class="big-avatar">
+          🧑‍💻
+        </div>
+
+        <div class="avatar-shadow"></div>
+
+        <h3 id="avatarNamePreview">
+          Agent
+        </h3>
+
+      </div>
+
+
+      <div class="builder-options">
+
+        <div class="option-group">
+
+          <h3 data-i18n="identity">
+            Identidad
+          </h3>
+
+          <div class="choice-grid">
+
+            <button class="choice-button selected"
+                    onclick="selectIdentity('female', this)">
+              👩
+              <span data-i18n="female">Mujer</span>
+            </button>
+
+            <button class="choice-button"
+                    onclick="selectIdentity('male', this)">
+              👨
+              <span data-i18n="male">Hombre</span>
+            </button>
+
+            <button class="choice-button"
+                    onclick="selectIdentity('neutral', this)">
+              🧑
+              <span data-i18n="other">Otro</span>
+            </button>
+
+          </div>
+
+        </div>
+
+
+        <div class="option-group">
+
+          <h3 data-i18n="style">
+            Estilo
+          </h3>
+
+          <div class="choice-grid">
+
+            <button class="choice-button"
+                    onclick="selectStyle('cool', this)">
+              😎
+              <span data-i18n="styleCool">Cool</span>
+            </button>
+
+            <button class="choice-button"
+                    onclick="selectStyle('student', this)">
+              🎒
+              <span data-i18n="styleStudent">Student</span>
+            </button>
+
+            <button class="choice-button"
+                    onclick="selectStyle('tech', this)">
+              🤓
+              <span data-i18n="styleTech">Tech</span>
+            </button>
+
+          </div>
+
+        </div>
+
+
+        <div class="name-field">
+
+          <label data-i18n="agentName">
+            Nombre de tu agente
+          </label>
+
+          <input
+            id="agentName"
+            type="text"
+            maxlength="18"
+            placeholder="Ej. Alex"
+            oninput="updateAgentName()"
+          >
+
+        </div>
+
+
+        <button class="primary-button full"
+                onclick="confirmCharacter()">
+
+          🚀 <span data-i18n="enterWorld">
+            Entrar al mundo digital
+          </span>
+
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- =========================================================
+     GAME
+========================================================= -->
+
+<section id="page-game" class="page">
+
+  <div class="game-container">
+
+    <!-- GAME HEADER -->
+
+    <div class="game-header">
+
+      <div>
+
+        <span class="eyebrow" data-i18n="digitalDay">
+          DÍA DIGITAL
+        </span>
+
+        <h2 id="gameGreeting">
+          Tu navegación diaria
+        </h2>
+
+      </div>
+
+
+      <div class="game-stats">
+
+        <div class="game-stat">
+          <span>👥</span>
+          <small data-i18n="followers">Seguidores</small>
+          <strong id="followers">100</strong>
+        </div>
+
+        <div class="game-stat">
+          <span>🛡️</span>
+          <small data-i18n="shields">Escudos</small>
+          <strong id="shields">1</strong>
+        </div>
+
+        <div class="game-stat viral">
+          <span>🦠</span>
+          <small data-i18n="viralLoad">Carga viral</small>
+          <strong id="viralLoad">15%</strong>
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- STAGE PROGRESS -->
+
+    <div class="stage-progress">
+
+      <div class="stage-progress-line"></div>
+
+      <div class="stage-node active" id="stageNode1">
+        <span>🌅</span>
+        <small data-i18n="stageMorning">Mañana</small>
+      </div>
+
+      <div class="stage-node locked" id="stageNode2">
+        <span>🏫</span>
+        <small data-i18n="stageSchool">Escuela</small>
+      </div>
+
+      <div class="stage-node locked" id="stageNode3">
+        <span>📱</span>
+        <small data-i18n="stageSocial">Redes</small>
+      </div>
+
+      <div class="stage-node locked" id="stageNode4">
+        <span>🌙</span>
+        <small data-i18n="stageNight">Noche</small>
+      </div>
+
+    </div>
+
+
+    <!-- GAME AREA -->
+
+    <div class="game-layout">
+
+
+      <!-- SIDE PANEL -->
+
+      <aside class="game-sidebar">
+
+        <div class="player-card">
+
+          <div class="mini-avatar" id="miniAvatar">
+            👩
+          </div>
+
+          <div>
+
+            <small data-i18n="currentAgent">
+              Agente actual
+            </small>
+
+            <strong id="playerName">
+              Agent
+            </strong>
+
+          </div>
+
+        </div>
+
+
+        <div class="position-card">
+
+          <span data-i18n="currentPosition">
+            Posición
+          </span>
+
+          <strong>
+            <span id="currentPosition">1</span>
+            / 24
+          </strong>
+
+          <div class="position-progress">
+            <div id="positionProgress"></div>
+          </div>
+
+        </div>
+
+
+        <div class="wheel-card">
+
+          <div class="wheel-icon" id="wheelNumber">
+            🎲
+          </div>
+
+          <h3 data-i18n="digitalWheel">
+            Rueda digital
+          </h3>
+
+          <p id="wheelMessage"
+             data-i18n="spinToMove">
+            Gira para avanzar.
+          </p>
+
+          <button
+            id="spinButton"
+            class="spin-button"
+            onclick="spinWheel()"
+          >
+            🎲 <span data-i18n="spin">GIRAR</span>
+          </button>
+
+        </div>
+
+
+        <div class="viral-card">
+
+          <div class="viral-header">
+            <span data-i18n="viralLoad">
+              Carga viral
+            </span>
+
+            <strong id="viralPercent">
+              15%
+            </strong>
+          </div>
+
+          <div class="viral-bar">
+            <div id="viralBar"></div>
+          </div>
+
+          <small data-i18n="viralExplanation">
+            Evita compartir información dudosa.
+          </small>
+
+        </div>
+
+      </aside>
+
+
+      <!-- BOARD -->
+
+      <main class="board-area">
+
+        <div class="board-header">
+
+          <div>
+            <span class="stage-tag" id="currentStageTag">
+              🌅 ETAPA 1
+            </span>
+
+            <h3 id="currentStageTitle">
+              Despertar & Feed Matutino
+            </h3>
+          </div>
+
+          <div class="board-tip">
+            💡
+            <span data-i18n="boardTip">
+              Cada decisión cambia tu día digital.
+            </span>
+          </div>
+
+        </div>
+
+
+        <div class="board" id="gameBoard">
+
+          <!-- Generated by JS -->
+
+        </div>
+
+
+        <div class="board-legend">
+
+          <span>
+            🧑‍💻 <span data-i18n="you">
+              Tú
+            </span>
+          </span>
+
+          <span>
+            📰 <span data-i18n="challengeTile">
+              Reto
+            </span>
+          </span>
+
+          <span>
+            🛡️ <span data-i18n="shieldTile">
+              Escudo
+            </span>
+          </span>
+
+          <span>
+            ⭐ <span data-i18n="bonusTile">
+              Bonus
+            </span>
+          </span>
+
+        </div>
+
+      </main>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- =========================================================
+     LAB
+========================================================= -->
+
+<section id="page-lab" class="page">
+
+  <div class="lab-container">
+
+    <div class="section-heading">
+
+      <span class="eyebrow">
+        🧪 INOCULA LAB
+      </span>
+
+      <h2 data-i18n="labTitle">
+        Laboratorio de verificación
+      </h2>
+
+      <p data-i18n="labDescription">
+        Practica antes de enfrentarte a los retos del tablero.
+      </p>
+
+    </div>
+
+
+    <div class="lab-grid">
+
+      <button class="lab-tool" onclick="runLab('clickbait')">
+        <span>📰</span>
+        <strong data-i18n="toolClickbait">
+          Detectar clickbait
+        </strong>
+        <small data-i18n="toolClickbaitText">
+          Descubre cuándo un titular exagera.
+        </small>
+      </button>
+
+      <button class="lab-tool" onclick="runLab('source')">
+        <span>🔎</span>
+        <strong data-i18n="toolSource">
+          Verificar fuente
+        </strong>
+        <small data-i18n="toolSourceText">
+          Aprende a investigar el origen.
+        </small>
+      </button>
+
+      <button class="lab-tool" onclick="runLab('ai')">
+        <span>🤖</span>
+        <strong data-i18n="toolAI">
+          Detectar IA
+        </strong>
+        <small data-i18n="toolAIText">
+          Identifica señales de contenido artificial.
+        </small>
+      </button>
+
+      <button class="lab-tool" onclick="runLab('context')">
+        <span>🧩</span>
+        <strong data-i18n="toolContext">
+          Revisar contexto
+        </strong>
+        <small data-i18n="toolContextText">
+          Una imagen no siempre cuenta toda la historia.
+        </small>
+      </button>
+
+    </div>
+
+
+    <div id="labResult" class="lab-result hidden">
+
+      <div class="lab-result-icon">
+        🔬
+      </div>
+
+      <div>
+        <h3 id="labResultTitle"></h3>
+        <p id="labResultText"></p>
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- =========================================================
+     RANKING
+========================================================= -->
+
+<section id="page-ranking" class="page">
+
+  <div class="ranking-container">
+
+    <div class="section-heading">
+
+      <span class="eyebrow">
+        🏆 INOCULA
+      </span>
+
+      <h2 data-i18n="rankingTitle">
+        Agentes destacados
+      </h2>
+
+      <p data-i18n="rankingDescription">
+        La confianza también se construye.
+      </p>
+
+    </div>
+
+
+    <div class="ranking-list">
+
+      <div class="ranking-row first">
+        <span class="rank">🥇</span>
+        <span class="rank-avatar">🧑‍🚀</span>
+        <strong>FactChecker_K</strong>
+        <span>950 👥</span>
+        <span>-80% 🦠</span>
+      </div>
+
+      <div class="ranking-row">
+        <span class="rank">🥈</span>
+        <span class="rank-avatar">👩‍💻</span>
+        <strong>Digital_Ana</strong>
+        <span>820 👥</span>
+        <span>-65% 🦠</span>
+      </div>
+
+      <div class="ranking-row">
+        <span class="rank">🥉</span>
+        <span class="rank-avatar">👨‍🔬</span>
+        <strong>Cyber_Luis</strong>
+        <span>740 👥</span>
+        <span>-50% 🦠</span>
+      </div>
+
+      <div class="ranking-row player-ranking">
+        <span class="rank">⭐</span>
+        <span class="rank-avatar" id="rankingAvatar">🧑‍💻</span>
+        <strong id="rankingName">YOU</strong>
+        <span id="rankingFollowers">100 👥</span>
+        <span id="rankingViral">-15% 🦠</span>
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- =========================================================
+     CHALLENGE MODAL
+========================================================= -->
+
+<div id="challengeModal" class="modal hidden">
+
+  <div class="modal-card">
+
+    <button class="modal-close" onclick="closeChallenge()">
+      ✕
+    </button>
+
+    <div class="modal-icon">
+      🧠
+    </div>
+
+    <span class="modal-eyebrow" data-i18n="newChallenge">
+      NUEVO RETO
+    </span>
+
+    <h2 id="challengeHeadline">
+      Headline
+    </h2>
+
+    <p id="challengeArticle" class="challenge-article hidden">
+    </p>
+
+    <button
+      id="readArticleButton"
+      class="secondary-button"
+      onclick="toggleArticle()"
+    >
+      📄 <span data-i18n="readArticle">
+        Leer nota completa
+      </span>
+    </button>
+
+
+    <div class="challenge-question">
+
+      <h3 data-i18n="question">
+        ¿Qué harías?
+      </h3>
+
+      <div class="answer-grid">
+
+        <button onclick="answerChallenge('share')">
+          📲
+          <span data-i18n="share">
+            Compartir
+          </span>
+        </button>
+
+        <button onclick="answerChallenge('verify')">
+          🔎
+          <span data-i18n="verify">
+            Verificar
+          </span>
+        </button>
+
+        <button onclick="answerChallenge('ignore')">
+          🚫
+          <span data-i18n="ignore">
+            Ignorar
+          </span>
+        </button>
+
+      </div>
+
+    </div>
+
+
+    <div id="challengeFeedback" class="challenge-feedback hidden">
+
+      <strong id="feedbackTitle"></strong>
+
+      <p id="feedbackText"></p>
+
+      <button
+        class="primary-button full"
+        onclick="closeChallenge()"
+      >
+        <span data-i18n="continue">
+          Continuar
+        </span>
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<!-- =========================================================
+     STAGE UNLOCK MODAL
+========================================================= -->
+
+<div id="stageModal" class="modal hidden">
+
+  <div class="stage-unlock-card">
+
+    <div class="unlock-stars">
+      ✨ ✨ ✨
+    </div>
+
+    <div class="unlock-icon" id="unlockIcon">
+      🏫
+    </div>
+
+    <span data-i18n="stageUnlocked">
+      ¡NUEVA ETAPA DESBLOQUEADA!
+    </span>
+
+    <h2 id="unlockTitle">
+      Escuela
+    </h2>
+
+    <p id="unlockText">
+      Tu viaje continúa.
+    </p>
+
+    <button
+      class="primary-button"
+      onclick="closeStageModal()"
+    >
+      🚀 <span data-i18n="continue">
+        Continuar
+      </span>
+    </button>
+
+  </div>
+
+</div>
+
+
+<!-- =========================================================
+     FINISH MODAL
+========================================================= -->
+
+<div id="finishModal" class="modal hidden">
+
+  <div class="stage-unlock-card">
+
+    <div class="unlock-stars">
+      🏆 ✨ 🏆
+    </div>
+
+    <div class="unlock-icon">
+      🎓
+    </div>
+
+    <span data-i18n="journeyComplete">
+      ¡DÍA DIGITAL COMPLETADO!
+    </span>
+
+    <h2 data-i18n="congratulations">
+      ¡Lo lograste!
+    </h2>
+
+    <p data-i18n="finishText">
+      Terminaste tu recorrido por INOCULA.
+    </p>
+
+    <div class="final-stats">
+
+      <div>
+        <strong id="finalFollowers">100</strong>
+        <span>👥</span>
+      </div>
+
+      <div>
+        <strong id="finalShields">1</strong>
+        <span>🛡️</span>
+      </div>
+
+      <div>
+        <strong id="finalViral">15%</strong>
+        <span>🦠</span>
+      </div>
+
+    </div>
+
+    <button
+      class="primary-button"
+      onclick="restartGame()"
+    >
+      🔄 <span data-i18n="playAgain">
+        Jugar otra vez
+      </span>
+    </button>
+
+  </div>
+
+</div>
+
+
+<script src="app.js"></script>
+
+</body>
+</html>
