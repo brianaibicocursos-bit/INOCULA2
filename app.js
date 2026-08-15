@@ -1,6 +1,7 @@
 /* =========================================================
-   INOCULA · DIGITAL LIFE GAME
-   VERSION ESTABLE MULTILINGÜE
+   INOCULA
+   Digital Life Game
+   VERSION CORREGIDA
    ========================================================= */
 
 let currentLanguage = "es";
@@ -13,13 +14,14 @@ let shields = 1;
 let viralLoad = 0;
 
 let selectedCharacter = "neutral";
-let selectedStyle = "cool";
+let playerName = "";
 
 let currentEvent = null;
 let viruses = [];
 
 let gameStarted = false;
 let isMoving = false;
+let eventOpen = false;
 
 
 /* =========================================================
@@ -34,8 +36,6 @@ navGame:"Tablero",
 navLab:"Laboratorio",
 navRanking:"Ranking",
 
-hackathon:"✨ UNESCO Youth Hackathon 2026",
-
 heroTitle:"Antes de creer,<br><span>inocúlate.</span>",
 heroText:"Un juego educativo que convierte la alfabetización mediática en una aventura digital.",
 
@@ -46,19 +46,14 @@ tiles:"Casillas",
 languages:"Idiomas",
 stages:"Etapas",
 
-chooseCharacter:"Elige tu personaje",
-characterDescription:"Tu personaje te acompañará durante todo el recorrido.",
-
+chooseCharacter:"Crea tu personaje",
+characterDescription:"Elige cómo quieres identificarte durante tu aventura.",
 neutral:"Neutral",
 woman:"Mujer",
 man:"Hombre",
 
-chooseStyle:"Elige tu estilo",
-cool:"Cool",
-smart:"Smart",
-fun:"Divertido",
-cyber:"Cyber",
-
+nameLabel:"Tu nombre",
+namePlaceholder:"Escribe tu nombre",
 continue:"Continuar →",
 
 position:"Posición",
@@ -86,51 +81,67 @@ dateTool:"Fecha",
 dateDescription:"Comprueba cuándo ocurrió",
 
 rankingTitle:"🏆 Ranking INOCULA",
-you:"Tú",
 
 errorTitle:"¡ERROR DE VERIFICACIÓN!",
 
-errorWrong:"Compartiste información sin verificar. Un agente digital debe detenerse, investigar y comprobar antes de compartir.",
+errorWrong:"Compartiste información sin verificar. Un agente digital debe detenerse y comprobar antes de compartir.",
 
-correct:"¡Verificar y continuar!",
-wrong:"Compartir sin verificar",
+correct:"¡Excelente! Tu verificación fue correcta.",
 
-correctMessage:"¡Excelente! Detectaste correctamente la situación.",
-wrongMessage:"La decisión no fue segura. Primero había que verificar la información.",
+wrong:"La respuesta no fue correcta.",
 
 next:"Continuar",
 
 advance:"Avanzas",
+
 spaces:"casillas",
-
-newsTitle:"🔎 Detecta la información",
-questionTitle:"🧠 Reto de pensamiento crítico",
-aiTitle:"🤖 Detector de IA",
-deepfakeTitle:"🎭 Alerta Deepfake",
-socialTitle:"📱 Redes sociales",
-
-shieldTitle:"🛡️ ¡Encontraste un escudo!",
-viralTitle:"🦠 Zona de alta carga viral",
-bonusTitle:"⭐ ¡Bonus!",
-
-useShield:"🛡️ Usar escudo",
-continueWithoutShield:"Continuar sin escudo",
-
-shieldDescription:"Tu escudo puede protegerte de una amenaza futura.",
-viralDescription:"Tu feed está lleno de información sin verificar.",
-bonusDescription:"Encontraste una fuente confiable.",
 
 victory:"🏆 ¡Completaste tu día digital!",
 victoryText:"Has recorrido todas las etapas y protegido tu entorno digital.",
 
-threat:"Amenaza",
-yes:"Sí",
-no:"No",
+morning:"Mañana",
+school:"Escuela",
+social:"Redes",
+night:"Noche",
 
-source:"Fuente",
-image:"Imagen",
-ai:"IA",
-date:"Fecha"
+check:"Comprobar",
+share:"Compartir",
+doNotShare:"No compartir",
+
+sourceQuestion:"Encuentras una noticia sorprendente en redes. ¿Qué haces primero?",
+sourceCorrect:"Buscar quién publicó originalmente la información.",
+sourceWrong:"Compartirla rápidamente porque parece importante.",
+
+aiQuestion:"Una imagen parece perfecta, pero algo se siente extraño. ¿Qué haces?",
+aiCorrect:"Buscar inconsistencias en manos, texto, sombras y detalles.",
+aiWrong:"Creerla porque parece profesional.",
+
+deepfakeQuestion:"Un video muestra a una persona famosa diciendo algo inesperado. ¿Qué haces?",
+deepfakeCorrect:"Buscar otras fuentes y comprobar si el video es auténtico.",
+deepfakeWrong:"Compartirlo inmediatamente.",
+
+socialQuestion:"Una publicación tiene millones de likes. ¿Eso demuestra que es verdadera?",
+socialCorrect:"No. La popularidad no demuestra que una información sea verdadera.",
+socialWrong:"Sí. Muchos likes significan que debe ser verdad.",
+
+shieldFound:"¡Encontraste un escudo!",
+shieldText:"Este escudo puede protegerte de un error futuro.",
+
+useShield:"Usar escudo",
+noShield:"Continuar sin escudo",
+
+viralTitle:"🦠 Zona de alta carga viral",
+viralText:"Tu feed contiene mucha información sin verificar.",
+
+bonusTitle:"⭐ Bonus",
+bonusText:"Encontraste una fuente confiable. ¡Recibes seguidores!",
+
+newsTitle:"📰 Detecta la información",
+
+correctNews:"¡Correcto! Detectaste correctamente la información.",
+wrongNews:"La decisión no fue correcta.",
+
+reset:"Jugar de nuevo"
 },
 
 en: {
@@ -138,8 +149,6 @@ navHome:"Home",
 navGame:"Game Board",
 navLab:"Laboratory",
 navRanking:"Leaderboard",
-
-hackathon:"✨ UNESCO Youth Hackathon 2026",
 
 heroTitle:"Before you believe,<br><span>inoculate yourself.</span>",
 heroText:"An educational game that turns media literacy into a digital adventure.",
@@ -151,19 +160,14 @@ tiles:"Tiles",
 languages:"Languages",
 stages:"Stages",
 
-chooseCharacter:"Choose your character",
-characterDescription:"Your character will accompany you throughout the journey.",
-
+chooseCharacter:"Create your character",
+characterDescription:"Choose how you want to identify yourself during your adventure.",
 neutral:"Neutral",
 woman:"Woman",
 man:"Man",
 
-chooseStyle:"Choose your style",
-cool:"Cool",
-smart:"Smart",
-fun:"Fun",
-cyber:"Cyber",
-
+nameLabel:"Your name",
+namePlaceholder:"Enter your name",
 continue:"Continue →",
 
 position:"Position",
@@ -191,51 +195,67 @@ dateTool:"Date",
 dateDescription:"Check when it happened",
 
 rankingTitle:"🏆 INOCULA Leaderboard",
-you:"You",
 
 errorTitle:"VERIFICATION ERROR!",
 
-errorWrong:"You shared information without verifying it. A digital agent should stop, investigate and check before sharing.",
+errorWrong:"You shared information without verifying it. A digital agent should stop and check before sharing.",
 
-correct:"Verify and continue!",
-wrong:"Share without verifying",
+correct:"Excellent! Your verification was correct.",
 
-correctMessage:"Excellent! You correctly identified the situation.",
-wrongMessage:"That was not the safest choice. The information needed to be verified first.",
+wrong:"That answer was not correct.",
 
 next:"Continue",
 
 advance:"You advance",
+
 spaces:"spaces",
-
-newsTitle:"🔎 Check the information",
-questionTitle:"🧠 Critical thinking challenge",
-aiTitle:"🤖 AI Detector",
-deepfakeTitle:"🎭 Deepfake Alert",
-socialTitle:"📱 Social Media",
-
-shieldTitle:"🛡️ You found a shield!",
-viralTitle:"🦠 High viral-load zone",
-bonusTitle:"⭐ Bonus!",
-
-useShield:"🛡️ Use shield",
-continueWithoutShield:"Continue without shield",
-
-shieldDescription:"Your shield can protect you from a future threat.",
-viralDescription:"Your feed is filled with unverified information.",
-bonusDescription:"You found a reliable source.",
 
 victory:"🏆 You completed your digital day!",
 victoryText:"You completed every stage and protected your digital environment.",
 
-threat:"Threat",
-yes:"Yes",
-no:"No",
+morning:"Morning",
+school:"School",
+social:"Social Media",
+night:"Night",
 
-source:"Source",
-image:"Image",
-ai:"AI",
-date:"Date"
+check:"Check",
+share:"Share",
+doNotShare:"Do not share",
+
+sourceQuestion:"You find a surprising news story on social media. What do you do first?",
+sourceCorrect:"Find who originally published the information.",
+sourceWrong:"Share it quickly because it looks important.",
+
+aiQuestion:"An image looks perfect, but something feels strange. What do you do?",
+aiCorrect:"Look for inconsistencies in hands, text, shadows and details.",
+aiWrong:"Believe it because it looks professional.",
+
+deepfakeQuestion:"A video shows a celebrity saying something unexpected. What do you do?",
+deepfakeCorrect:"Look for other sources and check whether the video is authentic.",
+deepfakeWrong:"Share it immediately.",
+
+socialQuestion:"A post has millions of likes. Does that prove it is true?",
+socialCorrect:"No. Popularity does not prove that information is true.",
+socialWrong:"Yes. Many likes mean it must be true.",
+
+shieldFound:"You found a shield!",
+shieldText:"This shield can protect you from a future mistake.",
+
+useShield:"Use shield",
+noShield:"Continue without shield",
+
+viralTitle:"🦠 High viral load zone",
+viralText:"Your feed contains lots of unverified information.",
+
+bonusTitle:"⭐ Bonus",
+bonusText:"You found a reliable source. You gain followers!",
+
+newsTitle:"📰 Check the information",
+
+correctNews:"Correct! You identified the information properly.",
+wrongNews:"That decision was not correct.",
+
+reset:"Play again"
 },
 
 zh: {
@@ -243,8 +263,6 @@ navHome:"首页",
 navGame:"游戏板",
 navLab:"实验室",
 navRanking:"排行榜",
-
-hackathon:"✨ UNESCO 青年黑客松 2026",
 
 heroTitle:"在相信之前，<br><span>先保护自己。</span>",
 heroText:"一个将媒体素养变成数字冒险的教育游戏。",
@@ -256,19 +274,14 @@ tiles:"格子",
 languages:"语言",
 stages:"阶段",
 
-chooseCharacter:"选择你的角色",
-characterDescription:"你的角色会陪伴你完成整个数字旅程。",
-
+chooseCharacter:"创建你的角色",
+characterDescription:"选择你在冒险中的身份。",
 neutral:"中性",
 woman:"女性",
 man:"男性",
 
-chooseStyle:"选择你的风格",
-cool:"酷",
-smart:"聪明",
-fun:"有趣",
-cyber:"赛博",
-
+nameLabel:"你的名字",
+namePlaceholder:"输入你的名字",
 continue:"继续 →",
 
 position:"位置",
@@ -281,7 +294,7 @@ stage2:"学校",
 stage3:"社交媒体",
 stage4:"夜晚",
 
-spin:"🎲 开始",
+spin:"🎲 旋转",
 
 labTitle:"🧪 信息验证实验室",
 labDescription:"学习在分享之前进行调查。",
@@ -296,421 +309,475 @@ dateTool:"日期",
 dateDescription:"确认发生时间",
 
 rankingTitle:"🏆 INOCULA 排行榜",
-you:"你",
 
 errorTitle:"验证错误！",
 
-errorWrong:"你在没有验证的情况下分享了信息。数字特工应该先停下来调查和核实。",
+errorWrong:"你在没有验证的情况下分享了信息。数字特工应该在分享之前停下来核实。",
 
-correct:"验证并继续！",
-wrong:"未经验证直接分享",
+correct:"太棒了！你的验证是正确的。",
 
-correctMessage:"太棒了！你正确识别了这个情况。",
-wrongMessage:"这个选择并不安全。你应该先验证信息。",
+wrong:"这个答案不正确。",
 
 next:"继续",
 
 advance:"你前进了",
+
 spaces:"格",
-
-newsTitle:"🔎 检查信息",
-questionTitle:"🧠 批判性思维挑战",
-aiTitle:"🤖 人工智能检测器",
-deepfakeTitle:"🎭 深度伪造警报",
-socialTitle:"📱 社交媒体",
-
-shieldTitle:"🛡️ 你找到了护盾！",
-viralTitle:"🦠 高病毒负荷区域",
-bonusTitle:"⭐ 奖励！",
-
-useShield:"🛡️ 使用护盾",
-continueWithoutShield:"不使用护盾继续",
-
-shieldDescription:"你的护盾可以保护你免受未来的威胁。",
-viralDescription:"你的信息流充满了未经验证的信息。",
-bonusDescription:"你找到了一条可靠的信息来源。",
 
 victory:"🏆 你完成了数字生活的一天！",
 victoryText:"你完成了所有阶段，并保护了你的数字环境。",
 
-threat:"威胁",
-yes:"是",
-no:"否",
+morning:"早晨",
+school:"学校",
+social:"社交媒体",
+night:"夜晚",
 
-source:"来源",
-image:"图片",
-ai:"人工智能",
-date:"日期"
+check:"检查",
+share:"分享",
+doNotShare:"不分享",
+
+sourceQuestion:"你在社交媒体上看到一条令人惊讶的新闻。你首先会做什么？",
+sourceCorrect:"寻找最初发布这条信息的人。",
+sourceWrong:"因为看起来很重要，所以马上分享。",
+
+aiQuestion:"一张图片看起来非常完美，但有些地方很奇怪。你会怎么做？",
+aiCorrect:"检查手部、文字、阴影和细节是否存在不一致。",
+aiWrong:"因为看起来很专业，所以相信它。",
+
+deepfakeQuestion:"一个视频显示一位名人在说一些奇怪的话。你会怎么做？",
+deepfakeCorrect:"寻找其他来源并检查视频是否真实。",
+deepfakeWrong:"立即分享。",
+
+socialQuestion:"一条帖子有数百万个赞。这能证明它是真的吗？",
+socialCorrect:"不能。受欢迎并不能证明信息是真的。",
+socialWrong:"是的。有很多点赞就一定是真的。",
+
+shieldFound:"你找到了护盾！",
+shieldText:"这个护盾可以保护你免受未来的错误。",
+
+useShield:"使用护盾",
+noShield:"不使用护盾继续",
+
+viralTitle:"🦠 高病毒负荷区域",
+viralText:"你的信息流中有很多未经验证的信息。",
+
+bonusTitle:"⭐ 奖励",
+bonusText:"你找到了一条可靠的信息来源。你获得了关注者！",
+
+newsTitle:"📰 检查信息",
+
+correctNews:"正确！你正确识别了这条信息。",
+wrongNews:"这个决定不正确。",
+
+reset:"重新开始"
 }
 
 };
 
 
 /* =========================================================
-   PERSONAJES Y ESTILOS
+   NOTICIAS
    ========================================================= */
 
-const characterIcons = {
-neutral:"🧑‍💻",
-woman:"👩‍💻",
-man:"👨‍💻"
-};
+const NEWS = {
 
-const styleIcons = {
-cool:"😎",
-smart:"🤓",
-fun:"🤪",
-cyber:"🤖"
-};
-
-
-/* =========================================================
-   CONTENIDO VARIADO
-   ========================================================= */
-
-const EVENTS = {
-
-news: [
-
+es:[
 {
-title:{
-es:"¡Esta bebida elimina TODAS las toxinas!",
-en:"This drink removes ALL toxins!",
-zh:"这种饮料可以清除所有毒素！"
-},
-body:{
-es:"Una publicación afirma que una bebida puede eliminar todas las toxinas del cuerpo.",
-en:"A post claims that a drink can remove every toxin from the human body.",
-zh:"一篇帖子声称某种饮料可以清除人体内的所有毒素。"
-},
+icon:"🚨",
+title:"¡Esta bebida elimina TODAS las toxinas!",
+body:"Una publicación afirma que una bebida puede eliminar todas las toxinas del cuerpo.",
 fake:true
 },
-
 {
-title:{
-es:"Las neuronas utilizan señales eléctricas y químicas.",
-en:"Neurons use electrical and chemical signals.",
-zh:"神经元使用电信号和化学信号。"
-},
-body:{
-es:"Las neuronas transmiten información mediante señales eléctricas y sustancias químicas llamadas neurotransmisores.",
-en:"Neurons transmit information using electrical signals and chemicals called neurotransmitters.",
-zh:"神经元通过电信号和称为神经递质的化学物质传递信息。"
-},
+icon:"📰",
+title:"Las neuronas utilizan señales eléctricas y químicas.",
+body:"Las neuronas transmiten información mediante señales eléctricas y neurotransmisores.",
 fake:false
 },
-
 {
-title:{
-es:"¡Instagram puede leer tus pensamientos!",
-en:"Instagram can read your thoughts!",
-zh:"Instagram 可以读取你的思想！"
-},
-body:{
-es:"Una publicación afirma que una red social puede leer directamente la mente de sus usuarios.",
-en:"A post claims that a social media platform can directly read its users' minds.",
-zh:"一篇帖子声称社交媒体平台可以直接读取用户的思想。"
-},
+icon:"🚨",
+title:"¡Instagram puede leer tus pensamientos!",
+body:"Una publicación afirma que las redes sociales pueden leer directamente la mente.",
 fake:true
 },
-
 {
-title:{
-es:"Una foto antigua puede volver a circular como si fuera actual.",
-en:"An old photo can circulate again as if it were current.",
-zh:"旧照片可能会再次传播，并被误认为是最新照片。"
-},
-body:{
-es:"Una imagen verdadera también puede desinformar si se presenta con una fecha o contexto incorrecto.",
-en:"A real image can still mislead people if it is presented with the wrong date or context.",
-zh:"即使图片是真实的，如果日期或背景错误，也可能造成误导。"
-},
+icon:"🧠",
+title:"Comparar diferentes fuentes ayuda a verificar información.",
+body:"Contrastar una afirmación con varias fuentes confiables puede revelar errores.",
 fake:false
 },
-
 {
-title:{
-es:"¡Un mensaje dice que debes compartirlo para evitar una multa!",
-en:"A message says you must share it to avoid a fine!",
-zh:"一条消息称必须转发，否则会被罚款！"
-},
-body:{
-es:"El mensaje utiliza urgencia y miedo para convencer a las personas de compartirlo.",
-en:"The message uses urgency and fear to persuade people to share it.",
-zh:"这条消息利用紧迫感和恐惧来让人转发。"
-},
+icon:"🚨",
+title:"¡Beber agua con limón cura cualquier infección!",
+body:"Un mensaje viral asegura que beber agua con limón elimina cualquier infección sin necesidad de tratamiento.",
 fake:true
 },
-
 {
-title:{
-es:"Comparar varias fuentes ayuda a detectar errores.",
-en:"Comparing several sources can help detect errors.",
-zh:"比较多个来源有助于发现错误。"
-},
-body:{
-es:"Contrastar una afirmación con fuentes independientes y confiables puede revelar información falsa o incompleta.",
-en:"Checking a claim against independent and reliable sources can reveal false or incomplete information.",
-zh:"将说法与独立且可靠的来源进行比较，可以发现虚假或不完整的信息。"
-},
+icon:"📰",
+title:"Dormir suficiente ayuda a mantener funciones cognitivas saludables.",
+body:"El sueño adecuado está relacionado con la memoria, la atención y otros procesos cognitivos.",
 fake:false
 }
-
 ],
 
-question: [
-
+en:[
 {
-q:{
-es:"Ves una noticia sorprendente. ¿Qué deberías hacer primero?",
-en:"You see a surprising news story. What should you do first?",
-zh:"你看到一条令人震惊的新闻。首先应该做什么？"
+icon:"🚨",
+title:"This drink removes ALL toxins from your body!",
+body:"A post claims that a drink can remove every toxin from the human body.",
+fake:true
 },
-correct:{
-es:"Buscar quién publicó originalmente la información.",
-en:"Find who originally published the information.",
-zh:"寻找最初发布这条信息的人。"
-},
-wrong:{
-es:"Compartirla rápidamente antes de que desaparezca.",
-en:"Share it quickly before it disappears.",
-zh:"趁它消失之前赶快转发。"
-}
-},
-
 {
-q:{
-es:"Una publicación usa MAYÚSCULAS y muchos signos de exclamación. ¿Eso demuestra que es cierta?",
-en:"A post uses CAPITAL LETTERS and many exclamation marks. Does that prove it is true?",
-zh:"一篇帖子使用大量大写字母和感叹号。这能证明它是真的吗？"
+icon:"📰",
+title:"Neurons use electrical and chemical signals.",
+body:"Neurons transmit information using electrical signals and neurotransmitters.",
+fake:false
 },
-correct:{
-es:"No. El estilo de escritura no demuestra que una afirmación sea verdadera.",
-en:"No. Writing style does not prove that a claim is true.",
-zh:"不能。写作风格不能证明信息是真的。"
-},
-wrong:{
-es:"Sí. Si parece urgente debe ser verdadera.",
-en:"Yes. If it looks urgent, it must be true.",
-zh:"是的。如果看起来很紧急，就一定是真的。"
-}
-},
-
 {
-q:{
-es:"Encuentras una captura de pantalla sin enlace. ¿Qué haces?",
-en:"You find a screenshot with no link. What do you do?",
-zh:"你看到一张没有链接的截图。你会怎么做？"
+icon:"🚨",
+title:"Instagram can read your thoughts!",
+body:"A post claims that social media platforms can directly read people's minds.",
+fake:true
 },
-correct:{
-es:"Buscas la publicación original y el contexto completo.",
-en:"Look for the original post and its full context.",
-zh:"寻找原始帖子和完整背景。"
+{
+icon:"🧠",
+title:"Comparing different sources helps verify information.",
+body:"Checking a claim against multiple reliable sources can reveal errors.",
+fake:false
 },
-wrong:{
-es:"La compartes porque la captura parece auténtica.",
-en:"Share it because the screenshot looks authentic.",
-zh:"因为截图看起来真实，所以转发。"
+{
+icon:"🚨",
+title:"Drinking lemon water cures every infection!",
+body:"A viral message claims that lemon water can eliminate any infection without medical treatment.",
+fake:true
+},
+{
+icon:"📰",
+title:"Getting enough sleep supports healthy cognitive functions.",
+body:"Adequate sleep is associated with memory, attention and other cognitive processes.",
+fake:false
 }
-}
-
 ],
 
-ai: [
-
+zh:[
 {
-q:{
-es:"¿Qué puede ser una señal de una imagen generada por IA?",
-en:"What could be a sign that an image was generated by AI?",
-zh:"什么可能表明图片是人工智能生成的？"
+icon:"🚨",
+title:"这种饮料可以清除体内所有毒素！",
+body:"一篇帖子声称某种饮料可以清除人体内的所有毒素。",
+fake:true
 },
-correct:{
-es:"Detalles extraños, manos deformes o inconsistencias visuales.",
-en:"Strange details, distorted hands, or visual inconsistencies.",
-zh:"奇怪的细节、变形的手或视觉上的不一致。"
-},
-wrong:{
-es:"Que tenga muchos likes.",
-en:"That it has many likes.",
-zh:"它有很多点赞。"
-}
-},
-
 {
-q:{
-es:"Una imagen tiene texto extraño y letras que cambian de forma. ¿Qué haces?",
-en:"An image has strange text and letters that change shape. What do you do?",
-zh:"一张图片中的文字很奇怪，而且字母形状不一致。你会怎么做？"
+icon:"📰",
+title:"神经元使用电信号和化学信号。",
+body:"神经元通过电信号和神经递质传递信息。",
+fake:false
 },
-correct:{
-es:"Investigas la imagen y buscas señales de generación o edición.",
-en:"Investigate the image and look for signs of generation or editing.",
-zh:"调查图片并寻找人工生成或编辑的迹象。"
-},
-wrong:{
-es:"La compartes porque se ve profesional.",
-en:"Share it because it looks professional.",
-zh:"因为它看起来很专业，所以转发。"
-}
-},
-
 {
-q:{
-es:"Una persona aparece con manos imposibles en una fotografía. ¿Qué sospechas?",
-en:"A person has impossible-looking hands in a photograph. What do you suspect?",
-zh:"照片中的人物手部看起来不自然。你会怀疑什么？"
+icon:"🚨",
+title:"Instagram 可以读取你的思想！",
+body:"一篇帖子声称社交媒体可以直接读取人的思想。",
+fake:true
 },
-correct:{
-es:"Que la imagen podría estar generada o manipulada digitalmente.",
-en:"The image may have been generated or digitally manipulated.",
-zh:"图片可能是人工生成或经过数字修改的。"
-},
-wrong:{
-es:"Que todas las fotografías reales tienen errores.",
-en:"That all real photographs have mistakes.",
-zh:"所有真实照片都会有错误。"
-}
-}
-
-],
-
-deepfake: [
-
 {
-q:{
-es:"Un video muestra a una persona famosa diciendo algo extraordinario. ¿Qué haces?",
-en:"A video shows a famous person saying something extraordinary. What do you do?",
-zh:"一段视频显示名人在说非常离奇的话。你会怎么做？"
+icon:"🧠",
+title:"比较不同的信息来源有助于验证信息。",
+body:"将一个说法与多个可靠来源进行比较可以发现错误。",
+fake:false
 },
-correct:{
-es:"Buscas otras fuentes y verificas el video antes de compartirlo.",
-en:"Look for other sources and verify the video before sharing it.",
-zh:"寻找其他来源并在转发前验证视频。"
-},
-wrong:{
-es:"Lo compartes porque puedes ver y escuchar a la persona.",
-en:"Share it because you can see and hear the person.",
-zh:"因为能看到并听到这个人，所以直接转发。"
-}
-},
-
 {
-q:{
-es:"Un video tiene movimientos faciales extraños. ¿Cuál es una buena reacción?",
-en:"A video has unusual facial movements. What is a good response?",
-zh:"一段视频中的面部动作很奇怪。正确的做法是什么？"
+icon:"🚨",
+title:"喝柠檬水可以治愈所有感染！",
+body:"一条病毒式消息声称柠檬水可以在没有治疗的情况下消除任何感染。",
+fake:true
 },
-correct:{
-es:"Investigar el origen del video y buscar verificaciones independientes.",
-en:"Investigate the video's origin and look for independent verification.",
-zh:"调查视频来源，并寻找独立验证。"
-},
-wrong:{
-es:"Asumir que es real porque tiene buena calidad.",
-en:"Assume it is real because the quality is good.",
-zh:"因为画质很好，就认为它是真的。"
-}
-},
-
 {
-q:{
-es:"Un audio parece imitar perfectamente la voz de alguien. ¿Qué haces?",
-en:"An audio clip appears to perfectly imitate someone's voice. What do you do?",
-zh:"一段音频似乎完美模仿了某人的声音。你会怎么做？"
-},
-correct:{
-es:"No confías solo en la voz; buscas una fuente verificable.",
-en:"Do not rely only on the voice; look for a verifiable source.",
-zh:"不要只相信声音；寻找可以验证的来源。"
-},
-wrong:{
-es:"Lo das por verdadero porque reconoces la voz.",
-en:"Assume it is true because you recognize the voice.",
-zh:"因为你认识这个声音，所以认为它是真的。"
+icon:"📰",
+title:"充足的睡眠有助于保持健康的认知功能。",
+body:"充足的睡眠与记忆力、注意力和其他认知过程有关。",
+fake:false
 }
-}
-
-],
-
-social: [
-
-{
-q:{
-es:"Una publicación tiene 2 millones de likes. ¿Eso demuestra que es verdadera?",
-en:"A post has 2 million likes. Does that prove it is true?",
-zh:"一条帖子有200万个赞。这能证明它是真的吗？"
-},
-correct:{
-es:"No. La popularidad no demuestra veracidad.",
-en:"No. Popularity does not prove accuracy.",
-zh:"不能。受欢迎并不能证明信息准确。"
-},
-wrong:{
-es:"Sí. Si tiene muchos likes debe ser cierta.",
-en:"Yes. If it has many likes it must be true.",
-zh:"是的。有很多点赞就一定是真的。"
-}
-},
-
-{
-q:{
-es:"Tu amigo comparte una noticia sin fuente. ¿Qué haces?",
-en:"Your friend shares a news story without a source. What do you do?",
-zh:"你的朋友分享了一条没有来源的新闻。你会怎么做？"
-},
-correct:{
-es:"Preguntas por la fuente antes de compartirla.",
-en:"Ask for the source before sharing it.",
-zh:"在转发前询问信息来源。"
-},
-wrong:{
-es:"La compartes porque confías en tu amigo.",
-en:"Share it because you trust your friend.",
-zh:"因为你相信朋友，所以转发。"
-}
-},
-
-{
-q:{
-es:"Un influencer recomienda una supuesta cura milagrosa. ¿Qué haces?",
-en:"An influencer recommends a supposed miracle cure. What do you do?",
-zh:"一位网红推荐所谓的神奇疗法。你会怎么做？"
-},
-correct:{
-es:"Buscas evidencia y fuentes confiables antes de creerlo.",
-en:"Look for evidence and reliable sources before believing it.",
-zh:"在相信之前寻找证据和可靠来源。"
-},
-wrong:{
-es:"La crees porque el influencer tiene millones de seguidores.",
-en:"Believe it because the influencer has millions of followers.",
-zh:"因为网红有数百万粉丝，所以相信。"
-}
-}
-
 ]
 
 };
 
 
 /* =========================================================
-   TIPOS DE CASILLA
+   RETOS
    ========================================================= */
 
-const TILE_PATTERN = [
-"news",
-"question",
-"shield",
-"ai",
-"social",
-"news",
-"viral",
-"question",
-"deepfake",
-"bonus",
-"ai",
-"news"
-];
+const CHALLENGES = {
+
+es:[
+{
+q:"Recibes una noticia alarmante en un grupo familiar. ¿Qué haces primero?",
+correct:"Busco la fuente original antes de compartir.",
+wrong:"La comparto porque viene de alguien que conozco."
+},
+{
+q:"Una publicación dice que una celebridad fue arrestada. ¿Qué haces?",
+correct:"Busco confirmación en medios confiables.",
+wrong:"La comparto porque todos están hablando de eso."
+},
+{
+q:"Un titular dice que una investigación científica demuestra algo increíble. ¿Qué haces?",
+correct:"Busco el estudio y reviso quién lo realizó.",
+wrong:"Creo el titular sin revisar la investigación."
+},
+{
+q:"Una publicación te pide compartirla para evitar que sea eliminada. ¿Qué haces?",
+correct:"Me detengo y verifico quién la publicó.",
+wrong:"La comparto inmediatamente para ayudar."
+},
+{
+q:"Una cuenta desconocida afirma tener información exclusiva. ¿Qué haces?",
+correct:"Investigo la cuenta y busco otras fuentes.",
+wrong:"Confío en ella porque dice ser información exclusiva."
+}
+],
+
+en:[
+{
+q:"You receive an alarming story in a family group chat. What do you do first?",
+correct:"I look for the original source before sharing.",
+wrong:"I share it because it came from someone I know."
+},
+{
+q:"A post says a celebrity was arrested. What do you do?",
+correct:"I look for confirmation from reliable news sources.",
+wrong:"I share it because everyone is talking about it."
+},
+{
+q:"A headline says a scientific study proves something incredible. What do you do?",
+correct:"I find the study and check who conducted it.",
+wrong:"I believe the headline without checking the study."
+},
+{
+q:"A post asks you to share it before it gets deleted. What do you do?",
+correct:"I stop and verify who published it.",
+wrong:"I share it immediately to help."
+},
+{
+q:"An unknown account claims to have exclusive information. What do you do?",
+correct:"I investigate the account and look for other sources.",
+wrong:"I trust it because it claims to be exclusive information."
+}
+],
+
+zh:[
+{
+q:"你在家庭群里收到一条令人担忧的新闻。首先怎么办？",
+correct:"在分享之前寻找原始来源。",
+wrong:"因为是认识的人发的，所以直接分享。"
+},
+{
+q:"一篇帖子说某位名人被捕了。你会怎么做？",
+correct:"寻找可靠新闻来源进行确认。",
+wrong:"因为大家都在讨论，所以直接分享。"
+},
+{
+q:"一个标题说某项科学研究证明了令人难以置信的事情。怎么办？",
+correct:"寻找研究并确认是谁完成的。",
+wrong:"不查看研究，直接相信标题。"
+},
+{
+q:"一篇帖子要求你赶快分享，否则就会被删除。怎么办？",
+correct:"停下来确认是谁发布的。",
+wrong:"为了帮助别人立即分享。"
+},
+{
+q:"一个陌生账号声称拥有独家信息。怎么办？",
+correct:"调查账号并寻找其他来源。",
+wrong:"因为它说是独家信息，所以相信它。"
+}
+]
+
+};
+
+
+/* =========================================================
+   RETOS IA
+   ========================================================= */
+
+const AI_CHALLENGES = {
+
+es:[
+{
+q:"Una foto tiene manos con seis dedos. ¿Qué señal es?",
+correct:"Una posible señal de contenido generado por IA.",
+wrong:"Una prueba de que la foto es auténtica."
+},
+{
+q:"El texto de un cartel aparece deformado y sin sentido. ¿Qué haces?",
+correct:"Considero que podría haber sido generado por IA y lo verifico.",
+wrong:"Asumo que es auténtico porque parece una fotografía."
+},
+{
+q:"Una persona aparece con reflejos diferentes en cada ojo. ¿Qué haces?",
+correct:"Busco inconsistencias antes de confiar en la imagen.",
+wrong:"La considero real automáticamente."
+},
+{
+q:"Una imagen tiene iluminación imposible y sombras contradictorias. ¿Qué haces?",
+correct:"La analizo antes de compartirla.",
+wrong:"La comparto porque tiene buena calidad."
+},
+{
+q:"Un rostro parece demasiado perfecto y cambia ligeramente entre imágenes. ¿Qué haces?",
+correct:"Investigo el origen de las imágenes.",
+wrong:"Confío en ellas porque parecen profesionales."
+}
+],
+
+en:[
+{
+q:"A photo shows a hand with six fingers. What could this be?",
+correct:"A possible sign of AI-generated content.",
+wrong:"Proof that the photo is authentic."
+},
+{
+q:"The text on a sign looks distorted and meaningless. What do you do?",
+correct:"I consider that it may be AI-generated and verify it.",
+wrong:"I assume it is authentic because it looks like a photograph."
+},
+{
+q:"A person has different reflections in each eye. What do you do?",
+correct:"I look for inconsistencies before trusting the image.",
+wrong:"I automatically consider it real."
+},
+{
+q:"An image has impossible lighting and contradictory shadows. What do you do?",
+correct:"I analyze it before sharing it.",
+wrong:"I share it because the image quality is high."
+},
+{
+q:"A face looks extremely perfect and changes slightly between images. What do you do?",
+correct:"I investigate where the images came from.",
+wrong:"I trust them because they look professional."
+}
+],
+
+zh:[
+{
+q:"一张照片中的手有六根手指。这可能是什么？",
+correct:"可能是人工智能生成内容的迹象。",
+wrong:"证明这张照片是真实的。"
+},
+{
+q:"一个标牌上的文字看起来变形且没有意义。怎么办？",
+correct:"考虑它可能是人工智能生成的，并进行验证。",
+wrong:"因为看起来像照片，所以认为它是真的。"
+},
+{
+q:"一个人的两只眼睛反射不同。怎么办？",
+correct:"在相信图片之前寻找不一致之处。",
+wrong:"直接认为图片是真的。"
+},
+{
+q:"一张图片的光线不合理，阴影也互相矛盾。怎么办？",
+correct:"在分享之前进行分析。",
+wrong:"因为图片质量很好，所以直接分享。"
+},
+{
+q:"一个人的脸看起来过于完美，而且不同图片中略有变化。怎么办？",
+correct:"调查这些图片的来源。",
+wrong:"因为看起来很专业，所以相信它们。"
+}
+]
+
+};
+
+
+/* =========================================================
+   RETOS REDES
+   ========================================================= */
+
+const SOCIAL_CHALLENGES = {
+
+es:[
+{
+q:"Una publicación tiene 2 millones de likes. ¿Eso demuestra que es verdadera?",
+correct:"No. La popularidad no demuestra veracidad.",
+wrong:"Sí. Muchos likes significan que debe ser verdad."
+},
+{
+q:"Un influencer recomienda un producto y dice que está científicamente comprobado. ¿Qué haces?",
+correct:"Busco la evidencia científica.",
+wrong:"Le creo porque tiene muchos seguidores."
+},
+{
+q:"Una publicación usa MAYÚSCULAS y muchos signos de exclamación. ¿Qué haces?",
+correct:"Me detengo y verifico la información.",
+wrong:"La creo porque parece urgente."
+},
+{
+q:"Un video se vuelve viral pero nadie menciona la fuente original. ¿Qué haces?",
+correct:"Busco el origen del video.",
+wrong:"Lo comparto porque ya es viral."
+},
+{
+q:"Una publicación dice 'TODOS están hablando de esto'. ¿Qué significa?",
+correct:"Es una frase que busca llamar la atención, no demostrar que sea cierta.",
+wrong:"Significa que necesariamente es verdadera."
+}
+],
+
+en:[
+{
+q:"A post has 2 million likes. Does that prove it is true?",
+correct:"No. Popularity does not prove accuracy.",
+wrong:"Yes. Many likes mean it must be true."
+},
+{
+q:"An influencer recommends a product and says it is scientifically proven. What do you do?",
+correct:"I look for the scientific evidence.",
+wrong:"I believe them because they have many followers."
+},
+{
+q:"A post uses ALL CAPS and many exclamation marks. What do you do?",
+correct:"I stop and verify the information.",
+wrong:"I believe it because it seems urgent."
+},
+{
+q:"A video goes viral but nobody mentions the original source. What do you do?",
+correct:"I look for where the video came from.",
+wrong:"I share it because it is already viral."
+},
+{
+q:"A post says 'EVERYONE is talking about this'. What does that mean?",
+correct:"It is attention-grabbing language, not proof that the claim is true.",
+wrong:"It means the information must be true."
+}
+],
+
+zh:[
+{
+q:"一条帖子有200万个赞。这能证明它是真的吗？",
+correct:"不能。受欢迎并不能证明信息准确。",
+wrong:"是的。有很多点赞就一定是真的。"
+},
+{
+q:"一个网红推荐产品并说它经过科学证明。怎么办？",
+correct:"寻找科学证据。",
+wrong:"因为他有很多粉丝，所以相信他。"
+},
+{
+q:"一篇帖子使用大量大写字母和感叹号。怎么办？",
+correct:"停下来验证信息。",
+wrong:"因为看起来很紧急，所以相信它。"
+},
+{
+q:"一个视频变得非常热门，但没人提到原始来源。怎么办？",
+correct:"寻找视频的来源。",
+wrong:"因为已经很热门，所以分享。"
+},
+{
+q:"一篇帖子说“所有人都在讨论这个”。这意味着什么？",
+correct:"这是吸引注意力的说法，并不能证明信息是真的。",
+wrong:"这意味着信息一定是真的。"
+}
+]
+
+};
 
 
 /* =========================================================
@@ -723,22 +790,25 @@ function navigateTo(pageId) {
     page.classList.add("hidden");
   });
 
-  const page = document.getElementById(pageId);
-
-  if (!page) return;
-
-  page.classList.remove("hidden");
-
   document.querySelectorAll(".nav-btn").forEach(btn => {
     btn.classList.remove("active");
-
-    const action = btn.getAttribute("onclick") || "";
-
-    if (action.includes(pageId)) {
-      btn.classList.add("active");
-    }
   });
 
+  const page = document.getElementById(pageId);
+
+  if(page) {
+    page.classList.remove("hidden");
+  }
+
+  document.querySelectorAll(".nav-btn").forEach(btn => {
+
+    const onclick = btn.getAttribute("onclick") || "";
+
+    if(onclick.includes(pageId)) {
+      btn.classList.add("active");
+    }
+
+  });
 }
 
 
@@ -748,7 +818,7 @@ function navigateTo(pageId) {
 
 function changeLanguage(lang) {
 
-  if (!TEXT[lang]) {
+  if(!TEXT[lang]) {
     lang = "es";
   }
 
@@ -756,42 +826,27 @@ function changeLanguage(lang) {
 
   document.documentElement.lang = lang;
 
-  const select = document.getElementById("lang-select");
-
-  if (select && select.value !== lang) {
-    select.value = lang;
-  }
-
-  applyTranslations();
-
-  createBoard();
-  updateHUD();
-  updateAvatarPreview();
-  updateAvatar();
-
-  if (currentEvent && !document.getElementById("event-modal").classList.contains("hidden")) {
-    reopenCurrentEvent();
-  }
-
-  renderViruses();
-
-}
-
-
-function applyTranslations() {
-
-  const t = TEXT[currentLanguage];
+  const t = TEXT[lang];
 
   document.querySelectorAll("[data-i18n]").forEach(element => {
 
     const key = element.dataset.i18n;
 
-    if (Object.prototype.hasOwnProperty.call(t, key)) {
+    if(t[key]) {
       element.innerHTML = t[key];
     }
 
   });
 
+  const nameInput = document.getElementById("player-name");
+
+  if(nameInput) {
+    nameInput.placeholder = t.namePlaceholder;
+  }
+
+  updateHUD();
+  createBoard();
+  updateAvatar();
 }
 
 
@@ -799,89 +854,81 @@ function applyTranslations() {
    PERSONAJE
    ========================================================= */
 
-function selectCharacter(type, button) {
+const characterIcons = {
+  neutral:"🧑‍💻",
+  woman:"👩‍💻",
+  man:"👨‍💻"
+};
 
-  if (!characterIcons[type]) return;
+
+function selectCharacter(type, button) {
 
   selectedCharacter = type;
 
-  document.querySelectorAll(".character-option")
-    .forEach(b => b.classList.remove("selected"));
+  document.querySelectorAll(".character-option").forEach(b => {
+    b.classList.remove("selected");
+  });
 
   button.classList.add("selected");
 
-  updateAvatarPreview();
-}
-
-
-function selectStyle(style, button) {
-
-  if (!styleIcons[style]) return;
-
-  selectedStyle = style;
-
-  document.querySelectorAll(".style-option")
-    .forEach(b => b.classList.remove("selected"));
-
-  button.classList.add("selected");
-
-  updateAvatarPreview();
-}
-
-
-function updateAvatarPreview() {
-
-  const avatar = document.getElementById("avatar-preview");
-  const style = document.getElementById("preview-style");
-
-  if (avatar) {
-    avatar.textContent = characterIcons[selectedCharacter];
-  }
-
-  if (style) {
-    style.textContent = styleIcons[selectedStyle];
-  }
-
+  updateAvatar();
 }
 
 
 function updateAvatar() {
 
-  const avatar = document.getElementById("player-avatar");
-  const style = document.getElementById("player-style");
+  const icon = characterIcons[selectedCharacter] || characterIcons.neutral;
 
-  if (avatar) {
-    avatar.textContent = characterIcons[selectedCharacter];
+  const preview = document.getElementById("avatar-preview");
+
+  if(preview) {
+    preview.textContent = icon;
   }
 
-  if (style) {
-    style.textContent = styleIcons[selectedStyle];
-  }
+  const playerAvatar = document.getElementById("player-avatar");
 
+  if(playerAvatar) {
+    playerAvatar.textContent = icon;
+  }
 }
 
 
 function confirmCharacter() {
 
-  updateAvatar();
+  const input = document.getElementById("player-name");
+
+  if(input) {
+    playerName = input.value.trim();
+  }
+
+  if(!playerName) {
+
+    playerName =
+      currentLanguage === "es"
+      ? "Jugador"
+      : currentLanguage === "en"
+      ? "Player"
+      : "玩家";
+  }
+
+  resetGame();
 
   gameStarted = true;
+
+  updateAvatar();
 
   navigateTo("page-game");
 
   createBoard();
   updateHUD();
-
 }
 
 
 /* =========================================================
-   INICIO
+   INICIAR
    ========================================================= */
 
 function startGame() {
-
-  resetGame();
 
   navigateTo("page-character");
 
@@ -898,13 +945,22 @@ function resetGame() {
   followers = 100;
   shields = 1;
   viralLoad = 0;
+
   viruses = [];
+
   currentEvent = null;
+
   isMoving = false;
+  eventOpen = false;
 
-  updateHUD();
+  const button = document.getElementById("spin-button");
+
+  if(button) {
+    button.disabled = false;
+  }
+
   renderViruses();
-
+  updateHUD();
 }
 
 
@@ -916,11 +972,11 @@ function createBoard() {
 
   const board = document.getElementById("game-board");
 
-  if (!board) return;
+  if(!board) return;
 
   board.innerHTML = "";
 
-  for (let i = 0; i < TOTAL_TILES; i++) {
+  for(let i = 0; i < TOTAL_TILES; i++) {
 
     const tile = document.createElement("div");
 
@@ -950,36 +1006,64 @@ function createBoard() {
 }
 
 
+/* =========================================================
+   ETAPA
+   ========================================================= */
+
 function getStage(position) {
 
-  if (position < 12) return 1;
-  if (position < 24) return 2;
-  if (position < 36) return 3;
+  if(position < 12) return 1;
+  if(position < 24) return 2;
+  if(position < 36) return 3;
 
   return 4;
 }
 
 
+/* =========================================================
+   TIPO DE CASILLA
+   ========================================================= */
+
 function getTileType(position) {
 
-  if (position === 0) return "start";
-  if (position === TOTAL_TILES - 1) return "finish";
+  if(position === 0) return "start";
 
-  return TILE_PATTERN[(position - 1) % TILE_PATTERN.length];
+  if(position === TOTAL_TILES - 1) return "finish";
+
+  const pattern = [
+    "news",
+    "question",
+    "ai",
+    "social",
+    "shield",
+    "news",
+    "deepfake",
+    "question",
+    "ai",
+    "social",
+    "viral",
+    "bonus"
+  ];
+
+  return pattern[position % pattern.length];
 }
 
+
+/* =========================================================
+   VISUALES
+   ========================================================= */
 
 function getTileVisual(type) {
 
   const names = {
 
-    news: {
+    news:{
       icon:"📰",
       name:{
         es:"Noticia",
         en:"News",
         zh:"新闻"
-      }
+      }[currentLanguage]
     },
 
     question:{
@@ -988,7 +1072,7 @@ function getTileVisual(type) {
         es:"Reto",
         en:"Challenge",
         zh:"挑战"
-      }
+      }[currentLanguage]
     },
 
     ai:{
@@ -997,7 +1081,7 @@ function getTileVisual(type) {
         es:"IA",
         en:"AI",
         zh:"人工智能"
-      }
+      }[currentLanguage]
     },
 
     deepfake:{
@@ -1006,7 +1090,7 @@ function getTileVisual(type) {
         es:"Deepfake",
         en:"Deepfake",
         zh:"深度伪造"
-      }
+      }[currentLanguage]
     },
 
     social:{
@@ -1015,7 +1099,7 @@ function getTileVisual(type) {
         es:"Redes",
         en:"Social",
         zh:"社交媒体"
-      }
+      }[currentLanguage]
     },
 
     shield:{
@@ -1024,7 +1108,7 @@ function getTileVisual(type) {
         es:"Escudo",
         en:"Shield",
         zh:"护盾"
-      }
+      }[currentLanguage]
     },
 
     viral:{
@@ -1033,7 +1117,7 @@ function getTileVisual(type) {
         es:"Viral",
         en:"Viral",
         zh:"病毒"
-      }
+      }[currentLanguage]
     },
 
     bonus:{
@@ -1042,7 +1126,7 @@ function getTileVisual(type) {
         es:"Bonus",
         en:"Bonus",
         zh:"奖励"
-      }
+      }[currentLanguage]
     },
 
     start:{
@@ -1051,7 +1135,7 @@ function getTileVisual(type) {
         es:"Inicio",
         en:"Start",
         zh:"开始"
-      }
+      }[currentLanguage]
     },
 
     finish:{
@@ -1060,15 +1144,12 @@ function getTileVisual(type) {
         es:"Meta",
         en:"Finish",
         zh:"终点"
-      }
+      }[currentLanguage]
     }
 
   };
 
-  return {
-    icon:names[type].icon,
-    name:names[type].name[currentLanguage]
-  };
+  return names[type];
 }
 
 
@@ -1078,33 +1159,42 @@ function getTileVisual(type) {
 
 function spinWheel() {
 
-  if (isMoving) return;
+  if(isMoving || eventOpen) {
+    return;
+  }
 
   const button = document.getElementById("spin-button");
 
-  if (!button) return;
+  if(!button || button.disabled) {
+    return;
+  }
 
-  button.disabled = true;
+  if(playerPosition >= TOTAL_TILES - 1) {
+    return;
+  }
 
   isMoving = true;
+
+  button.disabled = true;
 
   const moves = Math.floor(Math.random() * 4) + 1;
 
   const result = document.getElementById("wheel-result");
 
-  if (result) {
+  if(result) {
     result.textContent = `🎲 +${moves}`;
   }
 
   setTimeout(() => {
-    movePlayer(moves);
-  }, 500);
 
+    movePlayer(moves);
+
+  }, 600);
 }
 
 
 /* =========================================================
-   MOVER JUGADOR
+   MOVER
    ========================================================= */
 
 function movePlayer(moves) {
@@ -1113,13 +1203,24 @@ function movePlayer(moves) {
 
   const interval = setInterval(() => {
 
-    if (steps >= moves || playerPosition >= TOTAL_TILES - 1) {
+    if(playerPosition >= TOTAL_TILES - 1) {
 
       clearInterval(interval);
 
       isMoving = false;
 
-      setTimeout(triggerTileEvent, 350);
+      setTimeout(triggerTileEvent, 300);
+
+      return;
+    }
+
+    if(steps >= moves) {
+
+      clearInterval(interval);
+
+      isMoving = false;
+
+      setTimeout(triggerTileEvent, 400);
 
       return;
     }
@@ -1131,8 +1232,7 @@ function movePlayer(moves) {
 
     steps++;
 
-  }, 350);
-
+  }, 450);
 }
 
 
@@ -1142,24 +1242,32 @@ function movePlayer(moves) {
 
 function renderPlayer() {
 
-  document.querySelectorAll(".tile-car")
-    .forEach(car => car.remove());
+  document.querySelectorAll(".tile-car").forEach(car => {
+    car.remove();
+  });
 
-  document.querySelectorAll(".tile")
-    .forEach(tile => tile.classList.remove("current"));
+  document.querySelectorAll(".tile").forEach(tile => {
+    tile.classList.remove("current");
+  });
 
   const tile = document.querySelector(
     `.tile[data-position="${playerPosition}"]`
   );
 
-  if (!tile) return;
+  if(!tile) return;
 
   tile.classList.add("current");
 
   const car = document.createElement("div");
 
   car.className = "tile-car";
-  car.textContent = "🚗";
+
+  car.innerHTML = `
+    <span class="board-player-avatar">
+      ${characterIcons[selectedCharacter]}
+    </span>
+    🚗
+  `;
 
   tile.appendChild(car);
 
@@ -1167,30 +1275,32 @@ function renderPlayer() {
 }
 
 
+/* =========================================================
+   PROGRESO
+   ========================================================= */
+
 function updateStageProgress() {
 
   const stage = getStage(playerPosition);
 
-  document.querySelectorAll(".stage-point")
-    .forEach((point,index) => {
+  document.querySelectorAll(".stage-point").forEach((point,index) => {
 
-      point.classList.toggle(
-        "active",
-        index + 1 <= stage
-      );
+    point.classList.toggle(
+      "active",
+      index < stage
+    );
 
-    });
-
+  });
 }
 
 
 /* =========================================================
-   EVENTOS
+   EVENTO
    ========================================================= */
 
 function triggerTileEvent() {
 
-  if (playerPosition >= TOTAL_TILES - 1) {
+  if(playerPosition >= TOTAL_TILES - 1) {
 
     showVictory();
 
@@ -1201,236 +1311,9 @@ function triggerTileEvent() {
     `.tile[data-position="${playerPosition}"]`
   );
 
-  const type = tile ? tile.dataset.type : "question";
+  const type = tile?.dataset.type;
 
   openEvent(type);
-}
-
-
-/* =========================================================
-   ABRIR EVENTO
-   ========================================================= */
-
-function openEvent(type) {
-
-  const modal = document.getElementById("event-modal");
-
-  if (!modal) return;
-
-  const t = TEXT[currentLanguage];
-
-  document.getElementById("event-content").innerHTML = "";
-  document.getElementById("event-actions").innerHTML = "";
-
-  currentEvent = {
-    type:type,
-    data:null
-  };
-
-  if (type === "news") {
-
-    const item = randomEvent(EVENTS.news);
-
-    currentEvent.data = item;
-
-    showQuestionEvent(
-      "📰",
-      t.newsTitle,
-      item.body[currentLanguage],
-      `
-        <div class="news-card">
-          <h3>${item.title[currentLanguage]}</h3>
-          <p>${item.body[currentLanguage]}</p>
-        </div>
-      `,
-      [
-        {
-          text:t.correct,
-          callback:() => evaluateNews(true)
-        },
-        {
-          text:t.wrong,
-          callback:() => evaluateNews(false)
-        }
-      ]
-    );
-
-  }
-
-  else if (
-    type === "question" ||
-    type === "ai" ||
-    type === "deepfake" ||
-    type === "social"
-  ) {
-
-    const item = randomEvent(EVENTS[type]);
-
-    currentEvent.data = item;
-
-    const titleMap = {
-      question:t.questionTitle,
-      ai:t.aiTitle,
-      deepfake:t.deepfakeTitle,
-      social:t.socialTitle
-    };
-
-    const iconMap = {
-      question:"🧠",
-      ai:"🤖",
-      deepfake:"🎭",
-      social:"📱"
-    };
-
-    showQuestionEvent(
-      iconMap[type],
-      titleMap[type],
-      item.q[currentLanguage],
-      "",
-      [
-        {
-          text:item.correct[currentLanguage],
-          callback:correctAnswer
-        },
-        {
-          text:item.wrong[currentLanguage],
-          callback:wrongAnswer
-        }
-      ]
-    );
-
-  }
-
-  else if (type === "shield") {
-
-    showQuestionEvent(
-      "🛡️",
-      t.shieldTitle,
-      t.shieldDescription,
-      "",
-      [
-        {
-          text:"+1 🛡️",
-          callback:() => {
-
-            shields++;
-
-            closeEvent();
-            updateHUD();
-
-          }
-        }
-      ]
-    );
-
-  }
-
-  else if (type === "viral") {
-
-    showQuestionEvent(
-      "🦠",
-      t.viralTitle,
-      t.viralDescription,
-      "",
-      [
-        {
-          text:t.useShield,
-          callback:useShield
-        },
-        {
-          text:t.continueWithoutShield,
-          callback:() => {
-
-            viralLoad = Math.min(100, viralLoad + 15);
-
-            closeEvent();
-            updateHUD();
-
-          }
-        }
-      ]
-    );
-
-  }
-
-  else if (type === "bonus") {
-
-    showQuestionEvent(
-      "⭐",
-      t.bonusTitle,
-      t.bonusDescription,
-      "",
-      [
-        {
-          text:"+50 👥",
-          callback:() => {
-
-            followers += 50;
-
-            closeEvent();
-            updateHUD();
-
-          }
-        }
-      ]
-    );
-
-  }
-
-  modal.classList.remove("hidden");
-
-}
-
-
-function showQuestionEvent(icon,title,description,content,buttons) {
-
-  document.getElementById("event-icon").textContent = icon;
-  document.getElementById("event-title").textContent = title;
-  document.getElementById("event-description").textContent = description;
-
-  document.getElementById("event-content").innerHTML = content;
-
-  const actions = document.getElementById("event-actions");
-
-  actions.innerHTML = "";
-
-  buttons.forEach(buttonData => {
-
-    addAnswerButton(
-      buttonData.text,
-      buttonData.callback
-    );
-
-  });
-
-}
-
-
-function reopenCurrentEvent() {
-
-  if (!currentEvent) return;
-
-  openEvent(currentEvent.type);
-
-}
-
-
-/* =========================================================
-   BOTONES
-   ========================================================= */
-
-function addAnswerButton(text,callback) {
-
-  const button = document.createElement("button");
-
-  button.className = "event-option";
-  button.textContent = text;
-
-  button.onclick = callback;
-
-  document.getElementById("event-actions")
-    .appendChild(button);
-
 }
 
 
@@ -1438,12 +1321,355 @@ function addAnswerButton(text,callback) {
    RANDOM
    ========================================================= */
 
-function randomEvent(array) {
+function randomItem(array) {
+
+  if(!array || array.length === 0) {
+    return null;
+  }
 
   return array[
     Math.floor(Math.random() * array.length)
   ];
+}
 
+
+/* =========================================================
+   EVENTOS
+   ========================================================= */
+
+function openEvent(type) {
+
+  const modal = document.getElementById("event-modal");
+
+  const icon = document.getElementById("event-icon");
+
+  const title = document.getElementById("event-title");
+
+  const description =
+    document.getElementById("event-description");
+
+  const content =
+    document.getElementById("event-content");
+
+  const actions =
+    document.getElementById("event-actions");
+
+  if(!modal) return;
+
+  eventOpen = true;
+
+  modal.classList.remove("hidden");
+
+  content.innerHTML = "";
+  actions.innerHTML = "";
+
+  const t = TEXT[currentLanguage];
+
+
+  /* NOTICIA */
+
+  if(type === "news") {
+
+    currentEvent = randomItem(NEWS[currentLanguage]);
+
+    icon.textContent = currentEvent.icon;
+
+    title.textContent = t.newsTitle;
+
+    description.textContent = "";
+
+    content.innerHTML = `
+      <div class="news-card">
+        <h3>${currentEvent.title}</h3>
+        <p>${currentEvent.body}</p>
+      </div>
+    `;
+
+    addAnswerButton(
+      t.share,
+      () => evaluateNews(true)
+    );
+
+    addAnswerButton(
+      t.doNotShare,
+      () => evaluateNews(false)
+    );
+
+    return;
+  }
+
+
+  /* RETO */
+
+  if(type === "question") {
+
+    currentEvent =
+      randomItem(CHALLENGES[currentLanguage]);
+
+    icon.textContent = "🧠";
+
+    title.textContent =
+      currentLanguage === "es"
+      ? "Reto de pensamiento crítico"
+      : currentLanguage === "en"
+      ? "Critical thinking challenge"
+      : "批判性思维挑战";
+
+    description.textContent = currentEvent.q;
+
+    addAnswerButton(
+      currentEvent.correct,
+      () => correctAnswer()
+    );
+
+    addAnswerButton(
+      currentEvent.wrong,
+      () => wrongAnswer()
+    );
+
+    return;
+  }
+
+
+  /* IA */
+
+  if(type === "ai") {
+
+    currentEvent =
+      randomItem(AI_CHALLENGES[currentLanguage]);
+
+    icon.textContent = "🤖";
+
+    title.textContent =
+      currentLanguage === "es"
+      ? "Detecta contenido generado por IA"
+      : currentLanguage === "en"
+      ? "Detect AI-generated content"
+      : "识别人工智能生成的内容";
+
+    description.textContent = currentEvent.q;
+
+    addAnswerButton(
+      currentEvent.correct,
+      () => correctAnswer()
+    );
+
+    addAnswerButton(
+      currentEvent.wrong,
+      () => wrongAnswer()
+    );
+
+    return;
+  }
+
+
+  /* DEEPFAKE */
+
+  if(type === "deepfake") {
+
+    currentEvent = {
+
+      q:
+        currentLanguage === "es"
+        ? "Un video muestra a una persona famosa diciendo algo que parece extraño. ¿Qué haces?"
+        : currentLanguage === "en"
+        ? "A video shows a famous person saying something unusual. What do you do?"
+        : "一个视频显示一位名人在说奇怪的话。你会怎么做？",
+
+      correct:
+        currentLanguage === "es"
+        ? "Busco otras fuentes y verifico el video."
+        : currentLanguage === "en"
+        ? "I look for other sources and verify the video."
+        : "寻找其他来源并验证视频。",
+
+      wrong:
+        currentLanguage === "es"
+        ? "Lo comparto inmediatamente."
+        : currentLanguage === "en"
+        ? "I share it immediately."
+        : "立即分享。"
+    };
+
+    icon.textContent = "🎭";
+
+    title.textContent =
+      currentLanguage === "es"
+      ? "Alerta Deepfake"
+      : currentLanguage === "en"
+      ? "Deepfake Alert"
+      : "深度伪造警报";
+
+    description.textContent = currentEvent.q;
+
+    addAnswerButton(
+      currentEvent.correct,
+      () => correctAnswer()
+    );
+
+    addAnswerButton(
+      currentEvent.wrong,
+      () => wrongAnswer()
+    );
+
+    return;
+  }
+
+
+  /* REDES */
+
+  if(type === "social") {
+
+    currentEvent =
+      randomItem(SOCIAL_CHALLENGES[currentLanguage]);
+
+    icon.textContent = "📱";
+
+    title.textContent =
+      currentLanguage === "es"
+      ? "Redes sociales"
+      : currentLanguage === "en"
+      ? "Social Media"
+      : "社交媒体";
+
+    description.textContent = currentEvent.q;
+
+    addAnswerButton(
+      currentEvent.correct,
+      () => correctAnswer()
+    );
+
+    addAnswerButton(
+      currentEvent.wrong,
+      () => wrongAnswer()
+    );
+
+    return;
+  }
+
+
+  /* ESCUDO */
+
+  if(type === "shield") {
+
+    icon.textContent = "🛡️";
+
+    title.textContent = t.shieldFound;
+
+    description.textContent = t.shieldText;
+
+    addAnswerButton(
+      "+1 🛡️",
+      () => {
+
+        shields++;
+
+        closeEvent();
+
+        updateHUD();
+
+      }
+    );
+
+    return;
+  }
+
+
+  /* VIRAL */
+
+  if(type === "viral") {
+
+    icon.textContent = "🦠";
+
+    title.textContent = t.viralTitle;
+
+    description.textContent = t.viralText;
+
+    if(shields > 0) {
+
+      addAnswerButton(
+        t.useShield,
+        () => useShield()
+      );
+
+    }
+
+    addAnswerButton(
+      t.noShield,
+      () => {
+
+        viralLoad += 15;
+
+        viralLoad = Math.min(viralLoad,100);
+
+        addVirus();
+
+        closeEvent();
+
+        showError();
+
+        updateHUD();
+
+      }
+    );
+
+    return;
+  }
+
+
+  /* BONUS */
+
+  if(type === "bonus") {
+
+    icon.textContent = "⭐";
+
+    title.textContent = t.bonusTitle;
+
+    description.textContent = t.bonusText;
+
+    addAnswerButton(
+      "+50 👥",
+      () => {
+
+        followers += 50;
+
+        closeEvent();
+
+        updateHUD();
+
+      }
+    );
+
+    return;
+  }
+}
+
+
+/* =========================================================
+   BOTONES
+   ========================================================= */
+
+function addAnswerButton(text, callback) {
+
+  const button = document.createElement("button");
+
+  button.className = "event-option";
+
+  button.textContent = text;
+
+  button.onclick = () => {
+
+    document
+      .querySelectorAll("#event-actions .event-option")
+      .forEach(btn => btn.disabled = true);
+
+    callback();
+
+  };
+
+  document
+    .getElementById("event-actions")
+    .appendChild(button);
 }
 
 
@@ -1451,91 +1677,80 @@ function randomEvent(array) {
    NOTICIAS
    ========================================================= */
 
-function evaluateNews(userSaysShare) {
+function evaluateNews(userChoice) {
 
-  if (!currentEvent || !currentEvent.data) return;
+  if(!currentEvent) return;
 
-  const news = currentEvent.data;
+  const isCorrect =
+    (currentEvent.fake && !userChoice) ||
+    (!currentEvent.fake && userChoice);
 
-  /*
-    fake = true
-    -> lo correcto es NO compartir
+  if(isCorrect) {
 
-    fake = false
-    -> lo correcto es poder compartir
-       después de verificar
-  */
-
-  const correct =
-    (news.fake && !userSaysShare) ||
-    (!news.fake && userSaysShare);
-
-  if (correct) {
     correctAnswer();
-  } else {
-    wrongAnswer();
-  }
 
+  } else {
+
+    wrongAnswer();
+
+  }
 }
 
 
 /* =========================================================
-   RESPUESTAS
+   CORRECTO
    ========================================================= */
 
 function correctAnswer() {
 
   followers += 30;
 
-  const score = document.getElementById("your-score");
-
-  if (score) {
-    score.textContent = followers;
-  }
-
   closeEvent();
 
   updateHUD();
-
 }
 
 
+/* =========================================================
+   INCORRECTO
+   ========================================================= */
+
 function wrongAnswer() {
 
-  const t = TEXT[currentLanguage];
+  if(shields > 0) {
 
-  if (shields > 0) {
-
-    const use = window.confirm(
+    const message =
       currentLanguage === "es"
       ? "¡Te equivocaste! ¿Quieres usar un escudo?"
       : currentLanguage === "en"
       ? "You made a mistake! Do you want to use a shield?"
-      : "你答错了！要使用护盾吗？"
-    );
+      : "你答错了！要使用护盾吗？";
 
-    if (use) {
+    const use = confirm(message);
+
+    if(use) {
 
       shields--;
 
       closeEvent();
+
       updateHUD();
 
       return;
     }
-
   }
 
-  viralLoad = Math.min(100, viralLoad + 15);
+  viralLoad += 15;
+
+  viralLoad = Math.min(viralLoad,100);
 
   addVirus();
 
   closeEvent();
 
-  showError(t.wrongMessage);
+  showError();
 
   updateHUD();
-
 }
 
 
@@ -1549,23 +1764,24 @@ const VIRUSES = [
 "👾",
 "🕷️",
 "☣️",
-"🤖",
-"💀",
 "🪱",
 "🧬",
-"👹"
+"🧟",
+"👹",
+"💀"
 ];
 
 
 function addVirus() {
 
   const virus =
-    VIRUSES[viruses.length % VIRUSES.length];
+    VIRUSES[
+      viruses.length % VIRUSES.length
+    ];
 
   viruses.push(virus);
 
   renderViruses();
-
 }
 
 
@@ -1574,7 +1790,7 @@ function renderViruses() {
   const container =
     document.getElementById("virus-container");
 
-  if (!container) return;
+  if(!container) return;
 
   container.innerHTML = "";
 
@@ -1585,12 +1801,15 @@ function renderViruses() {
     span.textContent = virus;
 
     span.title =
-      `${TEXT[currentLanguage].threat} ${index + 1}`;
+      currentLanguage === "es"
+      ? `Amenaza ${index + 1}`
+      : currentLanguage === "en"
+      ? `Threat ${index + 1}`
+      : `威胁 ${index + 1}`;
 
     container.appendChild(span);
 
   });
-
 }
 
 
@@ -1598,35 +1817,40 @@ function renderViruses() {
    ERROR
    ========================================================= */
 
-function showError(message) {
+function showError() {
 
   const screen =
     document.getElementById("error-screen");
 
-  const messageElement =
+  const message =
     document.getElementById("error-message");
 
-  messageElement.textContent =
-    message || TEXT[currentLanguage].errorWrong;
+  if(!screen || !message) return;
+
+  message.textContent =
+    TEXT[currentLanguage].errorWrong;
 
   screen.classList.remove("hidden");
-
 }
 
 
 function closeError() {
 
-  document
-    .getElementById("error-screen")
-    .classList.add("hidden");
+  const screen =
+    document.getElementById("error-screen");
+
+  if(screen) {
+    screen.classList.add("hidden");
+  }
 
   const button =
     document.getElementById("spin-button");
 
-  if (button && !isMoving) {
+  if(button) {
     button.disabled = false;
   }
 
+  isMoving = false;
 }
 
 
@@ -1636,7 +1860,9 @@ function closeError() {
 
 function useShield() {
 
-  if (shields <= 0) {
+  if(shields <= 0) {
+
+    closeEvent();
 
     wrongAnswer();
 
@@ -1646,8 +1872,8 @@ function useShield() {
   shields--;
 
   closeEvent();
-  updateHUD();
 
+  updateHUD();
 }
 
 
@@ -1660,10 +1886,18 @@ function closeEvent() {
   const modal =
     document.getElementById("event-modal");
 
-  if (modal) {
+  if(modal) {
     modal.classList.add("hidden");
   }
 
+  eventOpen = false;
+
+  const button =
+    document.getElementById("spin-button");
+
+  if(button) {
+    button.disabled = false;
+  }
 }
 
 
@@ -1685,31 +1919,26 @@ function updateHUD() {
   const viralElement =
     document.getElementById("viral-count");
 
-  if (position) {
+  if(position) {
+
     position.textContent =
       `${playerPosition + 1}/${TOTAL_TILES}`;
   }
 
-  if (followersElement) {
+  if(followersElement) {
     followersElement.textContent = followers;
   }
 
-  if (shieldsElement) {
+  if(shieldsElement) {
     shieldsElement.textContent = shields;
   }
 
-  if (viralElement) {
+  if(viralElement) {
     viralElement.textContent =
       viralLoad + "%";
   }
 
-  const score =
-    document.getElementById("your-score");
-
-  if (score) {
-    score.textContent = followers;
-  }
-
+  renderViruses();
 }
 
 
@@ -1719,10 +1948,12 @@ function updateHUD() {
 
 function showVictory() {
 
-  const t = TEXT[currentLanguage];
-
   const modal =
     document.getElementById("event-modal");
+
+  if(!modal) return;
+
+  const t = TEXT[currentLanguage];
 
   document.getElementById("event-icon")
     .textContent = "🏆";
@@ -1736,10 +1967,21 @@ function showVictory() {
   document.getElementById("event-content")
     .innerHTML = `
       <div class="news-card">
-        ⭐ ${t.position}: ${playerPosition + 1}/${TOTAL_TILES}<br><br>
-        👥 ${t.followers}: ${followers}<br><br>
-        🛡️ ${t.shields}: ${shields}<br><br>
-        🦠 ${t.viralLoad}: ${viralLoad}%
+
+        👤 ${playerName}<br><br>
+
+        📍 ${t.position}:
+        ${playerPosition + 1}/${TOTAL_TILES}<br><br>
+
+        👥 ${t.followers}:
+        ${followers}<br><br>
+
+        🛡️ ${t.shields}:
+        ${shields}<br><br>
+
+        🦠 ${t.viralLoad}:
+        ${viralLoad}%
+
       </div>
     `;
 
@@ -1747,7 +1989,7 @@ function showVictory() {
     .innerHTML = "";
 
   addAnswerButton(
-    t.next,
+    t.reset,
     () => {
 
       closeEvent();
@@ -1755,13 +1997,17 @@ function showVictory() {
       resetGame();
 
       createBoard();
+
       updateHUD();
+
+      navigateTo("page-game");
 
     }
   );
 
   modal.classList.remove("hidden");
 
+  eventOpen = true;
 }
 
 
@@ -1774,29 +2020,31 @@ function labTool(tool) {
   const output =
     document.getElementById("lab-output");
 
+  if(!output) return;
+
   const responses = {
 
-    source:{
-      es:"🔎 FUENTE: Busca quién publicó originalmente la afirmación y comprueba si fuentes confiables e independientes la confirman.",
-      en:"🔎 SOURCE: Find who originally published the claim and check whether reliable, independent sources confirm it.",
-      zh:"🔎 来源：寻找最初发布该说法的人，并检查可靠且独立的来源是否确认。"
+    source: {
+      es:"🔎 FUENTE: Busca quién publicó originalmente la afirmación y si otras fuentes confiables la confirman.",
+      en:"🔎 SOURCE: Find who originally published the claim and whether other reliable sources confirm it.",
+      zh:"🔎 来源：寻找最初发布该说法的人，并检查其他可靠来源是否确认。"
     },
 
-    image:{
-      es:"🖼️ IMAGEN: Comprueba si la imagen es reciente, busca su origen y revisa si está fuera de contexto o manipulada.",
-      en:"🖼️ IMAGE: Check whether the image is recent, find its origin, and look for signs that it is out of context or manipulated.",
-      zh:"🖼️ 图片：检查图片是否最新，寻找来源，并确认它是否脱离背景或经过修改。"
+    image: {
+      es:"🖼️ IMAGEN: Una imagen puede estar fuera de contexto, ser antigua o estar manipulada.",
+      en:"🖼️ IMAGE: An image may be out of context, old, or manipulated.",
+      zh:"🖼️ 图片：图片可能脱离背景、来自过去，或者经过修改。"
     },
 
-    ai:{
-      es:"🤖 IA: Busca manos extrañas, texto deformado, sombras imposibles, reflejos inconsistentes y detalles que no tengan sentido.",
-      en:"🤖 AI: Look for strange hands, distorted text, impossible shadows, inconsistent reflections, and details that do not make sense.",
-      zh:"🤖 人工智能：寻找奇怪的手部、变形文字、不合理的阴影、不一致的反射以及不合逻辑的细节。"
+    ai: {
+      es:"🤖 IA: Busca inconsistencias en manos, texto, sombras, reflejos y rostros.",
+      en:"🤖 AI: Look for inconsistencies in hands, text, shadows, reflections, and faces.",
+      zh:"🤖 人工智能：检查手部、文字、阴影、反射和面部是否存在不一致。"
     },
 
-    date:{
-      es:"📅 FECHA: Comprueba cuándo ocurrió realmente el evento y si la publicación está utilizando una noticia antigua.",
-      en:"📅 DATE: Check when the event actually happened and whether the post is using an old news story.",
+    date: {
+      es:"📅 FECHA: Comprueba cuándo ocurrió realmente el evento y si la publicación utiliza una noticia antigua.",
+      en:"📅 DATE: Check when the event actually happened and whether the post uses an old story.",
       zh:"📅 日期：确认事件实际发生的时间，并检查帖子是否使用旧新闻。"
     }
 
@@ -1804,23 +2052,18 @@ function labTool(tool) {
 
   output.textContent =
     responses[tool][currentLanguage];
-
 }
 
 
 /* =========================================================
-   INICIALIZACIÓN
+   INICIO
    ========================================================= */
 
 document.addEventListener("DOMContentLoaded", () => {
 
-  applyTranslations();
-
   createBoard();
 
   updateHUD();
-
-  updateAvatarPreview();
 
   updateAvatar();
 
