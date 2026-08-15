@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -18,6 +19,8 @@
 </head>
 
 <body>
+
+<!-- ================= NAVBAR ================= -->
 
 <nav class="navbar">
 
@@ -72,7 +75,7 @@
 
   <div class="hero">
 
-    <div class="hero-badge" data-i18n="hackathon">
+    <div class="hero-badge">
       ✨ UNESCO Youth Hackathon 2026
     </div>
 
@@ -105,7 +108,7 @@
     <div class="home-cards">
 
       <div>
-        <strong>48</strong>
+        <strong>40+</strong>
         <span data-i18n="tiles">Casillas</span>
       </div>
 
@@ -134,76 +137,106 @@
 
     <div class="setup-card">
 
+      <div class="setup-icon">
+        🧑‍🚀
+      </div>
+
       <h2 data-i18n="chooseCharacter">
-        Elige tu personaje
+        Crea tu agente
       </h2>
 
       <p data-i18n="characterDescription">
-        Tu personaje te acompañará durante todo el recorrido.
+        Personaliza tu identidad antes de comenzar la misión.
       </p>
+
+
+      <!-- NOMBRE -->
+
+      <div class="name-input-container">
+
+        <label for="player-name"
+               data-i18n="playerName">
+          Nombre del agente
+        </label>
+
+        <input
+          id="player-name"
+          type="text"
+          maxlength="20"
+          autocomplete="off"
+          placeholder="Escribe tu nombre..."
+          data-i18n-placeholder="namePlaceholder"
+        >
+
+      </div>
+
+
+      <!-- GÉNERO -->
+
+      <h3 data-i18n="chooseGender">
+        Elige tu personaje
+      </h3>
 
       <div class="character-options">
 
         <button class="character-option selected"
                 onclick="selectCharacter('neutral', this)">
-          🧑‍💻
-          <span data-i18n="neutral">Neutral</span>
+
+          <div class="character-icon">
+            🧑‍💻
+          </div>
+
+          <span data-i18n="neutral">
+            Neutral
+          </span>
+
         </button>
+
 
         <button class="character-option"
                 onclick="selectCharacter('woman', this)">
-          👩‍💻
-          <span data-i18n="woman">Mujer</span>
+
+          <div class="character-icon">
+            👩‍💻
+          </div>
+
+          <span data-i18n="woman">
+            Mujer
+          </span>
+
         </button>
+
 
         <button class="character-option"
                 onclick="selectCharacter('man', this)">
-          👨‍💻
-          <span data-i18n="man">Hombre</span>
+
+          <div class="character-icon">
+            👨‍💻
+          </div>
+
+          <span data-i18n="man">
+            Hombre
+          </span>
+
         </button>
 
       </div>
 
-      <h3 data-i18n="chooseStyle">
-        Elige tu estilo
-      </h3>
 
-      <div class="style-options">
-
-        <button onclick="selectStyle('cool', this)"
-                class="style-option selected">
-          😎
-          <span data-i18n="cool">Cool</span>
-        </button>
-
-        <button onclick="selectStyle('smart', this)"
-                class="style-option">
-          🤓
-          <span data-i18n="smart">Smart</span>
-        </button>
-
-        <button onclick="selectStyle('fun', this)"
-                class="style-option">
-          🤪
-          <span data-i18n="fun">Fun</span>
-        </button>
-
-        <button onclick="selectStyle('cyber', this)"
-                class="style-option">
-          🤖
-          <span data-i18n="cyber">Cyber</span>
-        </button>
-
-      </div>
+      <!-- PREVIEW -->
 
       <div class="preview">
 
-        <div id="avatar-preview" class="big-avatar">
-          🧑‍💻
+        <div class="preview-sky"></div>
+
+        <div class="preview-name"
+             id="preview-name">
+          Agente
         </div>
 
-        <div id="preview-style" class="preview-style">
-          😎
+        <div id="avatar-preview"
+             class="big-avatar">
+          🧑‍💻
         </div>
 
         <div class="preview-car">
@@ -211,6 +244,7 @@
         </div>
 
       </div>
+
 
       <button class="primary-btn large"
               onclick="confirmCharacter()"
@@ -231,97 +265,177 @@
 
   <div class="game-container">
 
+
+    <!-- HUD -->
+
     <div class="game-top">
 
       <div class="game-stat">
+
         🧠
-        <span data-i18n="position">Posición</span>
-        <strong id="position-value">1/48</strong>
+
+        <span data-i18n="position">
+          Posición
+        </span>
+
+        <strong id="position-value">
+          1/48
+        </strong>
+
       </div>
 
-      <div class="game-stat">
-        👥
-        <span data-i18n="followers">Seguidores</span>
-        <strong id="followers-count">100</strong>
-      </div>
 
       <div class="game-stat">
+
+        👤
+
+        <span id="player-name-label">
+          Agente
+        </span>
+
+        <strong id="followers-count">
+          100
+        </strong>
+
+      </div>
+
+
+      <div class="game-stat">
+
         🛡️
-        <span data-i18n="shields">Escudos</span>
-        <strong id="shields-count">1</strong>
+
+        <span data-i18n="shields">
+          Escudos
+        </span>
+
+        <strong id="shields-count">
+          1
+        </strong>
+
       </div>
+
 
       <div class="game-stat virus-stat">
+
         🦠
-        <span data-i18n="viralLoad">Carga viral</span>
-        <strong id="viral-count">0%</strong>
+
+        <span data-i18n="viralLoad">
+          Carga viral
+        </span>
+
+        <strong id="viral-count">
+          0%
+        </strong>
+
       </div>
 
     </div>
 
+
+    <!-- STAGE PROGRESS -->
 
     <div class="stage-progress">
 
       <div class="stage-progress-line"></div>
 
+
       <div class="stage-point active">
+
         🌅
-        <span data-i18n="stage1">Mañana</span>
+
+        <span data-i18n="stage1">
+          Mañana
+        </span>
+
       </div>
 
+
       <div class="stage-point">
+
         🏫
-        <span data-i18n="stage2">Escuela</span>
+
+        <span data-i18n="stage2">
+          Escuela
+        </span>
+
       </div>
 
+
       <div class="stage-point">
+
         📱
-        <span data-i18n="stage3">Redes</span>
+
+        <span data-i18n="stage3">
+          Redes
+        </span>
+
       </div>
 
+
       <div class="stage-point">
+
         🌙
-        <span data-i18n="stage4">Noche</span>
+
+        <span data-i18n="stage4">
+          Noche
+        </span>
+
       </div>
 
     </div>
 
+
+    <!-- BOARD -->
 
     <div class="board-wrapper">
 
-      <div class="board" id="game-board"></div>
+      <div class="board"
+           id="game-board">
+      </div>
 
     </div>
 
+
+    <!-- PLAYER -->
 
     <div class="player-panel">
 
       <div class="player-car-area">
 
-        <div class="car-scene">
 
-          <div id="player-avatar" class="car-avatar">
+        <div class="player-info">
+
+          <div id="player-avatar"
+               class="car-avatar">
             🧑‍💻
           </div>
 
-          <div id="player-style" class="player-style">
-            😎
+          <div id="player-display-name"
+               class="player-display-name">
+            Agente
           </div>
 
-          <div class="car">
-            🚗
-          </div>
+        </div>
 
-          <div id="virus-container" class="car-viruses"></div>
 
+        <div class="car">
+          🚗
+        </div>
+
+
+        <div id="virus-container"
+             class="car-viruses">
         </div>
 
       </div>
 
 
+      <!-- WHEEL -->
+
       <div class="wheel-panel">
 
-        <div id="wheel-result" class="wheel-result">
+        <div id="wheel-result"
+             class="wheel-result">
           🎲
         </div>
 
@@ -343,7 +457,8 @@
 
 <!-- ================= LAB ================= -->
 
-<section id="page-lab" class="page-view hidden">
+<section id="page-lab"
+         class="page-view hidden">
 
   <div class="lab-container">
 
@@ -355,36 +470,77 @@
       Aprende a investigar antes de compartir.
     </p>
 
+
     <div class="lab-grid">
 
+
       <button onclick="labTool('source')">
+
         🔎
-        <strong data-i18n="sourceTool">Fuente</strong>
-        <small data-i18n="sourceDescription">Busca el origen</small>
+
+        <strong data-i18n="sourceTool">
+          Fuente
+        </strong>
+
+        <small data-i18n="sourceDescription">
+          Busca el origen
+        </small>
+
       </button>
+
 
       <button onclick="labTool('image')">
+
         🖼️
-        <strong data-i18n="imageTool">Imagen</strong>
-        <small data-i18n="imageDescription">Analiza el contexto</small>
+
+        <strong data-i18n="imageTool">
+          Imagen
+        </strong>
+
+        <small data-i18n="imageDescription">
+          Analiza el contexto
+        </small>
+
       </button>
+
 
       <button onclick="labTool('ai')">
+
         🤖
-        <strong data-i18n="aiTool">IA</strong>
-        <small data-i18n="aiDescription">Busca señales de IA</small>
+
+        <strong data-i18n="aiTool">
+          IA
+        </strong>
+
+        <small data-i18n="aiDescription">
+          Busca señales de IA
+        </small>
+
       </button>
 
+
       <button onclick="labTool('date')">
+
         📅
-        <strong data-i18n="dateTool">Fecha</strong>
-        <small data-i18n="dateDescription">Comprueba cuándo ocurrió</small>
+
+        <strong data-i18n="dateTool">
+          Fecha
+        </strong>
+
+        <small data-i18n="dateDescription">
+          Comprueba cuándo ocurrió
+        </small>
+
       </button>
 
     </div>
 
-    <div id="lab-output" class="lab-output">
+
+    <div id="lab-output"
+         class="lab-output">
+
       🔬
+
     </div>
 
   </div>
@@ -394,7 +550,8 @@
 
 <!-- ================= RANKING ================= -->
 
-<section id="page-ranking" class="page-view hidden">
+<section id="page-ranking"
+         class="page-view hidden">
 
   <div class="ranking-container">
 
@@ -402,25 +559,26 @@
       🏆 Ranking INOCULA
     </h2>
 
+
     <div class="ranking-card">
 
       <div>
-        <span>🥇 FactChecker_01</span>
+        🥇 FactChecker_01
         <strong>980</strong>
       </div>
 
       <div>
-        <span>🥈 MediaGuardian</span>
+        🥈 MediaGuardian
         <strong>920</strong>
       </div>
 
       <div>
-        <span>🥉 TruthHunter</span>
+        🥉 TruthHunter
         <strong>860</strong>
       </div>
 
       <div>
-        <span>⭐ <span data-i18n="you">Tú</span></span>
+        ⭐ <span id="ranking-player-name">You</span>
         <strong id="your-score">100</strong>
       </div>
 
@@ -433,21 +591,34 @@
 
 <!-- ================= EVENT MODAL ================= -->
 
-<div id="event-modal" class="modal hidden">
+<div id="event-modal"
+     class="modal hidden">
 
   <div class="modal-card">
 
-    <div id="event-icon" class="event-icon">
+
+    <div id="event-icon"
+         class="event-icon">
       📰
     </div>
 
-    <h2 id="event-title"></h2>
 
-    <p id="event-description"></p>
+    <h2 id="event-title">
+      Nuevo reto
+    </h2>
 
-    <div id="event-content"></div>
 
-    <div id="event-actions"></div>
+    <p id="event-description">
+    </p>
+
+
+    <div id="event-content">
+    </div>
+
+
+    <div id="event-actions">
+    </div>
+
 
   </div>
 
@@ -456,29 +627,37 @@
 
 <!-- ================= ERROR ================= -->
 
-<div id="error-screen" class="error-screen hidden">
+<div id="error-screen"
+     class="error-screen hidden">
 
   <div class="error-box">
+
 
     <div class="error-icon">
       ⚠️
     </div>
 
+
     <h2 data-i18n="errorTitle">
       ¡ERROR DE VERIFICACIÓN!
     </h2>
 
-    <p id="error-message"></p>
+
+    <p id="error-message">
+    </p>
+
 
     <div class="error-virus">
       🦠
     </div>
+
 
     <button class="primary-btn"
             onclick="closeError()"
             data-i18n="continue">
       Continuar
     </button>
+
 
   </div>
 
@@ -489,3 +668,4 @@
 
 </body>
 </html>
+```
