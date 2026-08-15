@@ -4,192 +4,111 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>INOCULA · Digital Life</title>
+  <title>INOCULA · Digital Life Game</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-  <link
-    href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap"
-    rel="stylesheet"
-  >
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
 
-  <link
-    rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
-  >
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
   <link rel="stylesheet" href="styles.css">
 </head>
 
 <body>
 
-<!-- =========================================================
-     NAVBAR
-========================================================= -->
-
 <nav class="navbar">
 
-  <div class="brand" onclick="showPage('home')">
-    <div class="brand-icon">
-      🧬
-    </div>
-
-    <div>
-      <strong>INOCULA</strong>
-      <span>Digital Life</span>
-    </div>
+  <div class="logo" onclick="navigateTo('page-home')">
+    🛡️ <span>INOCULA</span>
   </div>
 
   <div class="nav-links">
 
-    <button class="nav-button active" data-page="home" onclick="showPage('home')">
-      🏠 <span data-i18n="navHome">Inicio</span>
+    <button class="nav-btn active" onclick="navigateTo('page-home')" data-i18n="navHome">
+      🏠 Inicio
     </button>
 
-    <button class="nav-button" data-page="game" onclick="showPage('game')">
-      🎮 <span data-i18n="navGame">Tablero</span>
+    <button class="nav-btn" onclick="navigateTo('page-game')" data-i18n="navGame">
+      🎮 Tablero
     </button>
 
-    <button class="nav-button" data-page="lab" onclick="showPage('lab')">
-      🧪 <span data-i18n="navLab">Laboratorio</span>
+    <button class="nav-btn" onclick="navigateTo('page-lab')" data-i18n="navLab">
+      🧪 Laboratorio
     </button>
 
-    <button class="nav-button" data-page="ranking" onclick="showPage('ranking')">
-      🏆 <span data-i18n="navRanking">Ranking</span>
+    <button class="nav-btn" onclick="navigateTo('page-ranking')" data-i18n="navRanking">
+      🏆 Ranking
     </button>
 
   </div>
 
-  <div class="nav-right">
+  <div class="nav-controls">
 
-    <select id="languageSelect" onchange="changeLanguage(this.value)">
+    <select id="lang-select" onchange="changeLanguage(this.value)">
       <option value="es">🇲🇽 Español</option>
       <option value="en">🇺🇸 English</option>
       <option value="zh">🇨🇳 中文</option>
     </select>
-
-    <span class="hackathon-label">
-      UNESCO Youth 2026
-    </span>
 
   </div>
 
 </nav>
 
 
-<!-- =========================================================
-     HOME
-========================================================= -->
+<!-- ================= HOME ================= -->
 
-<section id="page-home" class="page active">
+<section id="page-home" class="page-view active">
 
   <div class="hero">
 
-    <div class="hero-decoration decoration-one">✦</div>
-    <div class="hero-decoration decoration-two">✧</div>
+    <div class="hero-badge">
+      ✨ UNESCO Youth Hackathon 2026
+    </div>
 
-    <div class="hero-content">
+    <h1 data-i18n="heroTitle">
+      Antes de creer,<br>
+      <span>inocúlate.</span>
+    </h1>
 
-      <div class="hero-badge">
-        🧬 <span data-i18n="heroBadge">UNESCO Youth Hackathon 2026</span>
-      </div>
+    <p data-i18n="heroText">
+      Un juego educativo que convierte la alfabetización mediática
+      en una aventura digital.
+    </p>
 
-      <h1>
-        <span data-i18n="heroTitle1">Antes de creer,</span>
-        <span class="gradient-text" data-i18n="heroTitle2">
-          inocúlate.
-        </span>
-      </h1>
+    <div class="hero-buttons">
 
-      <p data-i18n="heroDescription">
-        Una experiencia interactiva que te entrena para detectar
-        fake news, deepfakes y manipulación digital.
-      </p>
+      <button class="primary-btn" onclick="startGame()" data-i18n="startGame">
+        🚀 Comenzar aventura
+      </button>
 
-      <div class="hero-actions">
-
-        <button class="primary-button large" onclick="startGame()">
-          🎮 <span data-i18n="startGame">Comenzar aventura</span>
-        </button>
-
-        <button class="secondary-button large" onclick="showPage('lab')">
-          🧪 <span data-i18n="tryLab">Explorar laboratorio</span>
-        </button>
-
-      </div>
+      <button class="secondary-btn"
+              onclick="navigateTo('page-lab')"
+              data-i18n="tryTools">
+        🧪 Probar herramientas
+      </button>
 
     </div>
 
+    <div class="home-cards">
 
-    <div class="hero-preview">
-
-      <div class="floating-card card-one">
-        📰
-        <strong data-i18n="fakeNews">Fake News</strong>
-        <span data-i18n="detectIt">Detect it.</span>
+      <div>
+        <strong>40+</strong>
+        <span data-i18n="tiles">Casillas</span>
       </div>
 
-      <div class="floating-card card-two">
-        🤖
-        <strong>AI</strong>
-        <span data-i18n="verifyIt">Verify it.</span>
+      <div>
+        <strong>3</strong>
+        <span data-i18n="languages">Idiomas</span>
       </div>
 
-      <div class="phone-mockup">
-
-        <div class="phone-header">
-          <span>INOCULA</span>
-          <span>●</span>
-        </div>
-
-        <div class="phone-character">
-          🧑‍💻
-        </div>
-
-        <div class="phone-title" data-i18n="digitalJourney">
-          Tu viaje digital
-        </div>
-
-        <div class="phone-progress">
-          <div></div>
-        </div>
-
-        <div class="phone-stat">
-          🛡️ 1 &nbsp;&nbsp; 👥 100
-        </div>
-
+      <div>
+        <strong>4</strong>
+        <span data-i18n="stages">Etapas</span>
       </div>
 
-    </div>
-
-  </div>
-
-
-  <div class="home-features">
-
-    <div class="feature-card">
-      <div>🎮</div>
-      <h3 data-i18n="featureGame">Aprende jugando</h3>
-      <p data-i18n="featureGameText">
-        Toma decisiones y observa sus consecuencias.
-      </p>
-    </div>
-
-    <div class="feature-card">
-      <div>🧠</div>
-      <h3 data-i18n="featureSkills">Desarrolla habilidades</h3>
-      <p data-i18n="featureSkillsText">
-        Aprende a verificar información antes de compartirla.
-      </p>
-    </div>
-
-    <div class="feature-card">
-      <div>🌎</div>
-      <h3 data-i18n="featureLanguages">Multilingüe</h3>
-      <p data-i18n="featureLanguagesText">
-        Disponible en español, inglés y chino.
-      </p>
     </div>
 
   </div>
@@ -197,139 +116,94 @@
 </section>
 
 
-<!-- =========================================================
-     CHARACTER CREATION
-========================================================= -->
+<!-- ================= CHARACTER ================= -->
 
-<section id="page-character" class="page">
+<section id="page-character" class="page-view hidden">
 
-  <div class="character-container">
+  <div class="setup-container">
 
-    <div class="section-heading">
+    <div class="setup-card">
 
-      <span class="eyebrow">
-        🧬 INOCULA
-      </span>
-
-      <h2 data-i18n="createAgent">
-        Crea tu agente
+      <h2 data-i18n="chooseCharacter">
+        Elige tu personaje
       </h2>
 
-      <p data-i18n="createAgentText">
-        Este personaje te acompañará durante todo tu viaje digital.
+      <p data-i18n="characterDescription">
+        Tu personaje te acompañará durante todo el recorrido.
       </p>
 
-    </div>
+      <div class="character-options">
 
-
-    <div class="character-builder">
-
-      <div class="avatar-preview">
-
-        <div id="avatarPreview" class="big-avatar">
+        <button class="character-option selected"
+                onclick="selectCharacter('neutral', this)">
           🧑‍💻
-        </div>
+          <span data-i18n="neutral">Neutral</span>
+        </button>
 
-        <div class="avatar-shadow"></div>
+        <button class="character-option"
+                onclick="selectCharacter('woman', this)">
+          👩‍💻
+          <span data-i18n="woman">Mujer</span>
+        </button>
 
-        <h3 id="avatarNamePreview">
-          Agent
-        </h3>
-
-      </div>
-
-
-      <div class="builder-options">
-
-        <div class="option-group">
-
-          <h3 data-i18n="identity">
-            Identidad
-          </h3>
-
-          <div class="choice-grid">
-
-            <button class="choice-button selected"
-                    onclick="selectIdentity('female', this)">
-              👩
-              <span data-i18n="female">Mujer</span>
-            </button>
-
-            <button class="choice-button"
-                    onclick="selectIdentity('male', this)">
-              👨
-              <span data-i18n="male">Hombre</span>
-            </button>
-
-            <button class="choice-button"
-                    onclick="selectIdentity('neutral', this)">
-              🧑
-              <span data-i18n="other">Otro</span>
-            </button>
-
-          </div>
-
-        </div>
-
-
-        <div class="option-group">
-
-          <h3 data-i18n="style">
-            Estilo
-          </h3>
-
-          <div class="choice-grid">
-
-            <button class="choice-button"
-                    onclick="selectStyle('cool', this)">
-              😎
-              <span data-i18n="styleCool">Cool</span>
-            </button>
-
-            <button class="choice-button"
-                    onclick="selectStyle('student', this)">
-              🎒
-              <span data-i18n="styleStudent">Student</span>
-            </button>
-
-            <button class="choice-button"
-                    onclick="selectStyle('tech', this)">
-              🤓
-              <span data-i18n="styleTech">Tech</span>
-            </button>
-
-          </div>
-
-        </div>
-
-
-        <div class="name-field">
-
-          <label data-i18n="agentName">
-            Nombre de tu agente
-          </label>
-
-          <input
-            id="agentName"
-            type="text"
-            maxlength="18"
-            placeholder="Ej. Alex"
-            oninput="updateAgentName()"
-          >
-
-        </div>
-
-
-        <button class="primary-button full"
-                onclick="confirmCharacter()">
-
-          🚀 <span data-i18n="enterWorld">
-            Entrar al mundo digital
-          </span>
-
+        <button class="character-option"
+                onclick="selectCharacter('man', this)">
+          👨‍💻
+          <span data-i18n="man">Hombre</span>
         </button>
 
       </div>
+
+
+      <h3 data-i18n="chooseStyle">
+        Elige tu estilo
+      </h3>
+
+      <div class="style-options">
+
+        <button onclick="selectStyle('cool', this)"
+                class="style-option selected">
+          😎
+          <span>Cool</span>
+        </button>
+
+        <button onclick="selectStyle('smart', this)"
+                class="style-option">
+          🤓
+          <span>Smart</span>
+        </button>
+
+        <button onclick="selectStyle('fun', this)"
+                class="style-option">
+          🤪
+          <span>Fun</span>
+        </button>
+
+        <button onclick="selectStyle('cyber', this)"
+                class="style-option">
+          🤖
+          <span>Cyber</span>
+        </button>
+
+      </div>
+
+      <div class="preview">
+
+        <div id="avatar-preview" class="big-avatar">
+          🧑‍💻
+        </div>
+
+        <div class="preview-car">
+          🚗
+        </div>
+
+      </div>
+
+      <button class="primary-btn large"
+              onclick="confirmCharacter()"
+              data-i18n="continue">
+        Continuar →
+      </button>
 
     </div>
 
@@ -338,246 +212,106 @@
 </section>
 
 
-<!-- =========================================================
-     GAME
-========================================================= -->
+<!-- ================= GAME ================= -->
 
-<section id="page-game" class="page">
+<section id="page-game" class="page-view hidden">
 
   <div class="game-container">
 
-    <!-- GAME HEADER -->
+    <div class="game-top">
 
-    <div class="game-header">
-
-      <div>
-
-        <span class="eyebrow" data-i18n="digitalDay">
-          DÍA DIGITAL
-        </span>
-
-        <h2 id="gameGreeting">
-          Tu navegación diaria
-        </h2>
-
+      <div class="game-stat">
+        🧠
+        <span data-i18n="position">Posición</span>
+        <strong id="position-value">1/48</strong>
       </div>
 
+      <div class="game-stat">
+        👥
+        <span data-i18n="followers">Seguidores</span>
+        <strong id="followers-count">100</strong>
+      </div>
 
-      <div class="game-stats">
+      <div class="game-stat">
+        🛡️
+        <span data-i18n="shields">Escudos</span>
+        <strong id="shields-count">1</strong>
+      </div>
 
-        <div class="game-stat">
-          <span>👥</span>
-          <small data-i18n="followers">Seguidores</small>
-          <strong id="followers">100</strong>
-        </div>
-
-        <div class="game-stat">
-          <span>🛡️</span>
-          <small data-i18n="shields">Escudos</small>
-          <strong id="shields">1</strong>
-        </div>
-
-        <div class="game-stat viral">
-          <span>🦠</span>
-          <small data-i18n="viralLoad">Carga viral</small>
-          <strong id="viralLoad">15%</strong>
-        </div>
-
+      <div class="game-stat virus-stat">
+        🦠
+        <span data-i18n="viralLoad">Carga viral</span>
+        <strong id="viral-count">0%</strong>
       </div>
 
     </div>
 
-
-    <!-- STAGE PROGRESS -->
 
     <div class="stage-progress">
 
       <div class="stage-progress-line"></div>
 
-      <div class="stage-node active" id="stageNode1">
-        <span>🌅</span>
-        <small data-i18n="stageMorning">Mañana</small>
+      <div class="stage-point active">
+        🌅
+        <span data-i18n="stage1">Mañana</span>
       </div>
 
-      <div class="stage-node locked" id="stageNode2">
-        <span>🏫</span>
-        <small data-i18n="stageSchool">Escuela</small>
+      <div class="stage-point">
+        🏫
+        <span data-i18n="stage2">Escuela</span>
       </div>
 
-      <div class="stage-node locked" id="stageNode3">
-        <span>📱</span>
-        <small data-i18n="stageSocial">Redes</small>
+      <div class="stage-point">
+        📱
+        <span data-i18n="stage3">Redes</span>
       </div>
 
-      <div class="stage-node locked" id="stageNode4">
-        <span>🌙</span>
-        <small data-i18n="stageNight">Noche</small>
+      <div class="stage-point">
+        🌙
+        <span data-i18n="stage4">Noche</span>
       </div>
 
     </div>
 
 
-    <!-- GAME AREA -->
+    <div class="board-wrapper">
 
-    <div class="game-layout">
+      <div class="board" id="game-board"></div>
+
+    </div>
 
 
-      <!-- SIDE PANEL -->
+    <div class="player-panel">
 
-      <aside class="game-sidebar">
+      <div class="player-car-area">
 
-        <div class="player-card">
-
-          <div class="mini-avatar" id="miniAvatar">
-            👩
-          </div>
-
-          <div>
-
-            <small data-i18n="currentAgent">
-              Agente actual
-            </small>
-
-            <strong id="playerName">
-              Agent
-            </strong>
-
-          </div>
-
+        <div id="player-avatar" class="car-avatar">
+          🧑‍💻
         </div>
 
-
-        <div class="position-card">
-
-          <span data-i18n="currentPosition">
-            Posición
-          </span>
-
-          <strong>
-            <span id="currentPosition">1</span>
-            / 24
-          </strong>
-
-          <div class="position-progress">
-            <div id="positionProgress"></div>
-          </div>
-
+        <div class="car">
+          🚗
         </div>
 
+        <div id="virus-container" class="car-viruses"></div>
 
-        <div class="wheel-card">
+      </div>
 
-          <div class="wheel-icon" id="wheelNumber">
-            🎲
-          </div>
 
-          <h3 data-i18n="digitalWheel">
-            Rueda digital
-          </h3>
+      <div class="wheel-panel">
 
-          <p id="wheelMessage"
-             data-i18n="spinToMove">
-            Gira para avanzar.
-          </p>
-
-          <button
-            id="spinButton"
-            class="spin-button"
-            onclick="spinWheel()"
-          >
-            🎲 <span data-i18n="spin">GIRAR</span>
-          </button>
-
+        <div id="wheel-result" class="wheel-result">
+          🎲
         </div>
 
+        <button id="spin-button"
+                class="spin-button"
+                onclick="spinWheel()"
+                data-i18n="spin">
+          🎲 GIRAR
+        </button>
 
-        <div class="viral-card">
-
-          <div class="viral-header">
-            <span data-i18n="viralLoad">
-              Carga viral
-            </span>
-
-            <strong id="viralPercent">
-              15%
-            </strong>
-          </div>
-
-          <div class="viral-bar">
-            <div id="viralBar"></div>
-          </div>
-
-          <small data-i18n="viralExplanation">
-            Evita compartir información dudosa.
-          </small>
-
-        </div>
-
-      </aside>
-
-
-      <!-- BOARD -->
-
-      <main class="board-area">
-
-        <div class="board-header">
-
-          <div>
-            <span class="stage-tag" id="currentStageTag">
-              🌅 ETAPA 1
-            </span>
-
-            <h3 id="currentStageTitle">
-              Despertar & Feed Matutino
-            </h3>
-          </div>
-
-          <div class="board-tip">
-            💡
-            <span data-i18n="boardTip">
-              Cada decisión cambia tu día digital.
-            </span>
-          </div>
-
-        </div>
-
-
-        <div class="board" id="gameBoard">
-
-          <!-- Generated by JS -->
-
-        </div>
-
-
-        <div class="board-legend">
-
-          <span>
-            🧑‍💻 <span data-i18n="you">
-              Tú
-            </span>
-          </span>
-
-          <span>
-            📰 <span data-i18n="challengeTile">
-              Reto
-            </span>
-          </span>
-
-          <span>
-            🛡️ <span data-i18n="shieldTile">
-              Escudo
-            </span>
-          </span>
-
-          <span>
-            ⭐ <span data-i18n="bonusTile">
-              Bonus
-            </span>
-          </span>
-
-        </div>
-
-      </main>
+      </div>
 
     </div>
 
@@ -586,87 +320,58 @@
 </section>
 
 
-<!-- =========================================================
-     LAB
-========================================================= -->
+<!-- ================= LAB ================= -->
 
-<section id="page-lab" class="page">
+<section id="page-lab" class="page-view hidden">
 
   <div class="lab-container">
 
-    <div class="section-heading">
+    <h2 data-i18n="labTitle">
+      🧪 Laboratorio de Verificación
+    </h2>
 
-      <span class="eyebrow">
-        🧪 INOCULA LAB
-      </span>
-
-      <h2 data-i18n="labTitle">
-        Laboratorio de verificación
-      </h2>
-
-      <p data-i18n="labDescription">
-        Practica antes de enfrentarte a los retos del tablero.
-      </p>
-
-    </div>
-
+    <p data-i18n="labDescription">
+      Aprende a investigar antes de compartir.
+    </p>
 
     <div class="lab-grid">
 
-      <button class="lab-tool" onclick="runLab('clickbait')">
-        <span>📰</span>
-        <strong data-i18n="toolClickbait">
-          Detectar clickbait
-        </strong>
-        <small data-i18n="toolClickbaitText">
-          Descubre cuándo un titular exagera.
+      <button onclick="labTool('source')">
+        🔎
+        <strong data-i18n="sourceTool">Fuente</strong>
+        <small data-i18n="sourceDescription">
+          Busca el origen
         </small>
       </button>
 
-      <button class="lab-tool" onclick="runLab('source')">
-        <span>🔎</span>
-        <strong data-i18n="toolSource">
-          Verificar fuente
-        </strong>
-        <small data-i18n="toolSourceText">
-          Aprende a investigar el origen.
+      <button onclick="labTool('image')">
+        🖼️
+        <strong data-i18n="imageTool">Imagen</strong>
+        <small data-i18n="imageDescription">
+          Analiza el contexto
         </small>
       </button>
 
-      <button class="lab-tool" onclick="runLab('ai')">
-        <span>🤖</span>
-        <strong data-i18n="toolAI">
-          Detectar IA
-        </strong>
-        <small data-i18n="toolAIText">
-          Identifica señales de contenido artificial.
+      <button onclick="labTool('ai')">
+        🤖
+        <strong data-i18n="aiTool">IA</strong>
+        <small data-i18n="aiDescription">
+          Busca señales de IA
         </small>
       </button>
 
-      <button class="lab-tool" onclick="runLab('context')">
-        <span>🧩</span>
-        <strong data-i18n="toolContext">
-          Revisar contexto
-        </strong>
-        <small data-i18n="toolContextText">
-          Una imagen no siempre cuenta toda la historia.
+      <button onclick="labTool('date')">
+        📅
+        <strong data-i18n="dateTool">Fecha</strong>
+        <small data-i18n="dateDescription">
+          Comprueba cuándo ocurrió
         </small>
       </button>
 
     </div>
 
-
-    <div id="labResult" class="lab-result hidden">
-
-      <div class="lab-result-icon">
-        🔬
-      </div>
-
-      <div>
-        <h3 id="labResultTitle"></h3>
-        <p id="labResultText"></p>
-      </div>
-
+    <div id="lab-output" class="lab-output">
+      🔬
     </div>
 
   </div>
@@ -674,64 +379,22 @@
 </section>
 
 
-<!-- =========================================================
-     RANKING
-========================================================= -->
+<!-- ================= RANKING ================= -->
 
-<section id="page-ranking" class="page">
+<section id="page-ranking" class="page-view hidden">
 
   <div class="ranking-container">
 
-    <div class="section-heading">
+    <h2 data-i18n="rankingTitle">
+      🏆 Ranking INOCULA
+    </h2>
 
-      <span class="eyebrow">
-        🏆 INOCULA
-      </span>
+    <div class="ranking-card">
 
-      <h2 data-i18n="rankingTitle">
-        Agentes destacados
-      </h2>
-
-      <p data-i18n="rankingDescription">
-        La confianza también se construye.
-      </p>
-
-    </div>
-
-
-    <div class="ranking-list">
-
-      <div class="ranking-row first">
-        <span class="rank">🥇</span>
-        <span class="rank-avatar">🧑‍🚀</span>
-        <strong>FactChecker_K</strong>
-        <span>950 👥</span>
-        <span>-80% 🦠</span>
-      </div>
-
-      <div class="ranking-row">
-        <span class="rank">🥈</span>
-        <span class="rank-avatar">👩‍💻</span>
-        <strong>Digital_Ana</strong>
-        <span>820 👥</span>
-        <span>-65% 🦠</span>
-      </div>
-
-      <div class="ranking-row">
-        <span class="rank">🥉</span>
-        <span class="rank-avatar">👨‍🔬</span>
-        <strong>Cyber_Luis</strong>
-        <span>740 👥</span>
-        <span>-50% 🦠</span>
-      </div>
-
-      <div class="ranking-row player-ranking">
-        <span class="rank">⭐</span>
-        <span class="rank-avatar" id="rankingAvatar">🧑‍💻</span>
-        <strong id="rankingName">YOU</strong>
-        <span id="rankingFollowers">100 👥</span>
-        <span id="rankingViral">-15% 🦠</span>
-      </div>
+      <div>🥇 FactChecker_01 <strong>980</strong></div>
+      <div>🥈 MediaGuardian <strong>920</strong></div>
+      <div>🥉 TruthHunter <strong>860</strong></div>
+      <div>⭐ You <strong id="your-score">100</strong></div>
 
     </div>
 
@@ -740,196 +403,55 @@
 </section>
 
 
-<!-- =========================================================
-     CHALLENGE MODAL
-========================================================= -->
+<!-- ================= EVENT MODAL ================= -->
 
-<div id="challengeModal" class="modal hidden">
+<div id="event-modal" class="modal hidden">
 
   <div class="modal-card">
 
-    <button class="modal-close" onclick="closeChallenge()">
-      ✕
-    </button>
-
-    <div class="modal-icon">
-      🧠
+    <div id="event-icon" class="event-icon">
+      📰
     </div>
 
-    <span class="modal-eyebrow" data-i18n="newChallenge">
-      NUEVO RETO
-    </span>
-
-    <h2 id="challengeHeadline">
-      Headline
+    <h2 id="event-title">
+      Nuevo reto
     </h2>
 
-    <p id="challengeArticle" class="challenge-article hidden">
-    </p>
+    <p id="event-description"></p>
 
-    <button
-      id="readArticleButton"
-      class="secondary-button"
-      onclick="toggleArticle()"
-    >
-      📄 <span data-i18n="readArticle">
-        Leer nota completa
-      </span>
-    </button>
+    <div id="event-content"></div>
 
-
-    <div class="challenge-question">
-
-      <h3 data-i18n="question">
-        ¿Qué harías?
-      </h3>
-
-      <div class="answer-grid">
-
-        <button onclick="answerChallenge('share')">
-          📲
-          <span data-i18n="share">
-            Compartir
-          </span>
-        </button>
-
-        <button onclick="answerChallenge('verify')">
-          🔎
-          <span data-i18n="verify">
-            Verificar
-          </span>
-        </button>
-
-        <button onclick="answerChallenge('ignore')">
-          🚫
-          <span data-i18n="ignore">
-            Ignorar
-          </span>
-        </button>
-
-      </div>
-
-    </div>
-
-
-    <div id="challengeFeedback" class="challenge-feedback hidden">
-
-      <strong id="feedbackTitle"></strong>
-
-      <p id="feedbackText"></p>
-
-      <button
-        class="primary-button full"
-        onclick="closeChallenge()"
-      >
-        <span data-i18n="continue">
-          Continuar
-        </span>
-      </button>
-
-    </div>
+    <div id="event-actions"></div>
 
   </div>
 
 </div>
 
 
-<!-- =========================================================
-     STAGE UNLOCK MODAL
-========================================================= -->
+<!-- ================= ERROR ================= -->
 
-<div id="stageModal" class="modal hidden">
+<div id="error-screen" class="error-screen hidden">
 
-  <div class="stage-unlock-card">
+  <div class="error-box">
 
-    <div class="unlock-stars">
-      ✨ ✨ ✨
+    <div class="error-icon">
+      ⚠️
     </div>
 
-    <div class="unlock-icon" id="unlockIcon">
-      🏫
-    </div>
-
-    <span data-i18n="stageUnlocked">
-      ¡NUEVA ETAPA DESBLOQUEADA!
-    </span>
-
-    <h2 id="unlockTitle">
-      Escuela
+    <h2 data-i18n="errorTitle">
+      ¡ERROR DE VERIFICACIÓN!
     </h2>
 
-    <p id="unlockText">
-      Tu viaje continúa.
-    </p>
+    <p id="error-message"></p>
 
-    <button
-      class="primary-button"
-      onclick="closeStageModal()"
-    >
-      🚀 <span data-i18n="continue">
-        Continuar
-      </span>
-    </button>
-
-  </div>
-
-</div>
-
-
-<!-- =========================================================
-     FINISH MODAL
-========================================================= -->
-
-<div id="finishModal" class="modal hidden">
-
-  <div class="stage-unlock-card">
-
-    <div class="unlock-stars">
-      🏆 ✨ 🏆
+    <div class="error-virus">
+      🦠
     </div>
 
-    <div class="unlock-icon">
-      🎓
-    </div>
-
-    <span data-i18n="journeyComplete">
-      ¡DÍA DIGITAL COMPLETADO!
-    </span>
-
-    <h2 data-i18n="congratulations">
-      ¡Lo lograste!
-    </h2>
-
-    <p data-i18n="finishText">
-      Terminaste tu recorrido por INOCULA.
-    </p>
-
-    <div class="final-stats">
-
-      <div>
-        <strong id="finalFollowers">100</strong>
-        <span>👥</span>
-      </div>
-
-      <div>
-        <strong id="finalShields">1</strong>
-        <span>🛡️</span>
-      </div>
-
-      <div>
-        <strong id="finalViral">15%</strong>
-        <span>🦠</span>
-      </div>
-
-    </div>
-
-    <button
-      class="primary-button"
-      onclick="restartGame()"
-    >
-      🔄 <span data-i18n="playAgain">
-        Jugar otra vez
-      </span>
+    <button class="primary-btn"
+            onclick="closeError()"
+            data-i18n="continue">
+      Continuar
     </button>
 
   </div>
