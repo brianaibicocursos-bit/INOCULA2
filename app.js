@@ -1,2466 +1,1603 @@
 /* =========================================================
-   INOCULA · V1
+   INOCULA
    Digital Life Game
-========================================================= */
+   ========================================================= */
 
 
 /* =========================================================
-   1. STATE
-========================================================= */
+   1. ESTADO
+   ========================================================= */
 
-const state = {
+let currentLanguage = "es";
 
-  language: "es",
+let playerPosition = 0;
+const TOTAL_TILES = 48;
 
-  page: "home",
+let followers = 100;
+let shields = 1;
+let viralLoad = 0;
 
-  identity: "female",
+let selectedCharacter = "neutral";
+let selectedStyle = "cool";
 
-  style: "student",
+let currentEvent = null;
 
-  avatar: "👩‍💻",
+let viruses = [];
 
-  name: "Agent",
+let usedNews = [];
 
-  position: 0,
+let gameStarted = false;
 
-  totalTiles: 24,
 
-  followers: 100,
+/* =========================================================
+   2. TRADUCCIONES
+   ========================================================= */
 
-  shields: 1,
+const TEXT = {
 
-  viralLoad: 15,
+es: {
 
-  spinning: false,
+navHome:"Inicio",
+navGame:"Tablero",
+navLab:"Laboratorio",
+navRanking:"Ranking",
 
-  currentChallenge: null,
+heroTitle:"Antes de creer,<br><span>inocúlate.</span>",
+heroText:"Un juego educativo que convierte la alfabetización mediática en una aventura digital.",
 
-  completedChallenges: 0
+startGame:"🚀 Comenzar aventura",
+tryTools:"🧪 Probar herramientas",
+
+tiles:"Casillas",
+languages:"Idiomas",
+stages:"Etapas",
+
+chooseCharacter:"Elige tu personaje",
+characterDescription:"Tu personaje te acompañará durante todo el recorrido.",
+neutral:"Neutral",
+woman:"Mujer",
+man:"Hombre",
+chooseStyle:"Elige tu estilo",
+continue:"Continuar →",
+
+position:"Posición",
+followers:"Seguidores",
+shields:"Escudos",
+viralLoad:"Carga viral",
+
+stage1:"Mañana",
+stage2:"Escuela",
+stage3:"Redes",
+stage4:"Noche",
+
+spin:"🎲 GIRAR",
+
+labTitle:"🧪 Laboratorio de Verificación",
+labDescription:"Aprende a investigar antes de compartir.",
+
+sourceTool:"Fuente",
+sourceDescription:"Busca el origen",
+imageTool:"Imagen",
+imageDescription:"Analiza el contexto",
+aiTool:"IA",
+aiDescription:"Busca señales de IA",
+dateTool:"Fecha",
+dateDescription:"Comprueba cuándo ocurrió",
+
+rankingTitle:"🏆 Ranking INOCULA",
+
+errorTitle:"¡ERROR DE VERIFICACIÓN!",
+
+errorWrong:"Compartiste información sin verificar. Un agente digital debe detenerse y comprobar antes de compartir.",
+
+correct:"¡Excelente! Tu verificación fue correcta.",
+
+wrong:"La información parecía creíble, pero necesitaba una verificación adicional.",
+
+next:"Continuar",
+
+victory:"🏆 ¡Completaste tu día digital!",
+victoryText:"Has recorrido todas las etapas y protegido tu entorno digital.",
+
+advance:"Avanzas",
+
+spaces:"casillas",
+
+morning:"Mañana",
+school:"Escuela",
+social:"Redes",
+night:"Noche",
+
+sourceQuestion:"¿Cuál sería el mejor primer paso?",
+sourceCorrect:"Buscar quién publicó originalmente la información.",
+sourceWrong:"Compartirla rápidamente porque parece importante.",
+
+aiQuestion:"¿Qué señal puede indicar que una imagen fue generada por IA?",
+aiCorrect:"Detalles extraños, manos deformes o inconsistencias visuales.",
+aiWrong:"Que tenga muchos likes.",
+
+deepfakeQuestion:"Un video parece mostrar a una persona diciendo algo extraño. ¿Qué haces?",
+deepfakeCorrect:"Buscas otras fuentes y verificas el video.",
+deepfakeWrong:"Lo compartes inmediatamente.",
+
+socialQuestion:"Una publicación tiene 2 millones de likes. ¿Eso demuestra que es verdadera?",
+socialCorrect:"No. La popularidad no demuestra veracidad.",
+socialWrong:"Sí. Si tiene muchos likes debe ser cierta."
+
+},
+
+en: {
+
+navHome:"Home",
+navGame:"Game Board",
+navLab:"Laboratory",
+navRanking:"Leaderboard",
+
+heroTitle:"Before you believe,<br><span>inoculate yourself.</span>",
+heroText:"An educational game that turns media literacy into a digital adventure.",
+
+startGame:"🚀 Start adventure",
+tryTools:"🧪 Try tools",
+
+tiles:"Tiles",
+languages:"Languages",
+stages:"Stages",
+
+chooseCharacter:"Choose your character",
+characterDescription:"Your character will accompany you throughout the journey.",
+neutral:"Neutral",
+woman:"Woman",
+man:"Man",
+chooseStyle:"Choose your style",
+continue:"Continue →",
+
+position:"Position",
+followers:"Followers",
+shields:"Shields",
+viralLoad:"Viral load",
+
+stage1:"Morning",
+stage2:"School",
+stage3:"Social media",
+stage4:"Night",
+
+spin:"🎲 SPIN",
+
+labTitle:"🧪 Verification Laboratory",
+labDescription:"Learn how to investigate before sharing.",
+
+sourceTool:"Source",
+sourceDescription:"Find the origin",
+imageTool:"Image",
+imageDescription:"Check context",
+aiTool:"AI",
+aiDescription:"Look for AI signals",
+dateTool:"Date",
+dateDescription:"Check when it happened",
+
+rankingTitle:"🏆 INOCULA Leaderboard",
+
+errorTitle:"VERIFICATION ERROR!",
+
+errorWrong:"You shared information without verifying it. A digital agent should stop and check before sharing.",
+
+correct:"Excellent! Your verification was correct.",
+
+wrong:"The information looked credible, but it required additional verification.",
+
+next:"Continue",
+
+victory:"🏆 You completed your digital day!",
+victoryText:"You completed every stage and protected your digital environment.",
+
+advance:"You advanced",
+
+spaces:"spaces",
+
+morning:"Morning",
+school:"School",
+social:"Social Media",
+night:"Night",
+
+sourceQuestion:"What would be the best first step?",
+sourceCorrect:"Find who originally published the information.",
+sourceWrong:"Share it quickly because it looks important.",
+
+aiQuestion:"What could indicate that an image was generated by AI?",
+aiCorrect:"Strange details, distorted hands, or visual inconsistencies.",
+aiWrong:"The fact that it has many likes.",
+
+deepfakeQuestion:"A video appears to show someone saying something unusual. What do you do?",
+deepfakeCorrect:"Look for other sources and verify the video.",
+deepfakeWrong:"Share it immediately.",
+
+socialQuestion:"A post has 2 million likes. Does that prove it is true?",
+socialCorrect:"No. Popularity does not prove accuracy.",
+socialWrong:"Yes. If it has many likes it must be true."
+
+},
+
+zh: {
+
+navHome:"首页",
+navGame:"游戏板",
+navLab:"实验室",
+navRanking:"排行榜",
+
+heroTitle:"在相信之前，<br><span>先保护自己。</span>",
+heroText:"一个将媒体素养变成数字冒险的教育游戏。",
+
+startGame:"🚀 开始冒险",
+tryTools:"🧪 尝试工具",
+
+tiles:"格子",
+languages:"语言",
+stages:"阶段",
+
+chooseCharacter:"选择你的角色",
+characterDescription:"你的角色会陪伴你完成整个数字旅程。",
+neutral:"中性",
+woman:"女性",
+man:"男性",
+chooseStyle:"选择你的风格",
+continue:"继续 →",
+
+position:"位置",
+followers:"关注者",
+shields:"护盾",
+viralLoad:"病毒负荷",
+
+stage1:"早晨",
+stage2:"学校",
+stage3:"社交媒体",
+stage4:"夜晚",
+
+spin:"🎲 旋转",
+
+labTitle:"🧪 信息验证实验室",
+labDescription:"学习在分享之前进行调查。",
+
+sourceTool:"来源",
+sourceDescription:"寻找来源",
+imageTool:"图片",
+imageDescription:"检查背景",
+aiTool:"人工智能",
+aiDescription:"寻找人工智能迹象",
+dateTool:"日期",
+dateDescription:"确认发生时间",
+
+rankingTitle:"🏆 INOCULA 排行榜",
+
+errorTitle:"验证错误！",
+
+errorWrong:"你在没有验证的情况下分享了信息。数字特工应该在分享之前停下来核实。",
+
+correct:"太棒了！你的验证是正确的。",
+
+wrong:"这些信息看起来可信，但仍然需要进一步验证。",
+
+next:"继续",
+
+victory:"🏆 你完成了数字生活的一天！",
+victoryText:"你完成了所有阶段，并保护了你的数字环境。",
+
+advance:"你前进了",
+
+spaces:"格",
+
+morning:"早晨",
+school:"学校",
+social:"社交媒体",
+night:"夜晚",
+
+sourceQuestion:"最好的第一步是什么？",
+sourceCorrect:"寻找最初发布这条信息的人。",
+sourceWrong:"因为看起来很重要，所以马上分享。",
+
+aiQuestion:"什么可能表明一张图片是人工智能生成的？",
+aiCorrect:"奇怪的细节、变形的手或视觉上的不一致。",
+aiWrong:"它有很多点赞。",
+
+deepfakeQuestion:"一个视频似乎显示某人在说奇怪的话。你会怎么做？",
+deepfakeCorrect:"寻找其他来源并验证视频。",
+deepfakeWrong:"立即分享。",
+
+socialQuestion:"一条帖子有200万个赞。这能证明它是真的吗？",
+socialCorrect:"不能。受欢迎并不能证明信息准确。",
+socialWrong:"是的。有很多点赞就一定是真的。"
+
+}
 
 };
 
 
 /* =========================================================
-   2. TRANSLATIONS
-========================================================= */
-
-const translations = {
-
-  es: {
-
-    navHome: "Inicio",
-    navGame: "Tablero",
-    navLab: "Laboratorio",
-    navRanking: "Ranking",
-
-    heroBadge: "UNESCO Youth Hackathon 2026",
-
-    heroTitle1: "Antes de creer,",
-    heroTitle2: "inocúlate.",
-
-    heroDescription:
-      "Una experiencia interactiva que te entrena para detectar fake news, deepfakes y manipulación digital.",
-
-    startGame: "Comenzar aventura",
-    tryLab: "Explorar laboratorio",
-
-    fakeNews: "Fake News",
-    detectIt: "Detect it.",
-    verifyIt: "Verify it.",
-
-    digitalJourney: "Tu viaje digital",
-
-    featureGame: "Aprende jugando",
-    featureGameText:
-      "Toma decisiones y observa sus consecuencias.",
-
-    featureSkills: "Desarrolla habilidades",
-    featureSkillsText:
-      "Aprende a verificar información antes de compartirla.",
-
-    featureLanguages: "Multilingüe",
-    featureLanguagesText:
-      "Disponible en español, inglés y chino.",
-
-    createAgent: "Crea tu agente",
-    createAgentText:
-      "Este personaje te acompañará durante todo tu viaje digital.",
-
-    identity: "Identidad",
-    female: "Mujer",
-    male: "Hombre",
-    other: "Otro",
-
-    style: "Estilo",
-    styleCool: "Cool",
-    styleStudent: "Student",
-    styleTech: "Tech",
-
-    agentName: "Nombre de tu agente",
-    enterWorld: "Entrar al mundo digital",
-
-    digitalDay: "DÍA DIGITAL",
-    followers: "Seguidores",
-    shields: "Escudos",
-    viralLoad: "Carga viral",
-
-    stageMorning: "Mañana",
-    stageSchool: "Escuela",
-    stageSocial: "Redes",
-    stageNight: "Noche",
-
-    currentAgent: "Agente actual",
-    currentPosition: "Posición",
-
-    digitalWheel: "Rueda digital",
-    spinToMove: "Gira para avanzar.",
-    spin: "GIRAR",
-
-    viralExplanation:
-      "Evita compartir información dudosa.",
-
-    boardTip:
-      "Cada decisión cambia tu día digital.",
-
-    you: "Tú",
-    challengeTile: "Reto",
-    shieldTile: "Escudo",
-    bonusTile: "Bonus",
-
-    stage1Title:
-      "Despertar & Feed Matutino",
-
-    stage2Title:
-      "Escuela & Chats",
-
-    stage3Title:
-      "Noticias & Redes",
-
-    stage4Title:
-      "Noche & Retiro Digital",
-
-    labTitle:
-      "Laboratorio de verificación",
-
-    labDescription:
-      "Practica antes de enfrentarte a los retos del tablero.",
-
-    toolClickbait:
-      "Detectar clickbait",
-
-    toolClickbaitText:
-      "Descubre cuándo un titular exagera.",
-
-    toolSource:
-      "Verificar fuente",
-
-    toolSourceText:
-      "Aprende a investigar el origen.",
-
-    toolAI:
-      "Detectar IA",
-
-    toolAIText:
-      "Identifica señales de contenido artificial.",
-
-    toolContext:
-      "Revisar contexto",
-
-    toolContextText:
-      "Una imagen no siempre cuenta toda la historia.",
-
-    rankingTitle:
-      "Agentes destacados",
-
-    rankingDescription:
-      "La confianza también se construye.",
-
-    newChallenge:
-      "NUEVO RETO",
-
-    readArticle:
-      "Leer nota completa",
-
-    question:
-      "¿Qué harías?",
-
-    share:
-      "Compartir",
-
-    verify:
-      "Verificar",
-
-    ignore:
-      "Ignorar",
-
-    continue:
-      "Continuar",
-
-    stageUnlocked:
-      "¡NUEVA ETAPA DESBLOQUEADA!",
-
-    journeyComplete:
-      "¡DÍA DIGITAL COMPLETADO!",
-
-    congratulations:
-      "¡Lo lograste!",
-
-    finishText:
-      "Terminaste tu recorrido por INOCULA.",
-
-    playAgain:
-      "Jugar otra vez",
-
-    feedbackGood:
-      "¡Excelente decisión!",
-
-    feedbackBad:
-      "¡Cuidado!",
-
-    feedbackVerify:
-      "Verificar primero reduce el riesgo de compartir información falsa.",
-
-    feedbackShare:
-      "Compartir sin verificar puede aumentar la propagación de información falsa.",
-
-    feedbackIgnore:
-      "Ignorar puede evitar la propagación, pero aprender a verificar te da una herramienta para el futuro.",
-
-    labClickbait:
-      "Un titular exagerado puede utilizar emociones fuertes para conseguir clics.",
-
-    labSource:
-      "Busca quién publicó la información, cuándo fue publicada y si otras fuentes confiables confirman la afirmación.",
-
-    labAI:
-      "La detección de IA no es perfecta. Busca inconsistencias y verifica siempre la información.",
-
-    labContext:
-      "Una fotografía puede ser real pero utilizarse fuera de contexto. Investiga su origen y fecha."
-
-  },
-
-
-  en: {
-
-    navHome: "Home",
-    navGame: "Game Board",
-    navLab: "Laboratory",
-    navRanking: "Leaderboard",
-
-    heroBadge: "UNESCO Youth Hackathon 2026",
-
-    heroTitle1: "Before you believe,",
-    heroTitle2: "inoculate yourself.",
-
-    heroDescription:
-      "An interactive experience that trains you to detect fake news, deepfakes and digital manipulation.",
-
-    startGame: "Start adventure",
-    tryLab: "Explore laboratory",
-
-    fakeNews: "Fake News",
-    detectIt: "Detect it.",
-    verifyIt: "Verify it.",
-
-    digitalJourney: "Your digital journey",
-
-    featureGame: "Learn by playing",
-    featureGameText:
-      "Make decisions and observe their consequences.",
-
-    featureSkills: "Build skills",
-    featureSkillsText:
-      "Learn how to verify information before sharing it.",
-
-    featureLanguages: "Multilingual",
-    featureLanguagesText:
-      "Available in Spanish, English and Chinese.",
-
-    createAgent: "Create your agent",
-    createAgentText:
-      "This character will accompany you throughout your digital journey.",
-
-    identity: "Identity",
-    female: "Woman",
-    male: "Man",
-    other: "Other",
-
-    style: "Style",
-    styleCool: "Cool",
-    styleStudent: "Student",
-    styleTech: "Tech",
-
-    agentName: "Agent name",
-    enterWorld: "Enter the digital world",
-
-    digitalDay: "DIGITAL DAY",
-    followers: "Followers",
-    shields: "Shields",
-    viralLoad: "Viral load",
-
-    stageMorning: "Morning",
-    stageSchool: "School",
-    stageSocial: "Social",
-    stageNight: "Night",
-
-    currentAgent: "Current agent",
-    currentPosition: "Position",
-
-    digitalWheel: "Digital wheel",
-    spinToMove: "Spin to move.",
-    spin: "SPIN",
-
-    viralExplanation:
-      "Avoid sharing questionable information.",
-
-    boardTip:
-      "Every decision changes your digital day.",
-
-    you: "You",
-    challengeTile: "Challenge",
-    shieldTile: "Shield",
-    bonusTile: "Bonus",
-
-    stage1Title:
-      "Wake Up & Morning Feed",
-
-    stage2Title:
-      "School & Chats",
-
-    stage3Title:
-      "News & Social Media",
-
-    stage4Title:
-      "Night & Digital Detox",
-
-    labTitle:
-      "Verification Laboratory",
-
-    labDescription:
-      "Practice before facing the challenges on the board.",
-
-    toolClickbait:
-      "Detect clickbait",
-
-    toolClickbaitText:
-      "Discover when a headline exaggerates.",
-
-    toolSource:
-      "Verify the source",
-
-    toolSourceText:
-      "Learn how to investigate where information comes from.",
-
-    toolAI:
-      "Detect AI",
-
-    toolAIText:
-      "Identify signals of artificially generated content.",
-
-    toolContext:
-      "Check context",
-
-    toolContextText:
-      "A picture does not always tell the whole story.",
-
-    rankingTitle:
-      "Featured agents",
-
-    rankingDescription:
-      "Trust is built one decision at a time.",
-
-    newChallenge:
-      "NEW CHALLENGE",
-
-    readArticle:
-      "Read full article",
-
-    question:
-      "What would you do?",
-
-    share:
-      "Share",
-
-    verify:
-      "Verify",
-
-    ignore:
-      "Ignore",
-
-    continue:
-      "Continue",
-
-    stageUnlocked:
-      "NEW STAGE UNLOCKED!",
-
-    journeyComplete:
-      "DIGITAL DAY COMPLETED!",
-
-    congratulations:
-      "You did it!",
-
-    finishText:
-      "You completed your INOCULA journey.",
-
-    playAgain:
-      "Play again",
-
-    feedbackGood:
-      "Excellent decision!",
-
-    feedbackBad:
-      "Careful!",
-
-    feedbackVerify:
-      "Verifying first reduces the risk of sharing misinformation.",
-
-    feedbackShare:
-      "Sharing without checking can increase the spread of misinformation.",
-
-    feedbackIgnore:
-      "Ignoring can stop the spread, but learning how to verify gives you a skill for the future.",
-
-    labClickbait:
-      "An exaggerated headline may use strong emotions to attract clicks.",
-
-    labSource:
-      "Check who published the information, when it was published, and whether reliable sources confirm the claim.",
-
-    labAI:
-      "AI detection is not perfect. Look for inconsistencies and always verify the information.",
-
-    labContext:
-      "A photograph can be real but used out of context. Investigate its original source and date."
-
-  },
-
-
-  zh: {
-
-    navHome: "首页",
-    navGame: "游戏板",
-    navLab: "实验室",
-    navRanking: "排行榜",
-
-    heroBadge: "联合国教科文组织青年黑客马拉松 2026",
-
-    heroTitle1: "在相信之前，",
-    heroTitle2: "先给自己接种。",
-
-    heroDescription:
-      "通过互动体验训练你识别假新闻、深度伪造和数字信息操纵。",
-
-    startGame: "开始冒险",
-    tryLab: "探索实验室",
-
-    fakeNews: "虚假新闻",
-    detectIt: "识别它。",
-    verifyIt: "验证它。",
-
-    digitalJourney: "你的数字旅程",
-
-    featureGame: "边玩边学",
-    featureGameText:
-      "做出选择并观察它们带来的后果。",
-
-    featureSkills: "培养技能",
-    featureSkillsText:
-      "学习在分享信息之前进行验证。",
-
-    featureLanguages: "多语言",
-    featureLanguagesText:
-      "支持西班牙语、英语和中文。",
-
-    createAgent: "创建你的特工",
-    createAgentText:
-      "这个角色将在整个数字旅程中陪伴你。",
-
-    identity: "身份",
-    female: "女性",
-    male: "男性",
-    other: "其他",
-
-    style: "风格",
-    styleCool: "酷",
-    styleStudent: "学生",
-    styleTech: "科技",
-
-    agentName: "特工名称",
-    enterWorld: "进入数字世界",
-
-    digitalDay: "数字生活",
-    followers: "关注者",
-    shields: "护盾",
-    viralLoad: "病毒负荷",
-
-    stageMorning: "早晨",
-    stageSchool: "学校",
-    stageSocial: "社交网络",
-    stageNight: "夜晚",
-
-    currentAgent: "当前特工",
-    currentPosition: "位置",
-
-    digitalWheel: "数字转盘",
-    spinToMove: "旋转转盘前进。",
-    spin: "旋转",
-
-    viralExplanation:
-      "避免分享可疑信息。",
-
-    boardTip:
-      "每一个选择都会改变你的数字生活。",
-
-    you: "你",
-    challengeTile: "挑战",
-    shieldTile: "护盾",
-    bonusTile: "奖励",
-
-    stage1Title:
-      "起床与早晨信息流",
-
-    stage2Title:
-      "学校与聊天",
-
-    stage3Title:
-      "新闻与社交网络",
-
-    stage4Title:
-      "夜晚与数字休息",
-
-    labTitle:
-      "信息验证实验室",
-
-    labDescription:
-      "在挑战游戏板之前练习验证信息。",
-
-    toolClickbait:
-      "识别标题党",
-
-    toolClickbaitText:
-      "发现标题什么时候在夸大信息。",
-
-    toolSource:
-      "验证来源",
-
-    toolSourceText:
-      "学习如何调查信息的来源。",
-
-    toolAI:
-      "识别人工智能内容",
-
-    toolAIText:
-      "发现人工生成内容的信号。",
-
-    toolContext:
-      "检查背景",
-
-    toolContextText:
-      "一张图片并不总能说明完整的故事。",
-
-    rankingTitle:
-      "优秀特工",
-
-    rankingDescription:
-      "信任需要通过每一次选择建立。",
-
-    newChallenge:
-      "新挑战",
-
-    readArticle:
-      "阅读完整文章",
-
-    question:
-      "你会怎么做？",
-
-    share:
-      "分享",
-
-    verify:
-      "验证",
-
-    ignore:
-      "忽略",
-
-    continue:
-      "继续",
-
-    stageUnlocked:
-      "新阶段已解锁！",
-
-    journeyComplete:
-      "数字生活完成！",
-
-    congratulations:
-      "你做到了！",
-
-    finishText:
-      "你完成了 INOCULA 的数字旅程。",
-
-    playAgain:
-      "再玩一次",
-
-    feedbackGood:
-      "做得很好！",
-
-    feedbackBad:
-      "请注意！",
-
-    feedbackVerify:
-      "先验证信息可以降低传播错误信息的风险。",
-
-    feedbackShare:
-      "未经验证就分享可能增加错误信息的传播。",
-
-    feedbackIgnore:
-      "忽略可以阻止传播，但学习验证信息会成为你未来的重要技能。",
-
-    labClickbait:
-      "夸张的标题可能利用强烈情绪来吸引点击。",
-
-    labSource:
-      "检查谁发布了信息、发布时间以及其他可靠来源是否证实这一说法。",
-
-    labAI:
-      "人工智能检测并不完美。寻找不一致之处，并始终验证信息。",
-
-    labContext:
-      "照片可能是真实的，但可能被放在错误的背景中。调查它的原始来源和日期。"
-
-  }
+   3. NOTICIAS
+   ========================================================= */
+
+const NEWS = {
+
+es:[
+{
+type:"news",
+icon:"🚨",
+title:"¡Esta bebida elimina TODAS las toxinas!",
+body:"Una publicación afirma que una bebida puede eliminar todas las toxinas del cuerpo.",
+fake:true
+},
+{
+type:"news",
+icon:"📰",
+title:"Las neuronas utilizan señales eléctricas y químicas.",
+body:"Las neuronas transmiten información mediante señales eléctricas y neurotransmisores.",
+fake:false
+},
+{
+type:"news",
+icon:"🚨",
+title:"¡Instagram puede leer tus pensamientos!",
+body:"Una publicación afirma que las redes sociales pueden leer directamente la mente.",
+fake:true
+},
+{
+type:"news",
+icon:"🧠",
+title:"Comparar diferentes fuentes ayuda a verificar información.",
+body:"Contrastar una afirmación con varias fuentes confiables puede revelar errores.",
+fake:false
+}
+],
+
+en:[
+{
+type:"news",
+icon:"🚨",
+title:"This drink removes ALL toxins from your body!",
+body:"A post claims that a drink can remove every toxin from the human body.",
+fake:true
+},
+{
+type:"news",
+icon:"📰",
+title:"Neurons use electrical and chemical signals.",
+body:"Neurons transmit information using electrical signals and neurotransmitters.",
+fake:false
+},
+{
+type:"news",
+icon:"🚨",
+title:"Instagram can read your thoughts!",
+body:"A post claims that social media platforms can directly read people's minds.",
+fake:true
+},
+{
+type:"🧠",
+title:"Comparing different sources helps verify information.",
+body:"Checking a claim against multiple reliable sources can reveal errors.",
+fake:false
+}
+],
+
+zh:[
+{
+type:"news",
+icon:"🚨",
+title:"这种饮料可以清除体内所有毒素！",
+body:"一篇帖子声称某种饮料可以清除人体内的所有毒素。",
+fake:true
+},
+{
+type:"news",
+icon:"📰",
+title:"神经元使用电信号和化学信号。",
+body:"神经元通过电信号和神经递质传递信息。",
+fake:false
+},
+{
+type:"news",
+icon:"🚨",
+title:"Instagram 可以读取你的思想！",
+body:"一篇帖子声称社交媒体可以直接读取人的思想。",
+fake:true
+},
+{
+type:"🧠",
+title:"比较不同的信息来源有助于验证信息。",
+body:"将一个说法与多个可靠来源进行比较可以发现错误。",
+fake:false
+}
+]
 
 };
 
 
 /* =========================================================
-   3. NEWS DATABASE
-========================================================= */
+   4. TIPOS DE CASILLA
+   ========================================================= */
 
-const newsDatabase = {
-
-  es: [
-
-    {
-      headline:
-        "🚨 ¡Este alimento elimina TODAS las toxinas de tu cuerpo!",
-      article:
-        "La publicación afirma que un alimento puede eliminar todas las toxinas del cuerpo. El organismo ya cuenta con órganos como el hígado y los riñones que cumplen funciones importantes en el procesamiento de sustancias de desecho.",
-      correct: "verify"
-    },
-
-    {
-      headline:
-        "🧠 Las neuronas utilizan señales eléctricas y químicas.",
-      article:
-        "Las neuronas transmiten información mediante señales eléctricas y sustancias químicas llamadas neurotransmisores.",
-      correct: "verify"
-    },
-
-    {
-      headline:
-        "🚨 ¡Una publicación con millones de likes DEBE ser verdadera!",
-      article:
-        "La cantidad de interacciones de una publicación no demuestra por sí misma que la información sea verdadera.",
-      correct: "verify"
-    },
-
-    {
-      headline:
-        "🚨 ¡La inteligencia artificial NUNCA se equivoca!",
-      article:
-        "Los sistemas de inteligencia artificial pueden producir información incorrecta o inventada y sus resultados necesitan ser verificados.",
-      correct: "verify"
-    },
-
-    {
-      headline:
-        "📸 Esta fotografía demuestra exactamente lo que ocurrió.",
-      article:
-        "Una fotografía puede ser antigua, estar fuera de contexto o haber sido modificada. Es necesario verificar su origen y fecha.",
-      correct: "verify"
-    },
-
-    {
-      headline:
-        "🔎 Comparar varias fuentes puede ayudar a detectar información falsa.",
-      article:
-        "Contrastar una afirmación con diferentes fuentes confiables puede ayudar a identificar errores o inconsistencias.",
-      correct: "verify"
-    }
-
-  ],
-
-
-  en: [
-
-    {
-      headline:
-        "🚨 This food removes ALL toxins from your body!",
-      article:
-        "The post claims that one food can remove all toxins from the body. The body already has organs such as the liver and kidneys that perform important waste-processing functions.",
-      correct: "verify"
-    },
-
-    {
-      headline:
-        "🧠 Neurons communicate using electrical and chemical signals.",
-      article:
-        "Neurons transmit information through electrical signals and chemicals called neurotransmitters.",
-      correct: "verify"
-    },
-
-    {
-      headline:
-        "🚨 A post with millions of likes MUST be true!",
-      article:
-        "The number of interactions on a post does not prove that the information is accurate.",
-      correct: "verify"
-    },
-
-    {
-      headline:
-        "🚨 Artificial intelligence is NEVER wrong!",
-      article:
-        "Artificial intelligence systems can produce incorrect or fabricated information, so their outputs should be verified.",
-      correct: "verify"
-    },
-
-    {
-      headline:
-        "📸 This photograph proves exactly what happened.",
-      article:
-        "A photograph can be old, taken out of context, or digitally modified. Its origin and date should be checked.",
-      correct: "verify"
-    },
-
-    {
-      headline:
-        "🔎 Comparing multiple sources can help identify misinformation.",
-      article:
-        "Checking a claim against several reliable sources can help identify errors and inconsistencies.",
-      correct: "verify"
-    }
-
-  ],
-
-
-  zh: [
-
-    {
-      headline:
-        "🚨 这种食物可以清除身体里的所有毒素！",
-      article:
-        "这条信息声称某种食物可以清除身体里的所有毒素。事实上，肝脏和肾脏本身就承担着处理废物的重要功能。",
-      correct: "verify"
-    },
-
-    {
-      headline:
-        "🧠 神经元通过电信号和化学信号传递信息。",
-      article:
-        "神经元通过电信号以及被称为神经递质的化学物质传递信息。",
-      correct: "verify"
-    },
-
-    {
-      headline:
-        "🚨 一条帖子有数百万个赞，它一定是真的！",
-      article:
-        "帖子的点赞数量本身并不能证明其中的信息是真实的。",
-      correct: "verify"
-    },
-
-    {
-      headline:
-        "🚨 人工智能永远不会犯错！",
-      article:
-        "人工智能系统可能产生错误或虚构的信息，因此其结果仍然需要验证。",
-      correct: "verify"
-    },
-
-    {
-      headline:
-        "📸 这张照片证明了事情确实发生过。",
-      article:
-        "照片可能很旧，也可能脱离原来的背景，甚至经过修改。因此需要检查照片的来源和日期。",
-      correct: "verify"
-    },
-
-    {
-      headline:
-        "🔎 比较多个来源可以帮助识别虚假信息。",
-      article:
-        "将一个说法与多个可靠来源进行比较，可以帮助发现错误和不一致。",
-      correct: "verify"
-    }
-
-  ]
-
-};
-
-
-/* =========================================================
-   4. BOARD TILES
-========================================================= */
-
-const tileTypes = [
-
-  "start",
-
-  "challenge",
-  "normal",
-  "shield",
-  "challenge",
-  "normal",
-
-  "stage",
-
-  "challenge",
-  "normal",
-  "bonus",
-  "challenge",
-  "normal",
-
-  "stage",
-
-  "challenge",
-  "shield",
-  "normal",
-  "challenge",
-  "bonus",
-
-  "stage",
-
-  "challenge",
-  "normal",
-  "shield",
-  "challenge",
-  "finish"
-
+const TILE_TYPES = [
+"news",
+"question",
+"ai",
+"deepfake",
+"social",
+"shield",
+"viral",
+"bonus"
 ];
 
 
 /* =========================================================
-   5. INITIALIZATION
-========================================================= */
+   5. NAVEGACIÓN
+   ========================================================= */
 
-document.addEventListener(
-  "DOMContentLoaded",
-  () => {
+function navigateTo(pageId) {
 
-    buildBoard();
+  document.querySelectorAll(".page-view")
+    .forEach(page => page.classList.add("hidden"));
 
-    applyLanguage();
+  document.querySelectorAll(".nav-btn")
+    .forEach(btn => btn.classList.remove("active"));
 
-    updateAllUI();
+  const page = document.getElementById(pageId);
 
-  }
-);
-
-
-/* =========================================================
-   6. PAGE NAVIGATION
-========================================================= */
-
-function showPage(pageName) {
-
-  document
-    .querySelectorAll(".page")
-    .forEach(page => {
-      page.classList.remove("active");
-    });
-
-
-  const page =
-    document.getElementById(
-      `page-${pageName}`
-    );
-
-
-  if (page) {
-    page.classList.add("active");
+  if(page) {
+    page.classList.remove("hidden");
   }
 
+  document.querySelectorAll(".nav-btn").forEach(btn => {
 
-  document
-    .querySelectorAll(".nav-button")
-    .forEach(button => {
+    const onclick = btn.getAttribute("onclick") || "";
 
-      button.classList.toggle(
-        "active",
-        button.dataset.page === pageName
-      );
+    if(onclick.includes(pageId)) {
+      btn.classList.add("active");
+    }
 
-    });
-
-
-  state.page = pageName;
-
-  window.scrollTo({
-    top: 0,
-    behavior: "smooth"
   });
 
 }
 
 
 /* =========================================================
-   7. START GAME
-========================================================= */
+   6. IDIOMA
+   ========================================================= */
 
-function startGame() {
+function changeLanguage(lang) {
 
-  showPage("character");
+  if(!TEXT[lang]) lang = "es";
+
+  currentLanguage = lang;
+
+  document.documentElement.lang = lang;
+
+  const t = TEXT[lang];
+
+  document.querySelectorAll("[data-i18n]")
+    .forEach(element => {
+
+      const key = element.dataset.i18n;
+
+      if(t[key]) {
+        element.innerHTML = t[key];
+      }
+
+    });
+
+  updateHUD();
+  createBoard();
 
 }
 
 
 /* =========================================================
-   8. CHARACTER
-========================================================= */
+   7. PERSONAJE
+   ========================================================= */
 
-function selectIdentity(identity, button) {
+const characterIcons = {
+  neutral:"🧑‍💻",
+  woman:"👩‍💻",
+  man:"👨‍💻"
+};
 
-  state.identity = identity;
+const styleIcons = {
+  cool:"😎",
+  smart:"🤓",
+  fun:"🤪",
+  cyber:"🤖"
+};
 
-  document
-    .querySelectorAll(
-      ".option-group:first-of-type .choice-button"
-    )
-    .forEach(btn => {
-      btn.classList.remove("selected");
-    });
+
+function selectCharacter(type, button) {
+
+  selectedCharacter = type;
+
+  document.querySelectorAll(".character-option")
+    .forEach(b => b.classList.remove("selected"));
 
   button.classList.add("selected");
 
-  updateAvatar();
+  updateAvatarPreview();
 
 }
 
 
 function selectStyle(style, button) {
 
-  state.style = style;
+  selectedStyle = style;
 
-  const groups =
-    document.querySelectorAll(
-      ".option-group"
-    );
-
-  const styleButtons =
-    groups[1].querySelectorAll(
-      ".choice-button"
-    );
-
-  styleButtons.forEach(btn => {
-    btn.classList.remove("selected");
-  });
+  document.querySelectorAll(".style-option")
+    .forEach(b => b.classList.remove("selected"));
 
   button.classList.add("selected");
 
-  updateAvatar();
+  updateAvatarPreview();
 
 }
 
 
-function updateAvatar() {
+function updateAvatarPreview() {
 
-  let avatar = "🧑‍💻";
+  const avatar = document.getElementById("avatar-preview");
 
+  if(!avatar) return;
 
-  if (state.identity === "female") {
+  avatar.textContent = characterIcons[selectedCharacter];
 
-    if (state.style === "cool") {
-      avatar = "👩😎";
-    }
-
-    else if (state.style === "tech") {
-      avatar = "👩‍💻";
-    }
-
-    else {
-      avatar = "👩‍🎓";
-    }
-
-  }
-
-
-  if (state.identity === "male") {
-
-    if (state.style === "cool") {
-      avatar = "👨😎";
-    }
-
-    else if (state.style === "tech") {
-      avatar = "👨‍💻";
-    }
-
-    else {
-      avatar = "👨‍🎓";
-    }
-
-  }
-
-
-  if (state.identity === "neutral") {
-
-    if (state.style === "cool") {
-      avatar = "🧑😎";
-    }
-
-    else if (state.style === "tech") {
-      avatar = "🧑‍💻";
-    }
-
-    else {
-      avatar = "🧑‍🎓";
-    }
-
-  }
-
-
-  state.avatar = avatar;
-
-
-  const preview =
-    document.getElementById(
-      "avatarPreview"
-    );
-
-  if (preview) {
-    preview.textContent = avatar;
-  }
-
-
-  const mini =
-    document.getElementById(
-      "miniAvatar"
-    );
-
-  if (mini) {
-    mini.textContent = avatar;
-  }
-
-
-  const ranking =
-    document.getElementById(
-      "rankingAvatar"
-    );
-
-  if (ranking) {
-    ranking.textContent = avatar;
-  }
-
-}
-
-
-function updateAgentName() {
-
-  const input =
-    document.getElementById(
-      "agentName"
-    );
-
-  const name =
-    input.value.trim() ||
-    "Agent";
-
-  state.name = name;
-
-
-  const preview =
-    document.getElementById(
-      "avatarNamePreview"
-    );
-
-  if (preview) {
-    preview.textContent = name;
-  }
+  avatar.dataset.style = selectedStyle;
 
 }
 
 
 function confirmCharacter() {
 
-  updateAgentName();
+  updateAvatar();
 
-  state.position = 0;
-  state.followers = 100;
-  state.shields = 1;
-  state.viralLoad = 15;
-  state.completedChallenges = 0;
+  navigateTo("page-game");
+
+  gameStarted = true;
+
+}
 
 
-  buildBoard();
+function updateAvatar() {
 
-  updateAllUI();
+  const avatar = document.getElementById("player-avatar");
 
-  showPage("game");
+  if(!avatar) return;
+
+  avatar.textContent = characterIcons[selectedCharacter];
+
+  avatar.style.filter = "";
+
+  if(selectedStyle === "cool") {
+    avatar.textContent = characterIcons[selectedCharacter] + " 😎";
+  }
+
+  if(selectedStyle === "smart") {
+    avatar.textContent = characterIcons[selectedCharacter] + " 🤓";
+  }
+
+  if(selectedStyle === "fun") {
+    avatar.textContent = characterIcons[selectedCharacter] + " 🤪";
+  }
+
+  if(selectedStyle === "cyber") {
+    avatar.textContent = characterIcons[selectedCharacter] + " 🤖";
+  }
 
 }
 
 
 /* =========================================================
-   9. BUILD BOARD
-========================================================= */
+   8. INICIAR
+   ========================================================= */
 
-function buildBoard() {
+function startGame() {
 
-  const board =
-    document.getElementById(
-      "gameBoard"
-    );
-
-  if (!board) return;
-
-  board.innerHTML = "";
-
-
-  tileTypes.forEach(
-    (type, index) => {
-
-      const tile =
-        document.createElement("div");
-
-      tile.className =
-        `game-tile stage-${getStage(index)}`;
-
-      tile.dataset.position =
-        index;
-
-
-      const number =
-        document.createElement("span");
-
-      number.className =
-        "tile-number";
-
-      number.textContent =
-        index + 1;
-
-
-      const icon =
-        document.createElement("span");
-
-      icon.className =
-        "tile-icon";
-
-
-      const label =
-        document.createElement("span");
-
-      label.className =
-        "tile-label";
-
-
-      if (type === "start") {
-
-        icon.textContent = "🚀";
-        label.textContent =
-          getTileLabel("start");
-
-      }
-
-      else if (type === "challenge") {
-
-        icon.textContent = "📰";
-        label.textContent =
-          getTileLabel("challenge");
-
-      }
-
-      else if (type === "shield") {
-
-        icon.textContent = "🛡️";
-        label.textContent =
-          getTileLabel("shield");
-
-      }
-
-      else if (type === "bonus") {
-
-        icon.textContent = "⭐";
-        label.textContent =
-          getTileLabel("bonus");
-
-      }
-
-      else if (type === "stage") {
-
-        icon.textContent = "🔓";
-        label.textContent =
-          getTileLabel("stage");
-
-      }
-
-      else if (type === "finish") {
-
-        icon.textContent = "🏁";
-        label.textContent =
-          getTileLabel("finish");
-
-      }
-
-      else {
-
-        icon.textContent = "•";
-
-      }
-
-
-      tile.appendChild(number);
-      tile.appendChild(icon);
-      tile.appendChild(label);
-
-
-      board.appendChild(tile);
-
-    }
-  );
-
-
-  updatePlayerPosition();
+  navigateTo("page-character");
 
 }
 
 
+/* =========================================================
+   9. CREAR TABLERO
+   ========================================================= */
+
+function createBoard() {
+
+  const board = document.getElementById("game-board");
+
+  if(!board) return;
+
+  board.innerHTML = "";
+
+  for(let i=0; i<TOTAL_TILES; i++) {
+
+    const tile = document.createElement("div");
+
+    tile.className = "tile";
+
+    const stage = getStage(i);
+
+    tile.classList.add("stage" + stage);
+
+    const type = getTileType(i);
+
+    tile.dataset.position = i;
+    tile.dataset.type = type;
+
+    const typeData = getTileVisual(type);
+
+    tile.innerHTML = `
+      <div class="tile-number">${i+1}</div>
+      <div class="tile-icon">${typeData.icon}</div>
+      <span class="tile-label">${typeData.name}</span>
+    `;
+
+    board.appendChild(tile);
+
+  }
+
+  renderPlayer();
+
+}
+
+
+/* =========================================================
+   10. ETAPA
+   ========================================================= */
+
 function getStage(position) {
 
-  if (position < 6) return 1;
+  if(position < 12) return 1;
 
-  if (position < 12) return 2;
+  if(position < 24) return 2;
 
-  if (position < 18) return 3;
+  if(position < 36) return 3;
 
   return 4;
 
 }
 
 
-function getTileLabel(type) {
+/* =========================================================
+   11. TIPO DE CASILLA
+   ========================================================= */
 
-  const labels = {
+function getTileType(position) {
 
-    es: {
-      start: "Inicio",
-      challenge: "Reto",
-      shield: "Escudo",
-      bonus: "Bonus",
-      stage: "Nueva etapa",
-      finish: "Final"
+  if(position === 0) return "start";
+
+  if(position === TOTAL_TILES-1) return "finish";
+
+  const pattern = [
+    "news",
+    "question",
+    "shield",
+    "ai",
+    "social",
+    "news",
+    "viral",
+    "question",
+    "deepfake",
+    "bonus",
+    "news",
+    "ai"
+  ];
+
+  return pattern[position % pattern.length];
+
+}
+
+
+function getTileVisual(type) {
+
+  const names = {
+
+    news:{
+      icon:"📰",
+      name:{
+        es:"Noticia",
+        en:"News",
+        zh:"新闻"
+      }[currentLanguage]
     },
 
-    en: {
-      start: "Start",
-      challenge: "Challenge",
-      shield: "Shield",
-      bonus: "Bonus",
-      stage: "New stage",
-      finish: "Finish"
+    question:{
+      icon:"🧠",
+      name:{
+        es:"Reto",
+        en:"Challenge",
+        zh:"挑战"
+      }[currentLanguage]
     },
 
-    zh: {
-      start: "开始",
-      challenge: "挑战",
-      shield: "护盾",
-      bonus: "奖励",
-      stage: "新阶段",
-      finish: "终点"
+    ai:{
+      icon:"🤖",
+      name:{
+        es:"IA",
+        en:"AI",
+        zh:"人工智能"
+      }[currentLanguage]
+    },
+
+    deepfake:{
+      icon:"🎭",
+      name:{
+        es:"Deepfake",
+        en:"Deepfake",
+        zh:"深度伪造"
+      }[currentLanguage]
+    },
+
+    social:{
+      icon:"📱",
+      name:{
+        es:"Redes",
+        en:"Social",
+        zh:"社交媒体"
+      }[currentLanguage]
+    },
+
+    shield:{
+      icon:"🛡️",
+      name:{
+        es:"Escudo",
+        en:"Shield",
+        zh:"护盾"
+      }[currentLanguage]
+    },
+
+    viral:{
+      icon:"🦠",
+      name:{
+        es:"Viral",
+        en:"Viral",
+        zh:"病毒"
+      }[currentLanguage]
+    },
+
+    bonus:{
+      icon:"⭐",
+      name:{
+        es:"Bonus",
+        en:"Bonus",
+        zh:"奖励"
+      }[currentLanguage]
+    },
+
+    start:{
+      icon:"🚀",
+      name:{
+        es:"Inicio",
+        en:"Start",
+        zh:"开始"
+      }[currentLanguage]
+    },
+
+    finish:{
+      icon:"🏆",
+      name:{
+        es:"Meta",
+        en:"Finish",
+        zh:"终点"
+      }[currentLanguage]
     }
 
   };
 
-
-  return labels[state.language][type];
+  return names[type];
 
 }
 
 
 /* =========================================================
-   10. SPIN
-========================================================= */
+   12. GIRAR RUEDA
+   ========================================================= */
 
 function spinWheel() {
 
-  if (state.spinning) return;
+  const button = document.getElementById("spin-button");
 
-  if (state.position >= state.totalTiles - 1) {
-    return;
-  }
+  if(button.disabled) return;
 
+  button.disabled = true;
 
-  state.spinning = true;
+  const moves = Math.floor(Math.random()*4)+1;
 
+  const result = document.getElementById("wheel-result");
 
-  const button =
-    document.getElementById(
-      "spinButton"
-    );
+  result.textContent = `🎲 +${moves}`;
 
-  if (button) {
-    button.disabled = true;
-  }
+  setTimeout(() => {
 
+    movePlayer(moves);
 
-  const wheel =
-    document.getElementById(
-      "wheelNumber"
-    );
-
-  if (wheel) {
-    wheel.classList.add("spinning");
-  }
-
-
-  const moves =
-    Math.floor(
-      Math.random() * 4
-    ) + 1;
-
-
-  if (wheel) {
-    wheel.textContent = moves;
-  }
-
-
-  setTimeout(
-    () => {
-
-      if (wheel) {
-        wheel.classList.remove(
-          "spinning"
-        );
-      }
-
-      movePlayer(moves);
-
-    },
-    700
-  );
+  },600);
 
 }
 
 
 /* =========================================================
-   11. MOVE PLAYER
-========================================================= */
+   13. MOVER JUGADOR
+   ========================================================= */
 
 function movePlayer(moves) {
 
-  let steps = moves;
+  let steps = 0;
 
+  const interval = setInterval(() => {
 
-  const interval =
-    setInterval(
-      () => {
+    if(steps >= moves) {
 
-        if (steps <= 0) {
+      clearInterval(interval);
 
-          clearInterval(interval);
+      setTimeout(() => {
 
-          finishMovement();
+        triggerTileEvent();
 
-          return;
+      },400);
 
-        }
+      return;
 
+    }
 
-        if (
-          state.position <
-          state.totalTiles - 1
-        ) {
+    if(playerPosition < TOTAL_TILES-1) {
 
-          state.position++;
+      playerPosition++;
 
-          updatePlayerPosition();
+      renderPlayer();
 
-          steps--;
+      updateHUD();
 
-        }
+    }
 
-      },
-      300
-    );
+    steps++;
+
+  },400);
 
 }
 
 
 /* =========================================================
-   12. PLAYER POSITION
-========================================================= */
+   14. RENDER JUGADOR
+   ========================================================= */
 
-function updatePlayerPosition() {
+function renderPlayer() {
 
-  const tiles =
-    document.querySelectorAll(
-      ".game-tile"
-    );
+  document.querySelectorAll(".tile-car")
+    .forEach(car => car.remove());
+
+  document.querySelectorAll(".tile")
+    .forEach(tile => tile.classList.remove("current"));
+
+  const tile = document.querySelector(
+    `.tile[data-position="${playerPosition}"]`
+  );
+
+  if(!tile) return;
+
+  tile.classList.add("current");
+
+  const car = document.createElement("div");
+
+  car.className = "tile-car";
+
+  car.textContent = "🚗";
+
+  tile.appendChild(car);
+
+  updateStageProgress();
+
+}
 
 
-  tiles.forEach(tile => {
+/* =========================================================
+   15. PROGRESO
+   ========================================================= */
 
-    tile.classList.remove(
-      "current"
-    );
+function updateStageProgress() {
 
+  const stage = getStage(playerPosition);
 
-    const oldToken =
-      tile.querySelector(
-        ".player-token"
+  document.querySelectorAll(".stage-point")
+    .forEach((point,index) => {
+
+      point.classList.toggle(
+        "active",
+        index < stage
       );
 
-    if (oldToken) {
-      oldToken.remove();
+    });
+
+}
+
+
+/* =========================================================
+   16. EVENTO DE CASILLA
+   ========================================================= */
+
+function triggerTileEvent() {
+
+  if(playerPosition === TOTAL_TILES-1) {
+
+    showVictory();
+
+    return;
+
+  }
+
+  const type =
+    document.querySelector(
+      `.tile[data-position="${playerPosition}"]`
+    )?.dataset.type;
+
+  openEvent(type);
+
+}
+
+
+/* =========================================================
+   17. EVENTOS
+   ========================================================= */
+
+function openEvent(type) {
+
+  const modal = document.getElementById("event-modal");
+
+  const icon = document.getElementById("event-icon");
+  const title = document.getElementById("event-title");
+  const description = document.getElementById("event-description");
+  const content = document.getElementById("event-content");
+  const actions = document.getElementById("event-actions");
+
+  modal.classList.remove("hidden");
+
+  content.innerHTML = "";
+  actions.innerHTML = "";
+
+  const t = TEXT[currentLanguage];
+
+
+  /* NOTICIA */
+
+  if(type === "news") {
+
+    const database = NEWS[currentLanguage];
+
+    let index = Math.floor(Math.random()*database.length);
+
+    currentEvent = database[index];
+
+    icon.textContent = "📰";
+
+    title.textContent =
+      currentLanguage === "es" ? "Detecta la información" :
+      currentLanguage === "en" ? "Check the information" :
+      "检查信息";
+
+    description.textContent =
+      currentEvent.body;
+
+    content.innerHTML = `
+      <div class="news-card">
+        <h3>${currentEvent.title}</h3>
+        <p>${currentEvent.body}</p>
+      </div>
+    `;
+
+    addAnswerButton(
+      t.correct,
+      () => evaluateNews(true)
+    );
+
+    addAnswerButton(
+      t.wrong,
+      () => evaluateNews(false)
+    );
+
+  }
+
+
+  /* PREGUNTA */
+
+  else if(type === "question") {
+
+    icon.textContent = "🧠";
+
+    title.textContent =
+      currentLanguage === "es" ? "Reto de pensamiento crítico" :
+      currentLanguage === "en" ? "Critical thinking challenge" :
+      "批判性思维挑战";
+
+    description.textContent =
+      t.sourceQuestion;
+
+    addAnswerButton(
+      t.sourceCorrect,
+      () => correctAnswer()
+    );
+
+    addAnswerButton(
+      t.sourceWrong,
+      () => wrongAnswer()
+    );
+
+  }
+
+
+  /* IA */
+
+  else if(type === "ai") {
+
+    icon.textContent = "🤖";
+
+    title.textContent =
+      currentLanguage === "es" ? "¿Detectas contenido generado por IA?" :
+      currentLanguage === "en" ? "Can you detect AI-generated content?" :
+      "你能识别人工智能生成的内容吗？";
+
+    description.textContent =
+      t.aiQuestion;
+
+    addAnswerButton(
+      t.aiCorrect,
+      () => correctAnswer()
+    );
+
+    addAnswerButton(
+      t.aiWrong,
+      () => wrongAnswer()
+    );
+
+  }
+
+
+  /* DEEPFAKE */
+
+  else if(type === "deepfake") {
+
+    icon.textContent = "🎭";
+
+    title.textContent =
+      currentLanguage === "es" ? "Alerta Deepfake" :
+      currentLanguage === "en" ? "Deepfake Alert" :
+      "深度伪造警报";
+
+    description.textContent =
+      t.deepfakeQuestion;
+
+    addAnswerButton(
+      t.deepfakeCorrect,
+      () => correctAnswer()
+    );
+
+    addAnswerButton(
+      t.deepfakeWrong,
+      () => wrongAnswer()
+    );
+
+  }
+
+
+  /* REDES */
+
+  else if(type === "social") {
+
+    icon.textContent = "📱";
+
+    title.textContent =
+      currentLanguage === "es" ? "Redes sociales" :
+      currentLanguage === "en" ? "Social Media" :
+      "社交媒体";
+
+    description.textContent =
+      t.socialQuestion;
+
+    addAnswerButton(
+      t.socialCorrect,
+      () => correctAnswer()
+    );
+
+    addAnswerButton(
+      t.socialWrong,
+      () => wrongAnswer()
+    );
+
+  }
+
+
+  /* ESCUDO */
+
+  else if(type === "shield") {
+
+    icon.textContent = "🛡️";
+
+    title.textContent =
+      currentLanguage === "es" ? "¡Encontraste un escudo!" :
+      currentLanguage === "en" ? "You found a shield!" :
+      "你找到了护盾！";
+
+    description.textContent =
+      currentLanguage === "es"
+      ? "Tu escudo puede protegerte de una amenaza futura."
+      : currentLanguage === "en"
+      ? "Your shield can protect you from a future threat."
+      : "你的护盾可以保护你免受未来的威胁。";
+
+    addAnswerButton(
+      "+1 🛡️",
+      () => {
+        shields++;
+        closeEvent();
+        updateHUD();
+      }
+    );
+
+  }
+
+
+  /* VIRAL */
+
+  else if(type === "viral") {
+
+    icon.textContent = "🦠";
+
+    title.textContent =
+      currentLanguage === "es" ? "¡Zona de alta carga viral!" :
+      currentLanguage === "en" ? "High viral load zone!" :
+      "高病毒负荷区域！";
+
+    description.textContent =
+      currentLanguage === "es"
+      ? "Tu feed está lleno de información sin verificar."
+      : currentLanguage === "en"
+      ? "Your feed is filled with unverified information."
+      : "你的信息流充满了未经验证的信息。";
+
+    addAnswerButton(
+      currentLanguage === "es" ? "Usar Escudo" :
+      currentLanguage === "en" ? "Use Shield" :
+      "使用护盾",
+      () => useShield()
+    );
+
+    addAnswerButton(
+      currentLanguage === "es" ? "Continuar" :
+      currentLanguage === "en" ? "Continue" :
+      "继续",
+      () => {
+        viralLoad += 15;
+        closeEvent();
+        updateHUD();
+      }
+    );
+
+  }
+
+
+  /* BONUS */
+
+  else if(type === "bonus") {
+
+    icon.textContent = "⭐";
+
+    title.textContent =
+      currentLanguage === "es" ? "¡Bonus!" :
+      currentLanguage === "en" ? "Bonus!" :
+      "奖励！";
+
+    description.textContent =
+      currentLanguage === "es"
+      ? "Encontraste una fuente confiable."
+      : currentLanguage === "en"
+      ? "You found a reliable source."
+      : "你找到了一条可靠的信息来源。";
+
+    addAnswerButton(
+      "+50 👥",
+      () => {
+        followers += 50;
+        closeEvent();
+        updateHUD();
+      }
+    );
+
+  }
+
+
+  /* META */
+
+  else if(type === "finish") {
+
+    showVictory();
+
+  }
+
+}
+
+
+/* =========================================================
+   18. BOTONES DE EVENTO
+   ========================================================= */
+
+function addAnswerButton(text, callback) {
+
+  const button = document.createElement("button");
+
+  button.className = "event-option";
+
+  button.textContent = text;
+
+  button.onclick = callback;
+
+  document.getElementById("event-actions")
+    .appendChild(button);
+
+}
+
+
+/* =========================================================
+   19. NOTICIAS
+   ========================================================= */
+
+function evaluateNews(correct) {
+
+  if(!currentEvent) return;
+
+  if(
+    (currentEvent.fake && correct) ||
+    (!currentEvent.fake && !correct)
+  ) {
+
+    correctAnswer();
+
+  } else {
+
+    wrongAnswer();
+
+  }
+
+}
+
+
+/* =========================================================
+   20. RESPUESTA CORRECTA
+   ========================================================= */
+
+function correctAnswer() {
+
+  followers += 30;
+
+  closeEvent();
+
+  updateHUD();
+
+}
+
+
+/* =========================================================
+   21. RESPUESTA INCORRECTA
+   ========================================================= */
+
+function wrongAnswer() {
+
+  if(shields > 0) {
+
+    const use = confirm(
+      currentLanguage === "es"
+      ? "¡Te equivocaste! ¿Quieres usar un Escudo?"
+      : currentLanguage === "en"
+      ? "You made a mistake! Do you want to use a Shield?"
+      : "你答错了！要使用护盾吗？"
+    );
+
+    if(use) {
+
+      shields--;
+
+      closeEvent();
+
+      updateHUD();
+
+      return;
+
     }
+
+  }
+
+  viralLoad += 15;
+
+  viralLoad = Math.min(viralLoad,100);
+
+  addVirus();
+
+  closeEvent();
+
+  showError();
+
+  updateHUD();
+
+}
+
+
+/* =========================================================
+   22. VIRUS
+   ========================================================= */
+
+const VIRUSES = [
+"🦠",
+"🧫",
+"👾",
+"🕷️",
+"☣️",
+"🤖",
+"💀",
+"🪱"
+];
+
+
+function addVirus() {
+
+  const virus =
+    VIRUSES[viruses.length % VIRUSES.length];
+
+  viruses.push(virus);
+
+  renderViruses();
+
+}
+
+
+function renderViruses() {
+
+  const container =
+    document.getElementById("virus-container");
+
+  if(!container) return;
+
+  container.innerHTML = "";
+
+  viruses.forEach((virus,index) => {
+
+    const span = document.createElement("span");
+
+    span.textContent = virus;
+
+    span.title =
+      currentLanguage === "es"
+      ? `Amenaza ${index+1}`
+      : currentLanguage === "en"
+      ? `Threat ${index+1}`
+      : `威胁 ${index+1}`;
+
+    container.appendChild(span);
 
   });
 
-
-  const current =
-    document.querySelector(
-      `.game-tile[data-position="${state.position}"]`
-    );
-
-
-  if (!current) return;
-
-
-  current.classList.add("current");
-
-
-  const player =
-    document.createElement("div");
-
-  player.className =
-    "player-token";
-
-  player.textContent =
-    state.avatar;
-
-
-  current.appendChild(player);
-
-
-  updatePositionUI();
-
-  updateStageUI();
-
 }
 
 
 /* =========================================================
-   13. FINISH MOVEMENT
-========================================================= */
+   23. ERROR
+   ========================================================= */
 
-function finishMovement() {
+function showError() {
 
-  state.spinning = false;
+  const screen =
+    document.getElementById("error-screen");
 
+  const message =
+    document.getElementById("error-message");
+
+  message.textContent =
+    TEXT[currentLanguage].errorWrong;
+
+  screen.classList.remove("hidden");
+
+}
+
+
+function closeError() {
+
+  document
+    .getElementById("error-screen")
+    .classList.add("hidden");
 
   const button =
-    document.getElementById(
-      "spinButton"
-    );
+    document.getElementById("spin-button");
 
-  if (button) {
-    button.disabled = false;
-  }
+  button.disabled = false;
+
+}
 
 
-  const type =
-    tileTypes[state.position];
+/* =========================================================
+   24. ESCUDO
+   ========================================================= */
 
+function useShield() {
 
-  if (
-    state.position ===
-    state.totalTiles - 1
-  ) {
+  if(shields <= 0) {
 
-    showFinish();
+    closeEvent();
+
+    wrongAnswer();
 
     return;
 
   }
 
+  shields--;
 
-  if (type === "challenge") {
+  closeEvent();
 
-    setTimeout(
-      () => openChallenge(),
-      350
-    );
-
-  }
-
-
-  else if (type === "shield") {
-
-    state.shields++;
-
-    showTemporaryMessage(
-      getTemporaryText("shield")
-    );
-
-    updateAllUI();
-
-  }
-
-
-  else if (type === "bonus") {
-
-    state.followers += 20;
-
-    showTemporaryMessage(
-      getTemporaryText("bonus")
-    );
-
-    updateAllUI();
-
-  }
-
-
-  else if (type === "stage") {
-
-    unlockStage(
-      getStage(state.position)
-    );
-
-  }
+  updateHUD();
 
 }
 
 
 /* =========================================================
-   14. TEMPORARY MESSAGES
-========================================================= */
+   25. CERRAR EVENTO
+   ========================================================= */
 
-function getTemporaryText(type) {
+function closeEvent() {
 
-  const texts = {
+  document
+    .getElementById("event-modal")
+    .classList.add("hidden");
 
-    es: {
-      shield: "🛡️ ¡Encontraste un Escudo!",
-      bonus: "⭐ ¡Bonus! +20 Seguidores"
-    },
-
-    en: {
-      shield: "🛡️ You found a Shield!",
-      bonus: "⭐ Bonus! +20 Followers"
-    },
-
-    zh: {
-      shield: "🛡️ 你找到了护盾！",
-      bonus: "⭐ 奖励！+20 关注者"
-    }
-
-  };
-
-
-  return texts[state.language][type];
-
-}
-
-
-function showTemporaryMessage(message) {
-
-  const wheelMessage =
-    document.getElementById(
-      "wheelMessage"
-    );
-
-  if (wheelMessage) {
-
-    wheelMessage.textContent =
-      message;
-
-    setTimeout(
-      () => {
-
-        wheelMessage.textContent =
-          translations[
-            state.language
-          ].spinToMove;
-
-      },
-      2200
-    );
-
-  }
+  document
+    .getElementById("spin-button")
+    .disabled = false;
 
 }
 
 
 /* =========================================================
-   15. STAGE UI
-========================================================= */
+   26. HUD
+   ========================================================= */
 
-function updateStageUI() {
+function updateHUD() {
 
-  const stage =
-    getStage(state.position);
-
-
-  const nodes =
-    document.querySelectorAll(
-      ".stage-node"
-    );
-
-
-  nodes.forEach(
-    (node, index) => {
-
-      const number =
-        index + 1;
-
-      node.classList.toggle(
-        "active",
-        number === stage
-      );
-
-      node.classList.toggle(
-        "locked",
-        number > stage
-      );
-
-    }
-  );
-
-
-  const tag =
-    document.getElementById(
-      "currentStageTag"
-    );
-
-  const title =
-    document.getElementById(
-      "currentStageTitle"
-    );
-
-
-  const stageIcons =
-    ["🌅", "🏫", "📱", "🌙"];
-
-
-  if (tag) {
-
-    const stageText = {
-
-      es: "ETAPA",
-      en: "STAGE",
-      zh: "阶段"
-
-    };
-
-
-    tag.textContent =
-      `${stageIcons[stage - 1]} ${stageText[state.language]} ${stage}`;
-
-  }
-
-
-  const stageTitles = {
-
-    es: [
-      "Despertar & Feed Matutino",
-      "Escuela & Chats",
-      "Noticias & Redes",
-      "Noche & Retiro Digital"
-    ],
-
-    en: [
-      "Wake Up & Morning Feed",
-      "School & Chats",
-      "News & Social Media",
-      "Night & Digital Detox"
-    ],
-
-    zh: [
-      "起床与早晨信息流",
-      "学校与聊天",
-      "新闻与社交网络",
-      "夜晚与数字休息"
-    ]
-
-  };
-
-
-  if (title) {
-    title.textContent =
-      stageTitles[
-        state.language
-      ][stage - 1];
-  }
-
-}
-
-
-/* =========================================================
-   16. POSITION UI
-========================================================= */
-
-function updatePositionUI() {
+  const t = TEXT[currentLanguage];
 
   const position =
-    document.getElementById(
-      "currentPosition"
-    );
+    document.getElementById("position-value");
 
-  const progress =
-    document.getElementById(
-      "positionProgress"
-    );
+  const followersElement =
+    document.getElementById("followers-count");
 
+  const shieldsElement =
+    document.getElementById("shields-count");
 
-  if (position) {
+  const viralElement =
+    document.getElementById("viral-count");
 
+  if(position)
     position.textContent =
-      state.position + 1;
+      `${playerPosition+1}/${TOTAL_TILES}`;
 
-  }
+  if(followersElement)
+    followersElement.textContent = followers;
 
+  if(shieldsElement)
+    shieldsElement.textContent = shields;
 
-  if (progress) {
-
-    const percentage =
-      (
-        state.position /
-        (state.totalTiles - 1)
-      ) * 100;
-
-    progress.style.width =
-      `${Math.max(4, percentage)}%`;
-
-  }
+  if(viralElement)
+    viralElement.textContent = viralLoad + "%";
 
 }
 
 
 /* =========================================================
-   17. STAGE UNLOCK
-========================================================= */
+   27. VICTORIA
+   ========================================================= */
 
-function unlockStage(stage) {
+function showVictory() {
 
   const modal =
-    document.getElementById(
-      "stageModal"
-    );
+    document.getElementById("event-modal");
 
-  const icon =
-    document.getElementById(
-      "unlockIcon"
-    );
+  document.getElementById("event-icon")
+    .textContent = "🏆";
 
-  const title =
-    document.getElementById(
-      "unlockTitle"
-    );
+  document.getElementById("event-title")
+    .textContent = TEXT[currentLanguage].victory;
 
-  const text =
-    document.getElementById(
-      "unlockText"
-    );
+  document.getElementById("event-description")
+    .textContent = TEXT[currentLanguage].victoryText;
+
+  document.getElementById("event-content")
+    .innerHTML = `
+      <div class="news-card">
+        ⭐ ${TEXT[currentLanguage].position}: ${playerPosition+1}/${TOTAL_TILES}<br><br>
+        👥 ${TEXT[currentLanguage].followers}: ${followers}<br><br>
+        🛡️ ${TEXT[currentLanguage].shields}: ${shields}<br><br>
+        🦠 ${TEXT[currentLanguage].viralLoad}: ${viralLoad}%
+      </div>
+    `;
+
+  document.getElementById("event-actions")
+    .innerHTML = "";
+
+  addAnswerButton(
+    TEXT[currentLanguage].continue,
+    () => {
+
+      closeEvent();
+
+      playerPosition = 0;
+      followers = 100;
+      shields = 1;
+      viralLoad = 0;
+      viruses = [];
+
+      renderViruses();
+      createBoard();
+      updateHUD();
+
+    }
+  );
+
+  modal.classList.remove("hidden");
+
+}
 
 
-  const data = {
+/* =========================================================
+   28. LABORATORIO
+   ========================================================= */
 
-    es: {
+function labTool(tool) {
 
-      2: {
-        icon: "🏫",
-        title: "Escuela & Chats",
-        text:
-          "Ahora tendrás que enfrentarte a la información que circula entre compañeros y grupos."
-      },
+  const output =
+    document.getElementById("lab-output");
 
-      3: {
-        icon: "📱",
-        title: "Noticias & Redes",
-        text:
-          "El mundo digital se vuelve más rápido. Aprende a distinguir lo viral de lo verdadero."
-      },
+  const responses = {
 
-      4: {
-        icon: "🌙",
-        title: "Noche & Retiro Digital",
-        text:
-          "Tu última etapa. Antes de terminar el día, demuestra todo lo que aprendiste."
-      }
-
+    source: {
+      es:"🔎 FUENTE: Busca quién publicó originalmente la afirmación y si otras fuentes confiables la confirman.",
+      en:"🔎 SOURCE: Find who originally published the claim and whether other reliable sources confirm it.",
+      zh:"🔎 来源：寻找最初发布该说法的人，并检查其他可靠来源是否确认。"
     },
 
-    en: {
-
-      2: {
-        icon: "🏫",
-        title: "School & Chats",
-        text:
-          "Now you will face information circulating among classmates and group chats."
-      },
-
-      3: {
-        icon: "📱",
-        title: "News & Social Media",
-        text:
-          "The digital world gets faster. Learn to distinguish what is viral from what is true."
-      },
-
-      4: {
-        icon: "🌙",
-        title: "Night & Digital Detox",
-        text:
-          "Your final stage. Before ending the day, prove everything you have learned."
-      }
-
+    image: {
+      es:"🖼️ IMAGEN: Una imagen puede estar fuera de contexto, ser antigua o estar manipulada.",
+      en:"🖼️ IMAGE: An image may be out of context, old, or manipulated.",
+      zh:"🖼️ 图片：图片可能脱离背景、来自过去，或者经过修改。"
     },
 
-    zh: {
+    ai: {
+      es:"🤖 IA: Busca inconsistencias en manos, texto, sombras, reflejos y rostros.",
+      en:"🤖 AI: Look for inconsistencies in hands, text, shadows, reflections, and faces.",
+      zh:"🤖 人工智能：检查手部、文字、阴影、反射和面部是否存在不一致。"
+    },
 
-      2: {
-        icon: "🏫",
-        title: "学校与聊天",
-        text:
-          "现在你将面对同学和群聊中传播的信息。"
-      },
-
-      3: {
-        icon: "📱",
-        title: "新闻与社交网络",
-        text:
-          "数字世界变得越来越快。学习区分什么是热门的，什么是真实的。"
-      },
-
-      4: {
-        icon: "🌙",
-        title: "夜晚与数字休息",
-        text:
-          "这是最后一个阶段。在结束一天之前，展示你学到的所有知识。"
-      }
-
+    date: {
+      es:"📅 FECHA: Comprueba cuándo ocurrió realmente el evento y si la publicación utiliza una noticia antigua.",
+      en:"📅 DATE: Check when the event actually happened and whether the post uses an old story.",
+      zh:"📅 日期：确认事件实际发生的时间，并检查帖子是否使用旧新闻。"
     }
 
   };
 
-
-  const current =
-    data[state.language][stage];
-
-
-  if (!current) return;
-
-
-  icon.textContent =
-    current.icon;
-
-  title.textContent =
-    current.title;
-
-  text.textContent =
-    current.text;
-
-
-  modal.classList.remove(
-    "hidden"
-  );
-
-}
-
-
-function closeStageModal() {
-
-  document
-    .getElementById(
-      "stageModal"
-    )
-    .classList.add(
-      "hidden"
-    );
+  output.textContent =
+    responses[tool][currentLanguage];
 
 }
 
 
 /* =========================================================
-   18. CHALLENGES
-========================================================= */
+   29. INICIO
+   ========================================================= */
 
-function openChallenge() {
+document.addEventListener("DOMContentLoaded", () => {
 
-  const languageNews =
-    newsDatabase[
-      state.language
-    ];
+  createBoard();
 
+  updateHUD();
 
-  const index =
-    Math.floor(
-      Math.random() *
-      languageNews.length
-    );
+  updateAvatarPreview();
 
-
-  state.currentChallenge =
-    languageNews[index];
-
-
-  const modal =
-    document.getElementById(
-      "challengeModal"
-    );
-
-
-  const headline =
-    document.getElementById(
-      "challengeHeadline"
-    );
-
-  const article =
-    document.getElementById(
-      "challengeArticle"
-    );
-
-  const feedback =
-    document.getElementById(
-      "challengeFeedback"
-    );
-
-
-  headline.textContent =
-    state.currentChallenge.headline;
-
-  article.textContent =
-    state.currentChallenge.article;
-
-
-  article.classList.add(
-    "hidden"
-  );
-
-  feedback.classList.add(
-    "hidden"
-  );
-
-
-  modal.classList.remove(
-    "hidden"
-  );
-
-}
-
-
-function toggleArticle() {
-
-  const article =
-    document.getElementById(
-      "challengeArticle"
-    );
-
-  article.classList.toggle(
-    "hidden"
-  );
-
-}
-
-
-/* =========================================================
-   19. ANSWER
-========================================================= */
-
-function answerChallenge(answer) {
-
-  if (!state.currentChallenge) {
-    return;
-  }
-
-
-  const correct =
-    state.currentChallenge.correct;
-
-
-  const title =
-    document.getElementById(
-      "feedbackTitle"
-    );
-
-  const text =
-    document.getElementById(
-      "feedbackText"
-    );
-
-  const feedback =
-    document.getElementById(
-      "challengeFeedback"
-    );
-
-
-  let good = false;
-
-
-  if (
-    answer === correct
-  ) {
-
-    good = true;
-
-    state.followers += 25;
-
-    state.completedChallenges++;
-
-    title.textContent =
-      translations[
-        state.language
-      ].feedbackGood;
-
-    text.textContent =
-      translations[
-        state.language
-      ].feedbackVerify;
-
-  }
-
-  else {
-
-    state.viralLoad =
-      Math.min(
-        100,
-        state.viralLoad + 10
-      );
-
-
-    title.textContent =
-      translations[
-        state.language
-      ].feedbackBad;
-
-
-    if (answer === "share") {
-
-      text.textContent =
-        translations[
-          state.language
-        ].feedbackShare;
-
-    }
-
-    else {
-
-      text.textContent =
-        translations[
-          state.language
-        ].feedbackIgnore;
-
-    }
-
-  }
-
-
-  feedback.classList.remove(
-    "hidden"
-  );
-
-
-  updateAllUI();
-
-}
-
-
-function closeChallenge() {
-
-  document
-    .getElementById(
-      "challengeModal"
-    )
-    .classList.add(
-      "hidden"
-    );
-
-  state.currentChallenge = null;
-
-}
-
-
-/* =========================================================
-   20. FINISH
-========================================================= */
-
-function showFinish() {
-
-  document.getElementById(
-    "finalFollowers"
-  ).textContent =
-    state.followers;
-
-
-  document.getElementById(
-    "finalShields"
-  ).textContent =
-    state.shields;
-
-
-  document.getElementById(
-    "finalViral"
-  ).textContent =
-    `${state.viralLoad}%`;
-
-
-  document
-    .getElementById(
-      "finishModal"
-    )
-    .classList.remove(
-      "hidden"
-    );
-
-}
-
-
-function restartGame() {
-
-  document
-    .getElementById(
-      "finishModal"
-    )
-    .classList.add(
-      "hidden"
-    );
-
-
-  state.position = 0;
-
-  state.followers = 100;
-
-  state.shields = 1;
-
-  state.viralLoad = 15;
-
-  state.completedChallenges = 0;
-
-
-  buildBoard();
-
-  updateAllUI();
-
-}
-
-
-/* =========================================================
-   21. LAB
-========================================================= */
-
-function runLab(tool) {
-
-  const result =
-    document.getElementById(
-      "labResult"
-    );
-
-  const title =
-    document.getElementById(
-      "labResultTitle"
-    );
-
-  const text =
-    document.getElementById(
-      "labResultText"
-    );
-
-
-  const data = {
-
-    es: {
-
-      clickbait: [
-        "📰 Clickbait",
-        translations.es.labClickbait
-      ],
-
-      source: [
-        "🔎 Verificación de fuente",
-        translations.es.labSource
-      ],
-
-      ai: [
-        "🤖 Contenido generado por IA",
-        translations.es.labAI
-      ],
-
-      context: [
-        "🧩 Contexto",
-        translations.es.labContext
-      ]
-
-    },
-
-    en: {
-
-      clickbait: [
-        "📰 Clickbait",
-        translations.en.labClickbait
-      ],
-
-      source: [
-        "🔎 Source verification",
-        translations.en.labSource
-      ],
-
-      ai: [
-        "🤖 AI-generated content",
-        translations.en.labAI
-      ],
-
-      context: [
-        "🧩 Context",
-        translations.en.labContext
-      ]
-
-    },
-
-    zh: {
-
-      clickbait: [
-        "📰 标题党",
-        translations.zh.labClickbait
-      ],
-
-      source: [
-        "🔎 来源验证",
-        translations.zh.labSource
-      ],
-
-      ai: [
-        "🤖 人工智能生成内容",
-        translations.zh.labAI
-      ],
-
-      context: [
-        "🧩 背景",
-        translations.zh.labContext
-      ]
-
-    }
-
-  };
-
-
-  const response =
-    data[
-      state.language
-    ][tool];
-
-
-  title.textContent =
-    response[0];
-
-  text.textContent =
-    response[1];
-
-
-  result.classList.remove(
-    "hidden"
-  );
-
-}
-
-
-/* =========================================================
-   22. LANGUAGE
-========================================================= */
-
-function changeLanguage(language) {
-
-  if (
-    !translations[language]
-  ) {
-    language = "es";
-  }
-
-
-  state.language =
-    language;
-
-
-  document.documentElement.lang =
-    language;
-
-
-  buildBoard();
-
-  applyLanguage();
-
-  updateAllUI();
-
-}
-
-
-/* =========================================================
-   23. APPLY LANGUAGE
-========================================================= */
-
-function applyLanguage() {
-
-  const dictionary =
-    translations[
-      state.language
-    ];
-
-
-  document
-    .querySelectorAll(
-      "[data-i18n]"
-    )
-    .forEach(
-      element => {
-
-        const key =
-          element.dataset.i18n;
-
-
-        if (
-          dictionary[key]
-        ) {
-
-          element.textContent =
-            dictionary[key];
-
-        }
-
-      }
-    );
-
-
-  updateStageUI();
-
-}
-
-
-/* =========================================================
-   24. UPDATE EVERYTHING
-========================================================= */
-
-function updateAllUI() {
-
-  updateAvatar();
-
-  updateAgentName();
-
-  updatePlayerPosition();
-
-  updateStageUI();
-
-
-  const followers =
-    document.getElementById(
-      "followers"
-    );
-
-  const shields =
-    document.getElementById(
-      "shields"
-    );
-
-  const viral =
-    document.getElementById(
-      "viralLoad"
-    );
-
-  const viralPercent =
-    document.getElementById(
-      "viralPercent"
-    );
-
-  const viralBar =
-    document.getElementById(
-      "viralBar"
-    );
-
-
-  if (followers) {
-    followers.textContent =
-      state.followers;
-  }
-
-
-  if (shields) {
-    shields.textContent =
-      state.shields;
-  }
-
-
-  if (viral) {
-    viral.textContent =
-      `${state.viralLoad}%`;
-  }
-
-
-  if (viralPercent) {
-    viralPercent.textContent =
-      `${state.viralLoad}%`;
-  }
-
-
-  if (viralBar) {
-    viralBar.style.width =
-      `${state.viralLoad}%`;
-  }
-
-
-  const playerName =
-    document.getElementById(
-      "playerName"
-    );
-
-  if (playerName) {
-    playerName.textContent =
-      state.name;
-  }
-
-
-  const rankingName =
-    document.getElementById(
-      "rankingName"
-    );
-
-  const rankingFollowers =
-    document.getElementById(
-      "rankingFollowers"
-    );
-
-  const rankingViral =
-    document.getElementById(
-      "rankingViral"
-    );
-
-
-  if (rankingName) {
-    rankingName.textContent =
-      state.name;
-  }
-
-
-  if (rankingFollowers) {
-
-    rankingFollowers.textContent =
-      `${state.followers} 👥`;
-
-  }
-
-
-  if (rankingViral) {
-
-    rankingViral.textContent =
-      `-${Math.max(
-        0,
-        100 - state.viralLoad
-      )}% 🦠`;
-
-  }
-
-}
-
-
-/* =========================================================
-   25. INITIAL HOME STATE
-========================================================= */
-
-showPage("home");
+});
