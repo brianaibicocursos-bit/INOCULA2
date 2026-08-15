@@ -95,7 +95,7 @@
     <div class="home-cards">
 
       <div>
-        <strong>40+</strong>
+        <strong>48</strong>
         <span data-i18n="tiles">Casillas</span>
       </div>
 
@@ -164,34 +164,32 @@
         <button onclick="selectStyle('cool', this)"
                 class="style-option selected">
           😎
-          <span>Cool</span>
+          <span data-i18n="cool">Cool</span>
         </button>
 
         <button onclick="selectStyle('smart', this)"
                 class="style-option">
           🤓
-          <span>Smart</span>
+          <span data-i18n="smart">Smart</span>
         </button>
 
         <button onclick="selectStyle('fun', this)"
                 class="style-option">
           🤪
-          <span>Fun</span>
+          <span data-i18n="fun">Fun</span>
         </button>
 
         <button onclick="selectStyle('cyber', this)"
                 class="style-option">
           🤖
-          <span>Cyber</span>
+          <span data-i18n="cyber">Cyber</span>
         </button>
 
       </div>
 
       <div class="preview">
 
-        <div id="avatar-preview" class="big-avatar">
-          🧑‍💻
-        </div>
+        <div id="avatar-preview" class="big-avatar"></div>
 
         <div class="preview-car">
           🚗
@@ -285,15 +283,19 @@
 
       <div class="player-car-area">
 
-        <div id="player-avatar" class="car-avatar">
-          🧑‍💻
-        </div>
+        <div class="road-line"></div>
 
-        <div class="car">
-          🚗
-        </div>
+        <div class="player-car">
 
-        <div id="virus-container" class="car-viruses"></div>
+          <div id="player-avatar" class="car-avatar"></div>
+
+          <div class="car">
+            🚗
+          </div>
+
+          <div id="virus-container" class="car-viruses"></div>
+
+        </div>
 
       </div>
 
